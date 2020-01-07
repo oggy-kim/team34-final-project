@@ -173,7 +173,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# personal image
-member/
-
 # End of https://www.gitignore.io/api/java,macos,maven,windows,eclipse,visualstudiocode
