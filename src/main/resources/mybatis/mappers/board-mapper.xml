@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardMapper">
+	<resultMap type="Board" id="boardListResultSet">
+		<id property="aNo" column="ARTICLE_NO"/>
+		<result property="mNo" column="MEMBER_NO"/>
+		<result property="mNick" column="MEMBER_NICK"/>
+		<result property="aType" column="ARTICLE_TYPE"/>
+		<result property="aTag" column="TAG"/>
+		<result property="view" column="ARTICLE_VIEW"/>
+		<result property="like" column="ARTICLE_LIKE"/>
+		<result property="writeDate" column="WRITE_DATE"/>
+		<result property="replyDate" column="REPLY_DATE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="bHeader" column="HEADER"/>
+		<result property="bContent" column="CONTENT"/>
+		<result property="aStatus" column="ARTICLE_STATUS"/>
+		<result property="cType" column="CONTENT_TYPE"/>
+		<result property="star" column="ARTICLE_STAR"/>
+		<result property="reply" column="TOTAL_REPLY"/>
+	</resultMap>
+	<resultMap type="Board" id="boardDetailResultSet">
+		<id property="aNo" column="ARTICLE_NO"/>
+		<result property="mNo" column="MEMBER_NO"/>
+		<result property="mNick" column="MEMBER_NICK"/>
+		<result property="aType" column="ARTICLE_TYPE"/>
+		<result property="aboutMe" column="ABOUT_ME"/>
+		<result property="mPoint" column="MEMBER_POINT"/>
+		<result property="aTag" column="TAG"/>
+		<result property="view" column="ARTICLE_VIEW"/>
+		<result property="like" column="ARTICLE_LIKE"/>
+		<result property="writeDate" column="WRITE_DATE"/>
+		<result property="replyDate" column="REPLY_DATE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="bHeader" column="HEADER"/>
+		<result property="bContent" column="CONTENT"/>
+		<result property="aStatus" column="ARTICLE_STATUS"/>
+		<result property="cType" column="CONTENT_TYPE"/>
+		<result property="star" column="ARTICLE_STAR"/>
+		<result property="reply" column="TOTAL_REPLY"/>
+	</resultMap>
+
+	<select id="getListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE ARTICLE_STATUS='Y'
+	</select>
+	
+	<select id="selectList" parameterType="String" resultMap="boardListResultSet">
+		SELECT *
+		FROM BOARDVIEW
+		WHERE ARTICLE_STATUS = 'Y'
+	 	<if test="value != null">
+	 	AND CONTENT_TYPE = #{value}
+	 	</if>
+	</select>
+	
+	<update id="updateCount" parameterType="_int">
+		UPDATE BOARD
+		SET ARTICLE_VIEW = ARTICLE_VIEW + 1
+		WHERE ARTICLE_NO = #{aNo} 
+	</update>
+
+	<select id="selectArticle" resultMap="boardDetailResultSet">
+		SELECT *
+		FROM BOARDVIEWDETAIL
+		WHERE ARTICLE_NO = #{aNo}
+	</select>
+	
+	<update id="addLike" parameterType="_int">
+		UPDATE BOARD
+		SET ARTICLE_LIKE = ARTICLE_LIKE + 1
+		WHERE ARTICLE_NO = #{aNo} 
+	</update>
+
+	
+</mapper>

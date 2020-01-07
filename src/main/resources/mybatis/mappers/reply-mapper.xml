@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReplyMapper">
+	<resultMap type="Reply" id="ReplyResultSet">
+		<id property="rNo" column="REPLY_NO"/>
+		<result property="mNo" column="MEMBER_NO"/>
+		<result property="mNick" column="MEMBER_NICK"/>
+		<result property="mPoint" column="MEMBER_POINT"/>
+		<result property="aboutMe" column="ABOUT_ME"/>
+		<result property="aNo" column="ARTICLE_NO"/>
+		<result property="like" column="REPLY_LIKE"/>
+		<result property="rContent" column="CONTENT"/>
+		<result property="writeDate" column="WRITE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+        <result property="rStatus" column="REPLY_STATUS"/>
+ 		<result property="refRNo" column="REF_REPLY_NO"/>
+	</resultMap>
+
+	<select id="selectList" parameterType="_int" resultMap="ReplyResultSet">
+		SELECT *
+		FROM REPLYVIEW
+        WHERE ARTICLE_NO = #{aNo}
+	</select>
+
+
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO REPLY (MEMBER_NO, ARTICLE_NO, REPLY_LIKE, CONTENT, WRITE_DATE, REPLY_STATUS, REF_REPLY_NO, MODIFY_DATE)
+		VALUES (#{mNo}, #{aNo}, DEFAULT, #{rContent}, DEFAULT, DEFAULT, #{refRNo}, DEFAULT)
+	</insert>
+</mapper>
