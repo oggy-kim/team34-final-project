@@ -20,6 +20,17 @@
     <div class="col-6 col-12-small">
         <ul class="actions stacked">
             <li><a href="${contextPath}/board/post" class="button primary">글쓰기</a></li>
+            <c:if test="${loginMember eq null}">
+                <script>
+                    const needLogin = document.querySelector('.button.primary');
+                    needLogin.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        if(confirm("글쓰기는 로그인한 회원만 가능합니다. 로그인하시겠습니까?")) {
+                            location.href="${contextPath}/login";
+                        };
+                    }, false);
+                </script>
+            </c:if>
         </ul>
     </div>
     <div class="table-wrapper">
@@ -36,7 +47,7 @@
             <tbody>
                 <c:if test="${fn:length(list) eq 0}">해당 주제의 게시글이 없습니다.</c:if>
                 <c:set var="offset" value="1"/>
-                <c:forEach var="b" items="${list}" begin="${(offset - 1)*15}" end="${offset * 15}">
+                <c:forEach var="b" items="${list}" begin="${(pageInfo - 1) * boardLimit}" end="${pageInfo * boardLimit}">
                 <tr class="board-list" value="${b.aNo}">
                     <td>
                         <img class="profile-small" src="${contextPath}/resources/images/member/${b.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'">
@@ -97,7 +108,19 @@
         </table>
         <div class="col-6 col-12-small">
         <ul class="actions stacked">
-            <li><a href="#" class="button primary fit">더 보기</a></li>
+            <script>
+                const seeMore = fetch('${contextPath}/board').then((res) => {
+                    if(res.status == 200 || res.status == 201) {
+                        console.log(res.status);
+                        console.log("통신성공");
+                        console.log(res.body);
+                    } else {
+                        console.log(res.status);
+                        console.error(res.statusText);
+                    }
+                }).catch(e => console.log(e));
+            </script>
+            <li><a href="#" onclick="javascript:seeMore();" class="button primary fit">더 보기</a></li>
         </ul>
         </div>
     </div>

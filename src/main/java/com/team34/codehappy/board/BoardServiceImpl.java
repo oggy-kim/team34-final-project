@@ -19,14 +19,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> selectList() {
-		List<Board> list = bDao.selectList();
+	public List<Board> selectList(int currentPage, int boardLimit) {
+		List<Board> list = bDao.selectList(currentPage, boardLimit);
 		return list;
 	}
 
 	@Override
-	public List<Board> selectList(String type) {
-		List<Board> list = bDao.selectList(type);
+	public List<Board> selectList(String type, int currentPage, int boardLimit) {
+		List<Board> list = bDao.selectList(type, currentPage, boardLimit);
 		return list;
 	}
 
@@ -52,4 +52,11 @@ public class BoardServiceImpl implements BoardService {
 	public int addLike(int aNo) {
 		return bDao.addLike(aNo);
 	}
+
+	@Override
+	public int insertBoard(Board b) {
+		return bDao.insertBoard(b);
+	}
+	
+	
 }

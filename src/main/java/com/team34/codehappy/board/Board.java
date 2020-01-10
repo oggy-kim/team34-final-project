@@ -22,11 +22,12 @@ public class Board {
 	private int star;
 	private int reply;
 
-	public Board() {}
+	public Board() {
+	}
 
-	public Board(int aNo, int mNo, String mNick, int aType, String aboutMe, int mPoint, String aTag, int view,
-			int like, Date writeDate, Date replyDate, Date changeDate, String bHeader, String bContent, char aStatus,
-			int cType, int star, int reply) {
+	public Board(int aNo, int mNo, String mNick, int aType, String aboutMe, int mPoint, String aTag, int view, int like,
+			Date writeDate, Date replyDate, Date changeDate, String bHeader, String bContent, char aStatus, int cType,
+			int star, int reply) {
 		super();
 		this.aNo = aNo;
 		this.mNo = mNo;
@@ -195,11 +196,9 @@ public class Board {
 	@Override
 	public String toString() {
 		return "Board [aNo=" + aNo + ", mNo=" + mNo + ", mNick=" + mNick + ", aType=" + aType + ", aboutMe=" + aboutMe
-				+ ", mPoint=" + mPoint + ", aTag=" + aTag + ", view=" + view + ", like=" + like
-				+ ", writeDate=" + writeDate + ", replyDate=" + replyDate + ", changeDate=" + changeDate + ", bHeader="
-				+ bHeader + ", bContent=" + bContent + ", aStatus=" + aStatus + ", cType=" + cType + ", star=" + star
-				+ ", reply=" + reply + "]";
+				+ ", mPoint=" + mPoint + ", aTag=" + aTag + ", view=" + view + ", like=" + like + ", writeDate="
+				+ writeDate + ", replyDate=" + replyDate + ", changeDate=" + changeDate + ", bHeader=" + bHeader
+				+ ", bContent=" + bContent + ", aStatus=" + aStatus + ", cType=" + cType + ", star=" + star + ", reply="
+				+ reply + "]";
 	}
-
-	
 }

@@ -76,5 +76,8 @@
 		WHERE ARTICLE_NO = #{aNo} 
 	</update>
 
-	
+	<insert id="insertBoard" parameterType="Board">
+		INSERT INTO BOARD (ARTICLE_TYPE, TAG, ARTICLE_VIEW, ARTICLE_LIKE, WRITE_DATE, HEADER, CONTENT, ARTICLE_STATUS, MEMBER_NO, CONTENT_TYPE)
+		VALUES (#{aType}, #{aTag}, DEFAULT, DEFAULT, DEFAULT, #{bHeader}, #{bContent}, DEFAULT, #{mNo}, #{cType})
+	</insert>
 </mapper>

@@ -67,12 +67,11 @@ if(title_el && title_header)
         ${board.bContent}
         
     </div>
-        <div style="text-align:center">좋은 글인가요? &nbsp; 
+        <div style="text-align:center">좋은 글인가요? &nbsp; <a href="#" onclick="javascript:document.article_like.submit()" class="button">♡ ${board.like}</a>
             <form name="article_like" action="${contextPath}/board/${board.aNo}/like" method="POST">
             <input type="hidden" name="aNo" value="${board.aNo}" />
             <input type="hidden" name="mNo" value="${board.mNo}" />
             </form>
-            <a href="#" onclick="javascript:document.article_like.submit()" class="button">♡ ${board.like}</a> &nbsp; 
         보관함 담기 &nbsp;
         <a href="#" class="button">⭐️</a></div>
     <hr class="major" />

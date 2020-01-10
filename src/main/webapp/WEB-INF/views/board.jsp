@@ -18,7 +18,7 @@
                         <c:import url="./board/boarddetailview.jsp"/>
                     </c:when>
                     <c:when test="${name eq 'boardinsert'}">
-                        <c:import url="./board/boardinsertview.jsp"/>
+                        <c:import url="./board/boardinsertform.jsp"/>
                     </c:when>
                     <c:otherwise>
                         ${name}

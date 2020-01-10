@@ -19,10 +19,10 @@
                     <li>
                         <span class="opener"><a href="${contextPath}/board">게시판</a></span>
                         <ul>
-                            <li><a href="${contextPath}/board/category/?type=frontend">프론트엔드</a></li>
-                            <li><a href="${contextPath}/board/category/?type=backend">백엔드</a></li>
-                            <li><a href="${contextPath}/board/category/?type=others">그외 프로그래밍</a></li>
-                            <li><a href="${contextPath}/board/category/?type=freetalk">자유게시판</a></li>
+                            <li><a href="${contextPath}/board/?type=frontend">프론트엔드</a></li>
+                            <li><a href="${contextPath}/board/?type=backend">백엔드</a></li>
+                            <li><a href="${contextPath}/board/?type=others">그외 프로그래밍</a></li>
+                            <li><a href="${contextPath}/board/?type=freetalk">자유게시판</a></li>
                         </ul>
                     </li>
                     <li><a href="${contextPath}/blog">블로그</a></li>

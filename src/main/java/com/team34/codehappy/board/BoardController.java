@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.team34.codehappy.member.Member;
@@ -33,23 +34,28 @@ public class BoardController {
 	private Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView boardList(ModelAndView mv) {
-		int countList = bService.getListCount();
+	public ModelAndView boardList(ModelAndView mv,
+			@RequestParam(value="type", required=false) String type,
+			@RequestParam(value="page", required=false) Integer page) {
+
+		int currentPage = page != null ? page : 1;
+		int boardLimit = 15;
 		
-		List<Board> list = bService.selectList();
+		System.out.println("type : " + type);
+		System.out.println("currentPage : " + currentPage);
+		System.out.println("page : " + page);
 		
-		mv.addObject("countList", countList);
-		mv.addObject("list", list);
-		mv.addObject("name", "boardlist");
-		mv.setViewName("board");
-		return mv;
-	
-	}
-	
-	@RequestMapping(value="category", method=RequestMethod.GET)
-	public ModelAndView boardListByTag(ModelAndView mv,
-			@RequestParam(value="type", required=false) String type) {
-		if(type.equals("frontend")) {
+		if(type == null) {
+			List<Board> list = bService.selectList(currentPage, boardLimit);
+			int countList = bService.getListCount();
+			mv.addObject("countList", countList);
+			mv.addObject("list", list);
+			mv.addObject("pageInfo", currentPage);
+			mv.addObject("boardLimit", boardLimit);
+			mv.addObject("name", "boardlist");
+			mv.setViewName("board");
+			return mv;
+		} else if(type.equals("frontend")) {
 			type = "1";
 		} else if(type.equals("backend")) {
 			type = "2";
@@ -63,10 +69,12 @@ public class BoardController {
 			return mv;
 		}
 		
-		List<Board> list = bService.selectList(type);
-		mv.addObject("list", list)
-		  .addObject("name", "boardlist")
-		  .setViewName("board");
+		List<Board> list = bService.selectList(type, currentPage, boardLimit);
+		mv.addObject("list", list);
+		mv.addObject("pageInfo", currentPage);
+		mv.addObject("boardLimit", boardLimit);
+		mv.addObject("name", "boardlist");
+		mv.setViewName("board");
 		return mv;
 	}
 	
@@ -104,13 +112,6 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping(value="post", method=RequestMethod.GET)
-	public ModelAndView insertBoard(ModelAndView mv) {
-		mv.addObject("name", "boardinsert").
-		   setViewName("board");
-		return mv;
-	}
-	
 	@RequestMapping(value="{aNo}/like", method=RequestMethod.POST)
 	public String addLike(Model model, int aNo, Integer mNo, HttpServletRequest request, HttpServletResponse response) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
@@ -123,7 +124,7 @@ public class BoardController {
 					if(c.getName().equals("aNoLike"+aNo)) {
 						flag = true;
 						model.addAttribute("msg", "연속된 좋아요 클릭은 안돼요~");
-						return "board/" + aNo;
+						return "redirect:/board/" + aNo;
 					}
 				}
 				
@@ -131,20 +132,20 @@ public class BoardController {
 					Cookie c = new Cookie("aNoLike"+aNo, String.valueOf(aNo));
 					c.setMaxAge(1 * 24 * 60 * 60);
 					response.addCookie(c);
-					if(loginMember.getmNo() == mNo) {
+					if(loginMember == null || loginMember.getmNo() == mNo) {
 						model.addAttribute("msg", "본인 글에 좋아요를 누르실 수 없습니다.");
-						return "board/" + aNo;
+						return "redirect:/board/" + aNo;
 					}
 					int result = bService.addLike(aNo);
 					
 					if(result > 0) {
-						model.addAttribute("msg", "해당 글에 좋아요를 누르셨습니다.");
+						model.addAttribute("msg", "좋아요 클릭 완료!");
 					} else {
 						System.out.println("추후에 수정필요(Exception)");
 					}
 				}
 			}
-			return "board/" + aNo;
+			return "redirect:/board/" + aNo;
 		
 	}
 	
@@ -170,8 +171,24 @@ public class BoardController {
 	}
 	
 	
+	// 게시글 작성
+	// 게시글 작성 화면으로 이동
+	@RequestMapping(value="post", method=RequestMethod.GET)
+	public ModelAndView insertBoard(ModelAndView mv) {
+		mv.addObject("name", "boardinsert").
+		   setViewName("board");
+		return mv;
+	}
 	
-	
-	
-	
+	@RequestMapping(value="post", method=RequestMethod.POST)
+	public String insertBoard(HttpServletRequest request, HttpServletResponse response,
+							Board b) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		b.setaType(1);	
+		b.setmNo(loginMember.getmNo());
+		
+		int result = bService.insertBoard(b);
+
+		return "redirect:/board/";
+	}
 }

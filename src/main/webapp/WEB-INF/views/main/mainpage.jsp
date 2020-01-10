@@ -5,7 +5,7 @@
 <!-- 메인페이지 주요 게시글 -->
             <section>
                 <header class="major">
-                    <h2>오늘의 주제</h2>
+                    <h2>HOT TOPIC 🔥</h2>
                 </header>
                 <div class="table-wrapper">
                     <table>

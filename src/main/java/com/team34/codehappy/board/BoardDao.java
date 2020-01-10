@@ -3,6 +3,7 @@ package com.team34.codehappy.board;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,13 +23,19 @@ public class BoardDao {
 		return result;
 	}
 
-	public List<Board> selectList() {
-		List<Board> list = sqlSession.selectList("BoardMapper.selectList");
+	public List<Board> selectList(int currentPage, int boardLimit) {
+		int offset = (currentPage - 1) * boardLimit;
+		RowBounds rowBounds = new RowBounds(offset, boardLimit);
+		
+		List<Board> list = sqlSession.selectList("BoardMapper.selectList", null, rowBounds);
 		return list;
 	}
 
-	public List<Board> selectList(String type) {
-		List<Board> list = sqlSession.selectList("BoardMapper.selectList", type);
+	public List<Board> selectList(String type, int currentPage, int boardLimit) {
+		int offset = (currentPage - 1) * boardLimit;
+		RowBounds rowBounds = new RowBounds(offset, boardLimit);
+		
+		List<Board> list = sqlSession.selectList("BoardMapper.selectList", type, rowBounds);
 		return list;
 	}
 
@@ -50,5 +57,9 @@ public class BoardDao {
 
 	public int addLike(int aNo) {
 		return sqlSession.update("BoardMapper.addLike", aNo);
+	}
+
+	public int insertBoard(Board b) {
+		return sqlSession.insert("BoardMapper.insertBoard", b);
 	}
 }

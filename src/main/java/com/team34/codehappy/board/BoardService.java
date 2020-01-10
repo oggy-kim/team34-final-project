@@ -10,9 +10,9 @@ public interface BoardService {
 	
 	// 게시글 불러오기
 	// 전체
-	List<Board> selectList();
+	List<Board> selectList(int currentPage, int boardLimit);
 	// type에 따라
-	List<Board> selectList(String type);
+	List<Board> selectList(String type, int currentPage, int boardLimit);
 
 	// 글 세부읽기
 	Board selectArticle(int aNo, boolean flag);
@@ -25,6 +25,9 @@ public interface BoardService {
 
 	// 좋아요 등록하기
 	int addLike(int aNo);
+
+	// 게시글 등록하기
+	int insertBoard(Board b);
 	
 	
 	
