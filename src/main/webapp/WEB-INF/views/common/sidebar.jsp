@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!-- Sidebar -->
 <div id="sidebar">
     <div class="inner">
@@ -17,35 +19,40 @@
                 </header>
                 <ul>
                     <li>
-                        <span class="opener"><a href="${contextPath}/board">게시판</a></span>
+                        <span class="opener">게시판</span>
                         <ul>
+                            <li><a href="${contextPath}/board">글 모아보기</a></li>
                             <li><a href="${contextPath}/board/?type=frontend">프론트엔드</a></li>
                             <li><a href="${contextPath}/board/?type=backend">백엔드</a></li>
                             <li><a href="${contextPath}/board/?type=others">그외 프로그래밍</a></li>
-                            <li><a href="${contextPath}/board/?type=freetalk">자유게시판</a></li>
+                            <li><a href="${contextPath}/board/?type=freetalk">프리톡</a></li>
                         </ul>
                     </li>
-                    <li><a href="${contextPath}/blog">블로그</a></li>
+                    <li><a href="#" onclick="javascript:alert('블로그는 현재 개발중입니다. 곧 만나요!')">블로그</a></li>
                 </ul>
             </nav>
 
         <!-- Section -->
             <section>
                 <header class="major">
-                    <h2>&#x1F913; &nbsp;About Me</h2>
+                    <a href="#" onclick="javascript:alert('마이페이지는 현재 개발중입니다. 조금만 기다려주세요!')"><h2><img src="${contextPath}/resources/images/member/${r.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-xsmall"> About Me &#x1F913;</h2></a>
                 </header>
                 <div class="mini-posts">
                     <article>
-                        <p>{코드포인트} ${loginMember.mPoint} 점 </p>
+                        <p>{코드포인트} : <strong>${loginMember.mPoint} 점</strong> </p>
                     </article>
                     <article>
                         <p>나의 최근 게시글 업데이트</p>
-                        <a href="#" class="image"><img src="images/pic08.jpg" alt="" /></a>
+                        <h5>** 개발중입니다. **</h5>
                     </article>
                 </div>
-                <ul class="actions">
-                    <li><a href="#" class="button">More..</a></li>
-                </ul>
+                <c:if test="${loginMember eq null}">
+                    <script>
+                        const aboutMeDiv = document.querySelector('.mini-posts');
+                        aboutMeDiv.style = "filter:blur(3px);pointer-events:none";
+                    </script>
+                    <h5 align="center">로그인이 필요합니다.</h5>
+                </c:if>
             </section>
 
         <!-- Section -->
@@ -57,14 +64,16 @@
                 <ul class="contact">
                     <li class="icon solid fa-envelope">김옥철 : <a href="mailto:oksamha@gmail.com">oksamha@gmail.com</a></li>
                     <li class="icon solid fa-envelope">윤희석 : <a href="mailto:heesuk1181@naver.com">heesuk1181@naver.com</a></li>
-                    <li class="icon solid fa-home">서울시 강남구 <br />
-                    테헤란로 어딘가</li>
+                    <li class="icon solid fa-home">Github Link : 
+                        <a href="https://github.com/oggy-kim/team34-final-project"><img src="${contextPath}/resources/images/common/github.png" width="20px"></a>
+                    </li>
                 </ul>
             </section>
 
         <!-- Footer -->
             <footer id="footer">
                 <p class="copyright">&copy; http://Codehappy.site . All rights reserved. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+                
             </footer>
     </div>
 </div>

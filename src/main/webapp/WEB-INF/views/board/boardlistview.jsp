@@ -15,11 +15,11 @@
         </script>
 <section>
     <header class="major">
-        <h2>게시판</h2>
+        <h2>게시판 - ${bName}</h2>
     </header>
     <div class="col-6 col-12-small">
         <ul class="actions stacked">
-            <li><a href="${contextPath}/board/post" class="button primary">글쓰기</a></li>
+            <li><a href="${contextPath}/board/post" class="button primary">글쓰기</a> &nbsp; <strong>${countList}개</strong>의 글이 있습니다.</li>
             <c:if test="${loginMember eq null}">
                 <script>
                     const needLogin = document.querySelector('.button.primary');
@@ -67,23 +67,27 @@
                             </c:when>
                             <c:when test="${diff lt (60*60)}">
                                 <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
-                                ${minute} 분 전
+                                ${minute}분 전
                             </c:when>
                             <c:when test="${diff lt (60*60*24)}">
                                 <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
-                                ${hour} 시간 전
+                                ${hour}시간 전
+                            </c:when>
+                            <c:when test="${diff lt (60*60*24*7)}">
+                                <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
+                                ${day}일 전
                             </c:when>
                             <c:when test="${diff lt (60*60*24*30)}">
-                                <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
-                                ${day} 일 전
+                                <fmt:parseNumber var="week" integerOnly="true" value="${diff / (60*60*24*7) }"/>
+                                ${week}주 전
                             </c:when>
                             <c:when test="${diff lt (60*60*24*365)}">
                                 <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
-                                ${month} 달 전
+                                ${month}달 전
                             </c:when>
                             <c:otherwise>
                                 <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
-                                ${year} 년 전
+                                ${year}년 전
                             </c:otherwise>
                         </c:choose>
                     
@@ -100,35 +104,103 @@
 
 
                     </td>    
-                    <td><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1.13em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600"><path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg>${b.reply}</td>
-                    <td><svg xmlns="http://www.w3.org/2000/svg" width="1.13em" height="1.13em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#626262"/></svg>${b.star}</td>
+                    <td><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1.13em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600"><path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg>&nbsp; ${b.reply}</td>
+                    <td><svg xmlns="http://www.w3.org/2000/svg" width="1.13em" height="1.13em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#626262"/></svg>&nbsp; ${b.star}</td>
                 </tr>
                 </c:forEach>
             </tbody>
+            <c:set var="offset" value="${offset + 1}"/>
         </table>
         <div class="col-6 col-12-small">
         <ul class="actions stacked">
+            <c:if test="${boardLimit < countList}">
+                <li><a onclick="javascript:seeMore('${type}', 15);" class="button primary fit">더 보기</a></li>
+            </c:if>
+            <script src="resources/js/fetch.js"></script>
             <script>
-                const seeMore = fetch('${contextPath}/board').then((res) => {
-                    if(res.status == 200 || res.status == 201) {
-                        console.log(res.status);
-                        console.log("통신성공");
-                        console.log(res.body);
-                    } else {
-                        console.log(res.status);
-                        console.error(res.statusText);
-                    }
-                }).catch(e => console.log(e));
+                function prettyDate(time){
+                    var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
+                    diff = (((new Date()).getTime() - date.getTime()) / 1000);
+                    diff = diff - 33000;
+                    if(diff < 0) diff = 0;
+                    day_diff = Math.floor(diff / 86400);
+                    if ( isNaN(day_diff) || day_diff < 0 )
+                    return;
+
+                    return day_diff == 0 && (
+                    diff < 60 && "방금 전" ||
+                    diff < 120 && "1분 전" ||
+                    diff < 3600 && Math.floor( diff / 60 ) + "분 전" ||
+                    // diff < 7200 && "1 시간 전" ||
+                    diff < 86400 && Math.floor( diff / 3600 ) + "시간 전") ||
+                    // day_diff == 1 && "어제" ||
+                    day_diff < 7 && day_diff + " 일전" ||
+                    day_diff < 31 && Math.floor( day_diff / 7 ) + "주 전" ||
+                    day_diff < 360 && Math.floor( day_diff / 30 ) + "개월 전" ||
+                    day_diff >= 360 && (Math.floor( day_diff / 360 )==0?1:Math.floor( day_diff / 360 )) + "년 전"
+                }
+
+                let pageInfo = 1;
+                
+                const list = document.querySelector(".board-wrapper tbody");
+                function seeMore(boardType, limit) {
+                    console.log("boardType : " + boardType);
+                    console.log("limit : " + limit);
+                    console.log("info : " + pageInfo);
+                    fetch('${contextPath}/board/fetch/?type=' + boardType + '&page=' + pageInfo + '&limit=' + limit)
+                    .then((res) => {
+                        if(res.status == 200 || res.status == 201) {
+                            console.log(res.status);
+                            console.log(res);
+                            console.log("통신성공");
+                            return res.json();
+                        } else {
+                            console.log(res.status);
+                        }
+                    }).then((articles) => {
+                            console.log(articles);
+                            articles.map((article) => {
+                                const changeDate = prettyDate(article.changeDate);
+                                let tagList = "";
+                                const tagsForEach = article.aTag.split(',').forEach(tag => {
+                                    tagList += `<a href="/?tag=\${tag}" class="button small">\${tag}</a> &nbsp;`;
+                                });
+                                const dateType = article.replyDate === undefined ? "새글" : "댓글";
+                                const output = `
+                                <tr class="board-list" value="\${article.aNo}">
+                                    <td>
+                                    <img class="profile-small" src="${contextPath}/resources/images/member/\${article.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'"></td>
+                                    <td><input type="hidden" name="aNo" value="\${article.aNo}">\${article.bHeader}<br>
+                                    \${tagList}</td>
+                                    <td> \${changeDate} \${dateType}</td>
+                                    <td><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1.13em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600"><path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg>&nbsp; \${article.reply}</td>
+                                    <td> \${article.star}</td>
+                                    </tr>
+                                    `;
+                                list.innerHTML += output;
+                        });
+                        pageInfo++;
+                        if(pageInfo * limit >= ${countList}) {
+                        const seeMoreBtn = document.querySelector('.button.primary.fit');
+                        seeMoreBtn.parentNode.removeChild(seeMoreBtn);
+                    };
+                    })
+                    .catch((e) => console.log(e));
+                }
             </script>
-            <li><a href="#" onclick="javascript:seeMore();" class="button primary fit">더 보기</a></li>
+            
         </ul>
         </div>
     </div>
     <script>
         const board = document.querySelector('.board-wrapper')
         board.onclick = function(e) {
-            console.log(e.target.parentElement.getAttribute('value'));
-            location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+            // location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+            if(e.target.className === "profile-small") {
+                location.href = "${contextPath}/board/" + e.target.parentElement.parentElement.getAttribute('value');
+            } else {
+                location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+            }
         }
     </script> 
 </section>

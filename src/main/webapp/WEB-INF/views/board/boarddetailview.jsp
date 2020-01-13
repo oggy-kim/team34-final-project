@@ -59,7 +59,7 @@ if(title_el && title_header)
                 <p>포인트 : ${board.mPoint}점</p>
             </td>
             <td>${board.aboutMe}</td>
-        </tr>
+            </tr>
     </table>
 
     <!-- Question Contents -->
@@ -67,13 +67,15 @@ if(title_el && title_header)
         ${board.bContent}
         
     </div>
-        <div style="text-align:center">좋은 글인가요? &nbsp; <a href="#" onclick="javascript:document.article_like.submit()" class="button">♡ ${board.like}</a>
+        <div style="text-align:center">좋은 글인가요? &nbsp; <a onclick="javascript:document.article_like.submit()" class="button">♡ ${board.like}</a>
+            <c:if test="${loginMember ne null}">
+                &nbsp; 보관함 담기 &nbsp;
+                <a href="#" class="button">⭐️</a></div>
+            </c:if>
             <form name="article_like" action="${contextPath}/board/${board.aNo}/like" method="POST">
             <input type="hidden" name="aNo" value="${board.aNo}" />
             <input type="hidden" name="mNo" value="${board.mNo}" />
             </form>
-        보관함 담기 &nbsp;
-        <a href="#" class="button">⭐️</a></div>
     <hr class="major" />
       
     <!-- Reply Part -->
@@ -136,7 +138,9 @@ if(title_el && title_header)
                             </c:forEach>
                         </div>
                         <ul class="actions">
-                            <li><a href="#" class="button big">댓글 ${fn:length(reply) - offset * page }개 더 보기</a></li>
+                            <c:if test="${5 < fn:length(reply)}">
+                                <li><a onclick="javascript:seeMore();" class="button big">댓글 ${fn:length(reply) - offset * page }개 더 보기</a></li>
+                            </c:if>
                         </ul>
                         </c:otherwise>
                     </c:choose>

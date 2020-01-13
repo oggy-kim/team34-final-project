@@ -13,10 +13,14 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public int getListCount() {
-		int listCount = bDao.getListCount();
-		
-		return listCount;
+		return bDao.getListCount();
 	}
+	
+	@Override
+	public int getListCount(String type) {
+		return bDao.getListCount(type);
+	}
+	
 
 	@Override
 	public List<Board> selectList(int currentPage, int boardLimit) {
@@ -57,6 +61,7 @@ public class BoardServiceImpl implements BoardService {
 	public int insertBoard(Board b) {
 		return bDao.insertBoard(b);
 	}
-	
+
+
 	
 }

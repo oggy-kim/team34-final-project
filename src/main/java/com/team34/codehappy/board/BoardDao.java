@@ -16,12 +16,15 @@ public class BoardDao {
 	SqlSessionTemplate sqlSession;
 
 	public int getListCount() {
-		int result = sqlSession.selectOne("BoardMapper.getListCount");
-		
-		System.out.println(result);
-		
-		return result;
+		return sqlSession.selectOne("BoardMapper.getListCount");
 	}
+	
+
+	public int getListCount(String type) {
+		return sqlSession.selectOne("BoardMapper.getListCount", type);
+	}
+	
+	
 
 	public List<Board> selectList(int currentPage, int boardLimit) {
 		int offset = (currentPage - 1) * boardLimit;
@@ -62,4 +65,5 @@ public class BoardDao {
 	public int insertBoard(Board b) {
 		return sqlSession.insert("BoardMapper.insertBoard", b);
 	}
+
 }

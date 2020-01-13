@@ -6,6 +6,7 @@ public interface BoardService {
 	
 	// 글 갯수 count
 	int getListCount();
+	int getListCount(String type);
 	
 	
 	// 게시글 불러오기

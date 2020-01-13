@@ -1449,11 +1449,12 @@ table {
   margin: 0 0 2em 0;
   width: 100%; }
   table tbody tr {
-    border: solid 1px rgba(210, 215, 217, 0.75);
+    /* border: solid 1px rgba(210, 215, 217, 0.75);
     border-left: 0;
-    border-right: 0; }
-    table tbody tr:nth-child(2n + 1) {
-      background-color: rgba(230, 235, 237, 0.25); }
+    border-right: 0; */
+  }
+    /* table tbody tr:nth-child(2n + 1) {
+      background-color: rgba(124, 127, 128, 0.25); } */
   table td {
     padding: 0.3em 0.3em;}
   table th {
@@ -2283,8 +2284,9 @@ button,
 /* 기본 외 추가 css 설정 */
   .board-list:hover {
     cursor: pointer;
-    background-color: #f0f0f0;
-    font-weight: 600;
+    transition: all 0.5s;
+    background-color: rgba(222, 224, 226, 0.75);
+    font-weight: 500;
   }
   .board-list td {
     vertical-align: middle;
@@ -2327,6 +2329,12 @@ button,
     border-radius: 50%;
     width: 50px;
     height: 50px;
+  }
+
+  img.profile-xsmall {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
   }
 
   /* 댓글창 블러처리 관련 */

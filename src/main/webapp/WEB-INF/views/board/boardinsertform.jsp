@@ -40,8 +40,7 @@
                             });
                         </script>
                         <br>
-                        <h3>태그</h3>
-                        <p>질문과 관련된 <strong>최소 1개 이상 ~ 최대 3개 태그까지 </strong>선택 가능합니다. 태그 추가는 값 입력 후 ','를 눌러주세요. </p>
+                        <h3>태그</h3><p>입력 후 <code>,</code> 눌러서 태그 추가 / 태그 클릭 시 삭제 가능 / 질문과 관련된 <strong>1개 ~ 3개 태그까지 </strong>선택 가능합니다.</p> 
                         
                         <div class="box" id="tagBox" vertical-align="middle">
                         <input type="text" id="inputTagBox" onkeyup="addTagFunction();" style="width:100px; float: left;"><span></span> &nbsp;

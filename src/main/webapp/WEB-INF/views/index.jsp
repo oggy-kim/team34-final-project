@@ -16,12 +16,12 @@
         <c:import url="./common/sidebar.jsp"/>
     </div>
 </div>
-<!-- Scripts -->
-<script src="resources/js/jquery.min.js"></script>
-<script src="resources/js/browser.min.js"></script>
-<script src="resources/js/breakpoints.min.js"></script>
-<script src="resources/js/util.js"></script>
-<script src="resources/js/main.js"></script>
-
+    <!-- Scripts -->
+    <script src="resources/js/jquery.min.js"></script>
+    <script src="resources/js/browser.min.js"></script>
+    <script src="resources/js/breakpoints.min.js"></script>
+    <script src="resources/js/util.js"></script>
+    <script src="resources/js/main.js"></script>
+    <script src="resources/js/fetch.js"></script>
 </body>
 </html>

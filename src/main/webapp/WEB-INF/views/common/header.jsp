@@ -3,7 +3,7 @@
 
 <!-- Header -->
 <header id="header">
-    <a class="logo"><strong>CODEHAPPY Main</strong></a>
+    <div class="logo"><strong>CODEHAPPY Main</strong></div>
     <ul class="icons">
         <c:choose>
             <c:when test="${ empty sessionScope.loginMember }">
@@ -12,7 +12,7 @@
             </c:when>
             <c:otherwise>
                 <strong>${loginMember.mId}</strong> 님, &nbsp;
-                <li><a href="#" class="button">Mypage</a></li>
+                <li><a onclick="javascript:alert('기능 개발중입니다. 곧 만나요!');" class="button">Mypage</a></li>
                 <li><a href="${contextPath}/logout" class="button">로그아웃</a></li>
             </c:otherwise>
         </c:choose>
