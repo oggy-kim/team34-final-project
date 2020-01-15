@@ -1,5 +1,6 @@
 package com.team34.codehappy.board;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
 		if(!flag) {
 			bDao.addViewCount(aNo);
 		}
-		return bDao.selectArticle(aNo, flag);
+		return bDao.selectArticle(aNo);
 	}
 
 	@Override
@@ -62,6 +63,23 @@ public class BoardServiceImpl implements BoardService {
 		return bDao.insertBoard(b);
 	}
 
+	@Override
+	public int getStarCountByArticle(HashMap<String, Integer> starMap) {
+		return bDao.getStarCountByArticle(starMap);
+	}
 
-	
+	@Override
+	public int addArticleStar(HashMap<String, Integer> starMap) {
+		return bDao.addArticleStar(starMap);
+	}
+
+	@Override
+	public int removeArticleStar(HashMap<String, Integer> starMap) {
+		return bDao.removeArticleStar(starMap);
+	}
+
+	@Override
+	public int addViewCount(int aNo) {
+		return bDao.addViewCount(aNo);
+	}
 }

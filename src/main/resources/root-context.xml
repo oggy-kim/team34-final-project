@@ -13,8 +13,7 @@
 	 <!-- DB Password 암호화(Jasypt) -->
 	 	<bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">  
         <property name="algorithm" value="PBEWITHMD5ANDDES" />
-		<property name="passwordEnvName" value="DB_ENCRYPTION"/> 
-        <!-- <property name="password" value="testuserDB"/> -->
+		<property name="passwordEnvName" value="DB_ENCRYPTION"/>
 		</bean>  
 		       
 		<bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">  

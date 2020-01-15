@@ -66,4 +66,21 @@
 		INSERT INTO BOARD (ARTICLE_TYPE, TAG, ARTICLE_VIEW, ARTICLE_LIKE, WRITE_DATE, HEADER, CONTENT, ARTICLE_STATUS, MEMBER_NO, CONTENT_TYPE)
 		VALUES (#{aType}, #{aTag}, DEFAULT, DEFAULT, DEFAULT, #{bHeader}, #{bContent}, DEFAULT, #{mNo}, #{cType})
 	</insert>
+
+	<select id="getStarCountByArticle" parameterType="hashmap" resultType="_int">
+		SELECT COUNT(*)
+		FROM STAR
+		WHERE MEMBER_NO = #{mNo}
+		AND ARTICLE_NO = #{aNo}
+	</select> 
+
+	<insert id="addArticleStar" parameterType="hashmap">
+		INSERT INTO STAR
+		VALUES (#{mNo}, #{aNo}, DEFAULT)
+	</insert>
+
+	<delete id="removeArticleStar" parameterType="hashmap">
+		DELETE FROM STAR
+		WHERE MEMBER_NO = #{mNo} AND ARTICLE_NO = #{aNo}
+	</delete>
 </mapper>

@@ -128,11 +128,26 @@ public class BoardController {
 		return mv;
 	}
 	
+	
+	// 게시글 상세 보기 
 	@RequestMapping(value="{aNo}", method=RequestMethod.GET)
 	public ModelAndView boardDetail(ModelAndView mv, @PathVariable("aNo") int aNo, 
 			HttpServletRequest request, HttpServletResponse response) {
 		Board board = null;
 		List<Reply> rList = null;
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		
+		// 회원별 찜하기 정보 가져오기
+		if(loginMember == null) {
+			mv.addObject("star", 0);
+		} else {
+			HashMap<String, Integer> starMap = new HashMap<String, Integer>();
+			starMap.put("mNo", loginMember.getmNo());
+			starMap.put("aNo", aNo);
+			int star = bService.getStarCountByArticle(starMap);
+			System.out.println("star : " + star);
+			mv.addObject("star", star);
+		}
 		
 		// 글 읽음 상태에 대한 쿠키값 설정(1일 내 조회 증가 2회 방지)
 		boolean flag = false;
@@ -162,6 +177,7 @@ public class BoardController {
 		return mv;
 	}
 	
+	// 게시글 좋아요 클릭
 	@RequestMapping(value="{aNo}/like", method=RequestMethod.POST)
 	public String addLike(Model model, int aNo, Integer mNo, HttpServletRequest request, HttpServletResponse response) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
@@ -198,6 +214,23 @@ public class BoardController {
 				}
 			}
 			return "redirect:/board/" + aNo;
+	}
+	
+	// 게시글 찜하기 클릭
+	@RequestMapping(value="{aNo}/star", method=RequestMethod.POST)
+	public String addStar(Model model, int star, HttpServletRequest request, @PathVariable("aNo") int aNo, HttpServletResponse response) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		HashMap<String, Integer> starMap = new HashMap<String, Integer>();
+		starMap.put("aNo", aNo);
+		starMap.put("mNo", loginMember.getmNo());
+		
+		int result = 0;
+		if(star == 0) {
+			result = bService.addArticleStar(starMap);
+		} else {
+			result = bService.removeArticleStar(starMap);
+		}
+		return "redirect:/board/" + aNo;
 	}
 	
 	

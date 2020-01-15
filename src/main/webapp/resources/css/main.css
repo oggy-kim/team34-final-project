@@ -2325,6 +2325,12 @@ button,
     margin: 0.5em;
   }
 
+  img.profile-big {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+  }
+
   img.profile-small {
     border-radius: 50%;
     width: 50px;
@@ -2377,4 +2383,50 @@ button,
   }
   .reply-content {
     margin : 1em;
+  }
+
+  .article-like-toggle a {
+    border-bottom: none;
+    cursor: pointer;
+  }
+
+  /* Mypage */
+
+  .float-xs-right {
+    float: right;
+  }
+
+  .row.myactivity > div {
+    height: 18rem;
+    background-color:#dddddd;
+    padding: 1em;
+    margin: 1em;
+  }
+
+  .row.myactivity > div:nth-child(1) {
+    border-top: 0.3rem solid #26c6da;
+  }
+
+  .row.myactivity > div:nth-child(2) {
+    border-top: 0.3rem solid #50e3c2;
+  }
+
+  .modifyForm {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .modifyForm::target {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
   }

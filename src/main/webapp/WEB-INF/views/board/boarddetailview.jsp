@@ -48,10 +48,9 @@ if(title_el && title_header)
                             </c:otherwise>
                         </c:choose>) &nbsp;&nbsp;&nbsp; 
             조회수 : ${board.view} &nbsp;&nbsp;&nbsp; 
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1.13em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600"><path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg> : ${board.reply} &nbsp;&nbsp;&nbsp; 
-            <td><svg xmlns="http://www.w3.org/2000/svg" width="1.13em" height="1.13em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#626262"/></svg> : ${board.star}</p>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1.13em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600"><path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg>  ${board.reply} &nbsp;&nbsp;&nbsp; 
+            <td><svg xmlns="http://www.w3.org/2000/svg" width="1.13em" height="1.13em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#626262"/></svg>  ${board.star}</p>
     </header>
-    <!-- 크기조정 필요 -->
     <table class="profile-info">
         <tr>
             <td><img src="${contextPath}/resources/images/member/${board.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'"class="profile-small"></td>
@@ -65,17 +64,27 @@ if(title_el && title_header)
     <!-- Question Contents -->
     <div class="box">
         ${board.bContent}
-        
     </div>
-        <div style="text-align:center">좋은 글인가요? &nbsp; <a onclick="javascript:document.article_like.submit()" class="button">♡ ${board.like}</a>
-            <c:if test="${loginMember ne null}">
-                &nbsp; 보관함 담기 &nbsp;
-                <a href="#" class="button">⭐️</a></div>
-            </c:if>
-            <form name="article_like" action="${contextPath}/board/${board.aNo}/like" method="POST">
-            <input type="hidden" name="aNo" value="${board.aNo}" />
-            <input type="hidden" name="mNo" value="${board.mNo}" />
+        <div class="article-like-toggle" style="text-align:center"><a onclick="javascript:document.article_info.submit()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 20 20" fill="#fc2605"><path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75  C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
+            </svg> <strong>${board.like} </strong> </a>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
+            <c:choose>
+                <c:when test="${star eq 0}">
+                    <a title="나의 찜목록에 추가" class="add-star" onclick="javascript:document.article_star.submit()"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#dddddd"/></svg></a>
+                </c:when>
+                <c:otherwise>
+                    <a title="나의 찜목록에서 제거" class="add-star"  onclick="javascript:document.article_star.submit()"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#fc2605"/></svg></a>
+                </c:otherwise>
+            </c:choose>
+            <form name="article_info" action="${contextPath}/board/${board.aNo}/like" method="POST">
+                <input type="hidden" name="aNo" value="${board.aNo}" />
+                <input type="hidden" name="mNo" value="${board.mNo}" />
+                <input type="hidden" name="star" value="${star}" />
             </form>
+            <form name="article_star" action="${contextPath}/board/${board.aNo}/star" method="POST">
+                <input type="hidden" name="star" value="${star}" />
+            </form>
+        </div>
     <hr class="major" />
       
     <!-- Reply Part -->

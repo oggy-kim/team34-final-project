@@ -1,5 +1,6 @@
 package com.team34.codehappy.board;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface BoardService {
@@ -29,6 +30,16 @@ public interface BoardService {
 
 	// 게시글 등록하기
 	int insertBoard(Board b);
+	
+	// 게시물별 찜하기 숫자 확인
+	int getStarCountByArticle(HashMap<String, Integer> starMap);
+	
+	// 게시물에 즐겨찾기 추가/삭제
+	int addArticleStar(HashMap<String, Integer> starMap);
+	int removeArticleStar(HashMap<String, Integer> starMap);
+	
+	// 게시물 조회수 증가 
+	int addViewCount(int aNo);
 	
 	
 	

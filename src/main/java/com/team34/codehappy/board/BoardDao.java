@@ -1,5 +1,6 @@
 package com.team34.codehappy.board;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,7 @@ public class BoardDao {
 		return sqlSession.update("BoardMapper.updateCount", aNo);
 	}
 
-	public Board selectArticle(int aNo, boolean flag) {
+	public Board selectArticle(int aNo) {
 		return sqlSession.selectOne("BoardMapper.selectArticle", aNo);
 	}
 
@@ -64,6 +65,21 @@ public class BoardDao {
 
 	public int insertBoard(Board b) {
 		return sqlSession.insert("BoardMapper.insertBoard", b);
+	}
+
+
+	public int getStarCountByArticle(HashMap<String, Integer> starMap) {
+		return sqlSession.selectOne("BoardMapper.getStarCountByArticle", starMap);
+	}
+
+
+	public int addArticleStar(HashMap<String, Integer> starMap) {
+		return sqlSession.insert("BoardMapper.addArticleStar", starMap);
+	}
+
+
+	public int removeArticleStar(HashMap<String, Integer> starMap) {
+		return sqlSession.delete("BoardMapper.removeArticleStar", starMap);
 	}
 
 }

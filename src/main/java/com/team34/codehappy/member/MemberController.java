@@ -94,5 +94,10 @@ public class MemberController {
 	   model.addAttribute("loginMember", m);
 	   return "redirect:/";
    } 
+   
+   @RequestMapping(value="mypage")
+   public String myPage() {
+	   return "mypage";
+   }
 
 }
