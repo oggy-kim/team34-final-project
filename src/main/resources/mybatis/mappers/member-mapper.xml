@@ -16,6 +16,7 @@
 		<result property="joinDate" column="JOIN_DATE"/>
 		<result property="loginDate" column="LOGIN_DATE"/>
 		<result property="mPoint" column="MEMBER_POINT"/>
+		<result property="aNo" column="ARTICLE_NO"/>
 		<result property="recentReply" column="REPLY_DATE"/>
 	</resultMap>
 	
@@ -31,4 +32,11 @@
       MEMBER(MEMBER_ID, MEMBER_PWD, MEMBER_NICK, MEMBER_LEVEL, ABOUT_ME, MEMBER_STATUS, TAG_ID, JOIN_DATE, LOGIN_DATE)
       VALUES(#{mId}, #{mPwd}, #{mNick}, DEFAULT, DEFAULT, DEFAULT, #{myTag}, DEFAULT, DEFAULT)
    </insert>
+   
+   <update id="updateNick" parameterType="Member">
+   		UPDATE MEMBER
+   		SET MEMBER_NICK=#{mNick}
+   		WHERE MEMBER_NO=#{mNo}
+   </update>
+   
 </mapper>

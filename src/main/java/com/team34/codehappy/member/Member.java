@@ -14,6 +14,7 @@ public class Member {
 	private Date joinDate;
 	private Date loginDate;
 	private int mPoint;
+	private int aNo;
 	private Date recentReply;
 
 	public Member() {
@@ -22,7 +23,7 @@ public class Member {
 	}
 
 	public Member(int mNo, String mId, String mPwd, String mNick, String mLevel, String aboutMe, char mStatus,
-			String myTag, Date joinDate, Date loginDate, int mPoint, Date recentReply) {
+			String myTag, Date joinDate, Date loginDate, int mPoint, int aNo, Date recentReply) {
 		super();
 		this.mNo = mNo;
 		this.mId = mId;
@@ -35,6 +36,7 @@ public class Member {
 		this.joinDate = joinDate;
 		this.loginDate = loginDate;
 		this.mPoint = mPoint;
+		this.aNo = aNo;
 		this.recentReply = recentReply;
 	}
 
@@ -126,6 +128,14 @@ public class Member {
 		this.mPoint = mPoint;
 	}
 
+	public int getaNo() {
+		return aNo;
+	}
+
+	public void setaNo(int aNo) {
+		this.aNo = aNo;
+	}
+
 	public Date getRecentReply() {
 		return recentReply;
 	}
@@ -138,6 +148,9 @@ public class Member {
 	public String toString() {
 		return "Member [mNo=" + mNo + ", mId=" + mId + ", mPwd=" + mPwd + ", mNick=" + mNick + ", mLevel=" + mLevel
 				+ ", aboutMe=" + aboutMe + ", mStatus=" + mStatus + ", myTag=" + myTag + ", joinDate=" + joinDate
-				+ ", loginDate=" + loginDate + ", mPoint=" + mPoint + ", recentReply=" + recentReply + "]";
+				+ ", loginDate=" + loginDate + ", mPoint=" + mPoint + ", aNo=" + aNo + ", recentReply=" + recentReply
+				+ "]";
 	}
+	
+	
 }

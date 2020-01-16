@@ -16,22 +16,16 @@
                     <div class="col-4 col-12-small">
                         <h1>${loginMember.mNick}</h1>
                     </div>
+                    
                     <div class="col-6 col-12-small">
                         <a class="button" href="#modifynick">닉네임 수정</a>
                     </div>
-                    
-                    <div class="modifyForm" id="modifynick">
-                        <div class="popup">
-                            테스트
-                        </div>
-                    </div>
-
-                    
+            
                 </div>
                 <br>
                 <div class="row myactivity">
                     <div class="col-5 col-12-medium mypoint">
-                        <h4>점수</h4>
+            	        <h4>점수</h4>
                         <p>블라블라  블라블라  블라블라  블라블라  블라블라  블라블라  블라블라  블라블라  블라블라  </p> 
                     </div>
                     <div class="col-5 col-12-medium myactivity">
@@ -44,6 +38,8 @@
                 <div class="box">
                     추후 별도 수정
                 </div>
-
-                
+		
             </section>
+            
+
+

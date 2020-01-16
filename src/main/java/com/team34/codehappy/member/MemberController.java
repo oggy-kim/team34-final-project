@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 @SessionAttributes("loginMember")
 @Controller
@@ -90,14 +93,34 @@ public class MemberController {
    public String tempLogin(Model model) {
 	   Member m = new Member(25, "5@naver.com", "5", "옥철_TEST", "주관리자", "옥철_TESTID", 'Y', 
 			      			 "kotlin,javascript,python", new Date(), 
-			      			 new Date(), 180, new Date());
+			      			 new Date(), 180, 0, new Date());
 	   model.addAttribute("loginMember", m);
 	   return "redirect:/";
    } 
    
-   @RequestMapping(value="mypage")
-   public String myPage() {
+   @RequestMapping(value="mypage/{mNo}", method=RequestMethod.GET)
+   public String myPage(@PathVariable("mNo") int mNo, 
+		   HttpServletRequest request, HttpServletResponse response) {
 	   return "mypage";
    }
+   
+   @RequestMapping(value="mypage/{mNo}", method=RequestMethod.POST)
+   public String memberUpdate(Member m, Model model, @PathVariable("mNo") int mNo) {
+	   m.setmNo(mNo);
+	   
+	   
+	   int result = mService.updateNick(m);
+	   
+	   if(result > 0) {
+			model.addAttribute("msg", "닉네임 변경 완료.");
+			model.addAttribute("loginMember", m);
+			
+		} else {
+			throw new MemberException("닉네임 변경 실패!");
+		}
+	   
+	   return "mypage";
+   }
+   
 
 }

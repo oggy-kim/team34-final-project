@@ -8,6 +8,9 @@ public interface MemberService {
 
    // 2. 회원 가입
    public int insertMember(Member m);
+
+   // 3. 닉네임 변경
+   public int updateNick(Member m);
       
    
 }

@@ -2412,17 +2412,23 @@ button,
   }
 
   .modifyForm {
-    opacity: 0;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
     visibility: hidden;
+    opacity: 0;
   }
 
-  .modifyForm::target {
-    opacity: 1;
+  .modifyForm:target {
     visibility: visible;
+    opacity: 1;
   }
 
   .popup {
-    margin: 70px auto;
+    margin: 20% auto;
     padding: 20px;
     background: #fff;
     border-radius: 5px;
@@ -2430,3 +2436,45 @@ button,
     position: relative;
     transition: all 5s ease-in-out;
   }
+
+  .popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .popup .close:hover {
+    color: rgb(6, 150, 216);
+  }
+
+  #nick-div{
+  width:100%;
+  }
+
+  #nick-margin{
+    width:60%;
+    margin:auto;
+  }
+  
+  #nick-h2{
+    margin:auto;
+    
+  }
+
+  .content {
+    margin: auto;
+    width: 70%;
+    border: 1px solid black;
+  }
+
+  .actionButton {
+    
+  }
+
+
+  
