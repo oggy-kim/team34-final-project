@@ -82,4 +82,14 @@ public class BoardServiceImpl implements BoardService {
 	public int addViewCount(int aNo) {
 		return bDao.addViewCount(aNo);
 	}
+
+	@Override
+	public int addReplyLike(Integer rNo) {
+		return bDao.addReplyLike(rNo);
+	}
+
+	@Override
+	public List<Board> searchList(HashMap<Object, Object> map) {
+		return bDao.searchList(map);
+	}
 }

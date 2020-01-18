@@ -2381,8 +2381,19 @@ button,
   table.reply-profile p {
     margin: 0.5em;
   }
-  .reply-content {
+
+  div[class^="reply-content"] {
     margin : 1em;
+    width : 100%;
+  }
+
+  div[class^="reply-content"] > a{
+    border-bottom: none;
+    cursor: pointer;
+  }
+
+  hr[class="reply-content"] {
+    margin: 0.5em;
   }
 
   .article-like-toggle a {

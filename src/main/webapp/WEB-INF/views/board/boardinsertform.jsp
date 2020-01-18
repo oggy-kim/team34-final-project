@@ -35,7 +35,7 @@
                         </textarea>
                         <script>
                             CKEDITOR.replace( 'editor', {
-                                height: 500, 
+                                height: 500,
                                 extraPlugins : 'confighelper'
                             });
                         </script>

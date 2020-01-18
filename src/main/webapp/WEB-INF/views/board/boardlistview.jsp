@@ -35,15 +35,6 @@
     </div>
     <div class="table-wrapper">
         <table class="board-wrapper">
-            <!-- <thead>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead> -->
             <tbody>
                 <c:if test="${fn:length(list) eq 0}">해당 주제의 게시글이 없습니다.</c:if>
                 <c:set var="offset" value="1"/>
@@ -54,7 +45,7 @@
                     <td><input type="hidden" name="aNo" value="${b.aNo}">${b.bHeader}<br>
                         <c:set var="aTag" value="${b.aTag}"/>
                         <c:forEach var="t" items="${fn:split(aTag, ',')}">
-                            <a href="/?tag=${t}" class="button small">${t}</a>
+                            <a href="${contextPath}/search/?aTag=${t}" class="button small">${t}</a>
                         </c:forEach>
                     </td>
                     <td>

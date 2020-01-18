@@ -62,6 +62,12 @@
 		WHERE ARTICLE_NO = #{aNo} 
 	</update>
 
+	<update id="addReplyLike" parameterType="_int">
+		UPDATE REPLY
+		SET REPLY_LIKE = REPLY_LIKE + 1
+		WHERE REPLY_NO = #{rNo} 
+	</update>
+
 	<insert id="insertBoard" parameterType="Board">
 		INSERT INTO BOARD (ARTICLE_TYPE, TAG, ARTICLE_VIEW, ARTICLE_LIKE, WRITE_DATE, HEADER, CONTENT, ARTICLE_STATUS, MEMBER_NO, CONTENT_TYPE)
 		VALUES (#{aType}, #{aTag}, DEFAULT, DEFAULT, DEFAULT, #{bHeader}, #{bContent}, DEFAULT, #{mNo}, #{cType})
@@ -83,4 +89,12 @@
 		DELETE FROM STAR
 		WHERE MEMBER_NO = #{mNo} AND ARTICLE_NO = #{aNo}
 	</delete>
+
+	<select id="searchList" parameterType="hashmap" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARDVIEW
+		WHERE ARTICLE_STATUS = 'Y'
+		AND TAG LIKE CONCAT('%',#{atag},'%')
+		ORDER BY CHANGE_DATE DESC
+	</select>
 </mapper>

@@ -41,6 +41,12 @@ public interface BoardService {
 	// 게시물 조회수 증가 
 	int addViewCount(int aNo);
 	
+	// 댓글 좋아요 등록하기
+	int addReplyLike(Integer rNo);
+	
+	// 검색 리스트 불러오기
+	List<Board> searchList(HashMap<Object, Object> map);
+	
 	
 	
 	
