@@ -86,9 +86,7 @@ if(title_el && title_header)
         </div>
     <hr class="major" />
 
-
-    <c:set var="offset" value="5"/>
-    <c:set var="page" value="1"/>  
+    <c:set var="page" value="1"/>
     <!-- Reply Part -->
     <h3>${board.reply}개의 댓글이 있습니다.</h3>
                 <c:choose>
@@ -98,7 +96,7 @@ if(title_el && title_header)
                     </c:when>
                     <c:otherwise>
                         <div class="reply-area">
-                        <c:forEach var="r" items="${reply}" begin="${offset * (page - 1)}" end="${offset * page - 1}">
+                        <c:forEach var="r" items="${reply}" begin="0" end="4">
                         <div class="box reply">
                             <div class="reply-profile">
                             <table class="reply-profile">
@@ -149,51 +147,100 @@ if(title_el && title_header)
                                         </svg> <strong>${r.like} </strong> </a> &nbsp; &nbsp;
                                     <a title="댓글 달기" onclick="javascript:openRereplyForm(${r.rNo}, ${r.aNo});"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600">
                                         <path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg></a>
-                                        <form name="reReplyBox" action="post/${aNo}/comment" method="POST" style="display: none">
+                                        <form name="reReplyBox-${r.rNo}" action="post/${aNo}/comment" method="POST" style="display: none">
                                             <input type="hidden" name="aNo" value="${r.aNo}">
                                             <input type="hidden" name="refRNo" value="${r.rNo}">
-                                            <input type="text" name="rContent" style="width: 80%;">
-                                            &nbsp; &nbsp;
-                                            <button>댓글 달기</button>
+                                            <input type="text" name="rContent" style="width: 80%;"> &nbsp; &nbsp;
+                                            <input type="button" onclick="insertReReply(${r.rNo});" value="댓글 달기"/>
                                         </form>
-                                        <c:forEach var="rr" items="${reReply}">
-                                    <c:if test="${rr.refRNo eq r.rNo}">
-                                        <hr class="reply-content">
-                                        <div><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}님</a> ${rr.rContent} </div>
-                                    </c:if> 
-                                </c:forEach>
+                                        
+                                        <div id="reReplyBox-${r.rNo}">
+                                            <c:forEach var="rr" items="${reReply}">
+                                                <c:if test="${rr.refRNo eq r.rNo}">
+                                                    <hr class="reply-content-${rr.rNo}">
+                                                    <div><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}님</a> ${rr.rContent} </div>
+                                                </c:if> 
+                                            </c:forEach>
+                                        </div>
                                 </div>
                         </div>
                                 
                             </c:forEach>
                             <script>
                                 function openRereplyForm(rNo, aNo){
-                                    const reReply = document.querySelector('.reply-content-' + rNo + ' form[name=reReplyBox]');
-                                    console.log(reReply);
+                                    const reReply = document.querySelector('.reply-content-' + rNo + ' form[name=reReplyBox-' + rNo + ']');
+                                    console.log("${loginMember}");
+                                    if("${loginMember}" == "") {
+                                        if(confirm("글쓰기는 로그인한 회원만 가능합니다. 로그인하시겠습니까?")) {
+                                            location.href="${contextPath}/login";
+                                        };
+                                        return false;
+                                    }
+
                                     if(reReply.style.display == 'none' || reReply.style.display == '') {
                                         reReply.style.display = 'flex';
                                     } else {
                                         reReply.style.display = 'none';
                                     }
                                 }
-                            
+
+                                function insertReReply(rNo) {
+                                    const reReplyBox = document.querySelector('form[name=reReplyBox-' + rNo + ']');
+                                    const aNo = reReplyBox.aNo.value;
+                                    const refRNo = reReplyBox.refRNo.value;
+                                    const rContent = reReplyBox.rContent.value;
+
+                                    const data = 
+                                        {aNo: aNo,
+                                        refRNo: refRNo,
+                                        rContent: rContent
+                                        }
+
+
+                                    fetch('${contextPath}/board/post/' + aNo + '/recomment', {
+                                        method: 'POST',
+                                        body: JSON.stringify(data),
+                                        credentials: "same-origin",
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    }).then((res) => {
+                                        if(res.ok) {
+                                            return res.json();
+                                        } else {
+                                            console.log(res);
+                                        }
+                                    }).then((replies) => {
+                                        const reReplyBox = document.querySelector('div[id=reReplyBox-' + refRNo);
+                                        reReplyBox.innerHTML = "";
+                                        replies.filter((reply) => {
+                                            return reply.refRNo == refRNo;
+                                        }).map((reply) => {
+                                            const output = `
+                                            <hr class="reply-content-\${reply.rNo}">
+                                            <div><a href="${contextPath}/mypage/\${reply.mNo}">\${reply.mNick}님</a> \${reply.rContent} </div>
+                                            `;
+                                            reReplyBox.innerHTML += output;
+                                            })
+                                    }).catch((e) => {
+                                        console.log(e);
+                                    });
+                                }
                             </script>
                         </div>
                         <ul class="actions">
                             <c:if test="${5 < fn:length(reply)}">
-                                <li><a onclick="javascript:seeMore();" class="button big">댓글 ${fn:length(reply) - offset * page }개 더 보기</a></li>
+                                <li><a id="seeMoreReply" onclick="javascript:seeMoreReply(${page});" class="button big">댓글 더 보기</a></li>
                             </c:if>
                         </ul>
                         </c:otherwise>
                     </c:choose>
                     <script>
-                        function seeMore() {
+                        function seeMoreReply() {
+                            console.log("${page}");
                             const replyBox = document.querySelector('.reply-area');
-                            console.log(replyBox);
-                            let page = 1;
-                            const offset = 5;
-                            replyBox.innerHTML += `
-                            <c:forEach var="r" items="${reply}" begin="${offset * (page - 1)}" end="${offset * page - 1}">
+                            const output = `
+                            <c:forEach var="r" items="${reply}" begin="${startNum}" end="${endNum}">
                             <div class="box reply">
                             <div class="reply-profile">
                             <table class="reply-profile">
@@ -252,15 +299,23 @@ if(title_el && title_header)
                                             <button>댓글 달기</button>
                                         </form>
                                         <c:forEach var="rr" items="${reReply}">
-                                    <c:if test="${rr.refRNo eq r.rNo}">
-                                        <hr class="reply-content">
-                                        <div><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}님</a> ${rr.rContent} </div>
-                                    </c:if> 
-                                </c:forEach>
+                                            <c:if test="${rr.refRNo eq r.rNo}">
+                                                <hr class="reply-content">
+                                                <div><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}님</a> ${rr.rContent} </div>
+                                            </c:if> 
+                                        </c:forEach>
+                                    </div>
                                 </div>
-                            </div>
                             </c:forEach>
                             `;
+                            replyBox.innerHTML += output;
+
+                            const seeMoreReply = document.querySelector('#seeMoreReply');
+                            if(${page * offset} >= ${fn:length(reply)}) {
+                                seeMoreReply.parentNode.removeChild(seeMoreReply);
+                            } else {
+                                seeMoreReply.innerHTML = "댓글 " + ${fn:length(reply) - offset * page} + "개 더 보기";
+                            }
                         }
                     </script>
                     

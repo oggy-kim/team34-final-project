@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -167,8 +168,6 @@ public class BoardController {
 			board = bService.selectArticle(aNo, flag);
 			rList = bService.selectReplyList(aNo);
 			
-			System.out.println("test : " + rList.get(3).getRefRNo());
-			
 			for(Reply r : rList) {
 				if(r.getRefRNo() == 0) {
 					replyList.add(r);
@@ -277,22 +276,16 @@ public class BoardController {
 		return "redirect:/board/" + aNo;
 	}
 	
+	
 	// 댓글 달기
 	@RequestMapping(value="post/{aNo}/comment", method=RequestMethod.POST)
-	public String insertReply(@PathVariable("aNo") int aNo, String rContent, String editor, Integer refRNo, HttpServletRequest request) {
+	public String insertReply(@PathVariable("aNo") int aNo, String editor, Integer refRNo, HttpServletRequest request) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
 		Reply r = new Reply();
 		
-		System.out.println("rContent : " + rContent);
-		System.out.println("refRNo : " + refRNo);
-		
 		r.setaNo(aNo);
-		if(editor == null) {
-			r.setrContent(rContent);
-		} else {
-			r.setrContent(editor);
-		}
+		r.setrContent(editor);
 		r.setmNo(loginMember.getmNo());
 		if(refRNo != null) {
 			r.setRefRNo(refRNo);
@@ -301,6 +294,29 @@ public class BoardController {
 		int result = bService.insertReply(r);
 		
 		return "redirect:/board/" + aNo;
+	}
+	
+	// 대댓글 달기
+	@RequestMapping(value="post/{aNo}/recomment", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Reply> insertReply(@RequestBody HashMap<String, Object> map, 
+			HttpServletRequest request) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		
+		System.out.println(map);
+		
+		Reply r = new Reply();
+		
+		
+		
+		r.setaNo(Integer.parseInt(map.get("aNo").toString()));
+		r.setmNo(loginMember.getmNo());
+		r.setRefRNo(Integer.parseInt(map.get("refRNo").toString()));
+		r.setrContent((String)map.get("rContent"));
+		
+		int result = bService.insertReply(r);
+		List<Reply> list = bService.selectReplyList(r.getaNo());
+		return list;
 	}
 	
 	// 게시글 작성
