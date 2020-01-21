@@ -20,6 +20,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <div hidden id="spinner"></div>
                             <script>
                                 function prettyDate(time){
                                     var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
@@ -43,8 +44,9 @@
                                     day_diff < 360 && Math.floor( day_diff / 30 ) + "개월 전" ||
                                     day_diff >= 360 && (Math.floor( day_diff / 360 )==0?1:Math.floor( day_diff / 360 )) + "년 전"
                                 }
-
+                                const spinner = document.getElementById("spinner");
                                 const list = document.querySelector(".board-wrapper tbody");
+                                spinner.removeAttribute('hidden');
                                 fetch("${contextPath}/board/fetch/?limit=5")
                                     .then((res) => {
                                         if(res.status == 200 || res.status == 201) {
@@ -65,6 +67,7 @@
                                                 const tagsForEach = article.aTag.split(',').forEach(tag => {
                                                     tagList += `<a href="/?tag=\${tag}" class="button small">\${tag}</a> &nbsp;`;
                                                 });
+                                                spinner.setAttribute('hidden', '');
                                                 const output = `
                                                 <tr class="board-list" value="\${article.aNo}">
                                                     <td><input type="hidden" name="aNo" value="\${article.aNo}">\${article.bHeader}<br>

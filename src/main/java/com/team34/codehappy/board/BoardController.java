@@ -1,12 +1,10 @@
 package com.team34.codehappy.board;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -135,6 +134,8 @@ public class BoardController {
 			HttpServletRequest request, HttpServletResponse response) {
 		Board board = null;
 		List<Reply> rList = null;
+		List<Reply> replyList = new ArrayList<Reply>();
+		List<Reply> reReplyList = new ArrayList<Reply>();
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
 		// 회원별 찜하기 정보 가져오기
@@ -166,12 +167,24 @@ public class BoardController {
 			}
 			board = bService.selectArticle(aNo, flag);
 			rList = bService.selectReplyList(aNo);
+			
+			for(Reply r : rList) {
+				if(r.getRefRNo() == 0) {
+					replyList.add(r);
+				}
+			}
+			for(Reply r : rList) {
+				if(r.getRefRNo() != 0) {
+					reReplyList.add(r);
+				}
+			}
 		}
 		
 		if(board != null) {
 			mv.addObject("name", "boarddetail").
 			   addObject("board", board).
-			   addObject("reply", rList).
+			   addObject("reply", replyList).
+			   addObject("reReply", reReplyList).
 			   setViewName("board");
 		}
 		return mv;
@@ -179,32 +192,53 @@ public class BoardController {
 	
 	// 게시글 좋아요 클릭
 	@RequestMapping(value="{aNo}/like", method=RequestMethod.POST)
-	public String addLike(Model model, int aNo, Integer mNo, HttpServletRequest request, HttpServletResponse response) {
+	public String addLike(Model model, @PathVariable("aNo") int aNo, Integer mNo, Integer rNo, HttpServletRequest request, HttpServletResponse response) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
-		System.out.println("aNo : " + aNo);
-		System.out.println("mNo : " + mNo);
 		// 글 읽음 상태에 대한 쿠키값 설정(1일 내 좋아요 증가 2회 방지)
 			boolean flag = false;
 			Cookie[] cookies = request.getCookies();
 			if(cookies != null) {
+				if(rNo != null) {
 				for(Cookie c: cookies) {
-					if(c.getName().equals("aNoLike"+aNo)) {
+					if(c.getName().equals("rNoLike"+rNo)) {
 						flag = true;
 						model.addAttribute("msg", "연속된 좋아요 클릭은 안돼요~");
 						return "redirect:/board/" + aNo;
 					}
 				}
-				
-				if(!flag) {
-					Cookie c = new Cookie("aNoLike"+aNo, String.valueOf(aNo));
-					c.setMaxAge(1 * 24 * 60 * 60);
-					response.addCookie(c);
-					if(loginMember != null && loginMember.getmNo() == mNo) {
-						model.addAttribute("msg", "본인 글에 좋아요를 누르실 수 없습니다.");
-						return "redirect:/board/" + aNo;
+				} else {
+					for(Cookie c: cookies) {
+						if(c.getName().equals("aNoLike"+aNo)) {
+							flag = true;
+							model.addAttribute("msg", "연속된 좋아요 클릭은 안돼요~");
+							return "redirect:/board/" + aNo;
+						}
 					}
-					int result = bService.addLike(aNo);
+				}
+				int result = 0;
+				if(!flag) {
+					if(rNo != null) {
+						Cookie c = new Cookie("rNoLike"+rNo, String.valueOf(rNo));
+						c.setMaxAge(1 * 24 * 60 * 60);
+						response.addCookie(c);
+						if(loginMember != null && loginMember.getmNo() == mNo) {
+							model.addAttribute("msg", "본인 글에 좋아요를 누르실 수 없습니다.");
+							return "redirect:/board/" + aNo;
+						}
+						result = bService.addReplyLike(rNo);
+						}
+					
+					else {
+						Cookie c = new Cookie("aNoLike"+aNo, String.valueOf(aNo));
+						c.setMaxAge(1 * 24 * 60 * 60);
+						response.addCookie(c);
+						if(loginMember != null && loginMember.getmNo() == mNo) {
+							model.addAttribute("msg", "본인 글에 좋아요를 누르실 수 없습니다.");
+							return "redirect:/board/" + aNo;
+						}
+						result = bService.addLike(aNo);
+						}
 					
 					if(result > 0) {
 						model.addAttribute("msg", "좋아요 클릭 완료!");
@@ -220,11 +254,20 @@ public class BoardController {
 	@RequestMapping(value="{aNo}/star", method=RequestMethod.POST)
 	public String addStar(Model model, int star, HttpServletRequest request, @PathVariable("aNo") int aNo, HttpServletResponse response) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		
+		if(loginMember == null) {
+			model.addAttribute("msg", "회원만 찜기능을 사용할 수 있습니다.");
+			return "redirect:/board/" + aNo;
+		}
+		
 		HashMap<String, Integer> starMap = new HashMap<String, Integer>();
 		starMap.put("aNo", aNo);
 		starMap.put("mNo", loginMember.getmNo());
+		System.out.println("starMap : " + starMap);
 		
 		int result = 0;
+		
+		// 찜하기 상태에서 넘어오면 찜삭제, 찜이 안되어 있으면 찜하기 Service로 전달
 		if(star == 0) {
 			result = bService.addArticleStar(starMap);
 		} else {
@@ -234,8 +277,7 @@ public class BoardController {
 	}
 	
 	
-	
-	
+	// 댓글 달기
 	@RequestMapping(value="post/{aNo}/comment", method=RequestMethod.POST)
 	public String insertReply(@PathVariable("aNo") int aNo, String editor, Integer refRNo, HttpServletRequest request) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
@@ -254,6 +296,29 @@ public class BoardController {
 		return "redirect:/board/" + aNo;
 	}
 	
+	// 대댓글 달기
+	@RequestMapping(value="post/{aNo}/recomment", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Reply> insertReply(@RequestBody HashMap<String, Object> map, 
+			HttpServletRequest request) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		
+		System.out.println(map);
+		
+		Reply r = new Reply();
+		
+		
+		
+		r.setaNo(Integer.parseInt(map.get("aNo").toString()));
+		r.setmNo(loginMember.getmNo());
+		r.setRefRNo(Integer.parseInt(map.get("refRNo").toString()));
+		r.setrContent((String)map.get("rContent"));
+		
+		int result = bService.insertReply(r);
+		List<Reply> list = bService.selectReplyList(r.getaNo());
+		return list;
+	}
+	
 	// 게시글 작성
 	// 게시글 작성 화면으로 이동
 	@RequestMapping(value="post", method=RequestMethod.GET)
@@ -263,6 +328,7 @@ public class BoardController {
 		return mv;
 	}
 	
+	// 게시글 작성
 	@RequestMapping(value="post", method=RequestMethod.POST)
 	public String insertBoard(HttpServletRequest request, HttpServletResponse response,
 							Board b) {
@@ -274,4 +340,6 @@ public class BoardController {
 
 		return "redirect:/board/";
 	}
+	
+	
 }

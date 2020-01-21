@@ -35,7 +35,7 @@
         <!-- Section -->
             <section>
                 <header class="major">
-                    <a href="#" onclick="javascript:alert('마이페이지는 현재 개발중입니다. 조금만 기다려주세요!')"><h2><img src="${contextPath}/resources/images/member/${r.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-xsmall"> About Me &#x1F913;</h2></a>
+                    <a href="#" onclick="javascript:alert('마이페이지는 현재 개발중입니다. 조금만 기다려주세요!')"><h2><img src="${contextPath}/resources/images/member/${loginMember.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-xsmall"> About Me &#x1F913;</h2></a>
                 </header>
                 <div class="mini-posts">
                     <article>

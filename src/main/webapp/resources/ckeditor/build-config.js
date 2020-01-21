@@ -64,7 +64,9 @@ var CKBUILDER_CONFIG = {
 		'list' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
-		'wysiwygarea' : 1
+		'wysiwygarea' : 1,
+		'uploadimage' : 1,
+		'uploadwidget' : 1
 	},
 	languages : {
 		'en' : 1,

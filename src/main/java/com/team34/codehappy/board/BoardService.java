@@ -46,6 +46,12 @@ public interface BoardService {
 	
 	// 마이페이지 답변 목록 조회
 	List<Reply> selectReplyByUser(int mNo);
+  
+	// 댓글 좋아요 등록하기
+	int addReplyLike(Integer rNo);
+	
+	// 검색 리스트 불러오기
+	List<Board> searchList(HashMap<Object, Object> map);
 	
 	
 	
