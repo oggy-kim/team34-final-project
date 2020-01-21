@@ -30,4 +30,11 @@
 		INSERT INTO REPLY (MEMBER_NO, ARTICLE_NO, REPLY_LIKE, CONTENT, WRITE_DATE, REPLY_STATUS, REF_REPLY_NO, MODIFY_DATE)
 		VALUES (#{mNo}, #{aNo}, DEFAULT, #{rContent}, DEFAULT, DEFAULT, #{refRNo}, DEFAULT)
 	</insert>
+	
+	<select id="selectReplyList" resultMap="ReplyResultSet">
+		SELECT *
+		FROM REPLYVIEW
+		WHERE MEMBER_NO=#{mNo}
+	</select>
+	
 </mapper>
