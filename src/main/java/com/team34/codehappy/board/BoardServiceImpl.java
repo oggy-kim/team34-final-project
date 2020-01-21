@@ -91,8 +91,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<Reply> selectReplyByUser(int mNo) {
 		return bDao.selectReplyByUser(mNo);
-    
-  @Override
+	}
+	@Override
 	public int addReplyLike(Integer rNo) {
 		return bDao.addReplyLike(rNo);
 	}

@@ -89,7 +89,8 @@ public class BoardDao {
 
 	public List<Reply> selectReplyByUser(int mNo) {
 		return sqlSession.selectList("ReplyMapper.selectReplyList", mNo);
-
+	}
+	
 	public int addReplyLike(Integer rNo) {
 		return sqlSession.update("BoardMapper.addReplyLike", rNo);
 	}
