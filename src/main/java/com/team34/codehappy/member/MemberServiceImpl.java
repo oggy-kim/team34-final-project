@@ -3,6 +3,9 @@ package com.team34.codehappy.member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team34.codehappy.board.Board;
+import com.team34.codehappy.board.Reply;
+
 @Service("mService")
 public class MemberServiceImpl implements MemberService{
    @Autowired
@@ -22,5 +25,6 @@ public class MemberServiceImpl implements MemberService{
 	public int updateNick(Member m) {
 		return mDao.updateNick(m);
 	}
+
 
 }

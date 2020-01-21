@@ -83,4 +83,12 @@
 		DELETE FROM STAR
 		WHERE MEMBER_NO = #{mNo} AND ARTICLE_NO = #{aNo}
 	</delete>
+	
+	<select id="selectBoardList" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARDVIEW
+		WHERE MEMBER_NO=#{mNo}
+	</select>
+	
+
 </mapper>

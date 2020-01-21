@@ -22,7 +22,7 @@
 	
 	<select id="selectOne" parameterType="Member" resultMap="MemberResultSet">
 		SELECT *
-		FROM MEMBER
+		FROM MEMBERVIEW
 		WHERE MEMBER_ID=#{mId}
 		AND MEMBER_STATUS='Y'
 	</select>
@@ -35,8 +35,10 @@
    
    <update id="updateNick" parameterType="Member">
    		UPDATE MEMBER
-   		SET MEMBER_NICK=#{mNick}
+   		SET MEMBER_ID=#{mId}, MEMBER_NICK=#{mNick}, ABOUT_ME=#{aboutMe}
    		WHERE MEMBER_NO=#{mNo}
    </update>
+   
+  
    
 </mapper>

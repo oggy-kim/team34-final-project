@@ -82,4 +82,14 @@ public class BoardDao {
 		return sqlSession.delete("BoardMapper.removeArticleStar", starMap);
 	}
 
+
+	public List<Board> selectArticleByUser(int mNo) {
+		return sqlSession.selectList("BoardMapper.selectBoardList", mNo);
+	}
+
+
+	public List<Reply> selectReplyByUser(int mNo) {
+		return sqlSession.selectList("ReplyMapper.selectReplyList", mNo);
+	}
+
 }

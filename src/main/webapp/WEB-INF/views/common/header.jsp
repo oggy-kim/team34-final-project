@@ -11,7 +11,7 @@
                 <li><a href="${contextPath}/enrollView" class="button">회원가입</a></li>
             </c:when>
             <c:otherwise>
-                <strong>${loginMember.mNick}</strong> 님,&nbsp;
+                <strong>${loginMember.mId}</strong> 님,&nbsp;
                 <li><a href="${contextPath}/mypage/${ loginMember.mNo }" class="button">Mypage</a></li>
                 <li><a href="${contextPath}/logout" class="button">로그아웃</a></li>
             </c:otherwise>

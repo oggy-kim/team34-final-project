@@ -41,6 +41,12 @@ public interface BoardService {
 	// 게시물 조회수 증가 
 	int addViewCount(int aNo);
 	
+	// 마이페이지 게시글 목록 조회	
+	List<Board> selectArticleByUser(int mNo);
+	
+	// 마이페이지 답변 목록 조회
+	List<Reply> selectReplyByUser(int mNo);
+	
 	
 	
 	

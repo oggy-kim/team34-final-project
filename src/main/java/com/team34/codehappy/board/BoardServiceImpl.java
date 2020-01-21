@@ -82,4 +82,14 @@ public class BoardServiceImpl implements BoardService {
 	public int addViewCount(int aNo) {
 		return bDao.addViewCount(aNo);
 	}
+
+	@Override
+	public List<Board> selectArticleByUser(int mNo) {
+		return bDao.selectArticleByUser(mNo);
+	}
+
+	@Override
+	public List<Reply> selectReplyByUser(int mNo) {
+		return bDao.selectReplyByUser(mNo);
+	}
 }

@@ -4,6 +4,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.team34.codehappy.board.Board;
+import com.team34.codehappy.board.Reply;
+
 @Repository("mDao")
 public class MemberDao {
    @Autowired
@@ -20,6 +23,8 @@ public class MemberDao {
 	public int updateNick(Member m) {
 		return sqlSession.update("MemberMapper.updateNick", m);
 	}
+
+
    
    
 
