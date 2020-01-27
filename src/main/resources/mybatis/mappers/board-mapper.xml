@@ -100,7 +100,24 @@
 		SELECT *
 		FROM BOARDVIEW
 		WHERE ARTICLE_STATUS = 'Y'
-		AND TAG LIKE CONCAT('%',#{atag},'%')
-		ORDER BY CHANGE_DATE DESC
+		<choose>
+			<when test="q != null">
+			AND ((CONTENT LIKE CONCAT ('%', #{searchItem}, '%')) OR (HEADER LIKE CONCAT ('%', #{searchItem}, '%')))
+			</when>
+			<otherwise>
+			AND TAG LIKE CONCAT ('%', #{searchItem}, '%')
+			</otherwise>
+		</choose>
+		<if test="aType != null">
+			AND ARTICLE_TYPE = #{aType} 
+		</if>
+		<trim prefix="ORDER BY">
+			<if test="sort == null">  CHANGE_DATE DESC </if>
+			<if test="sort == 'recent'">  CHANGE_DATE DESC </if>                       
+			<if test="sort == 'new'">  WRITE_DATE DESC </if>    
+			<if test="sort == 'like'">  ARTICLE_LIKE DESC </if>                       
+			<if test="sort == 'star'">  ARTICLE_STAR DESC </if> 
+			<if test="sort == 'reply'">  TOTAL_REPLY DESC </if> 
+		</trim>
 	</select>
 </mapper>

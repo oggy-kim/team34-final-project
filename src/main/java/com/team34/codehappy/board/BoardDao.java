@@ -96,7 +96,7 @@ public class BoardDao {
 	}
 
 
-	public List<Board> searchList(HashMap<Object, Object> map) {
+	public List<Board> searchList(HashMap<String, Object> map) {
 		return sqlSession.selectList("BoardMapper.searchList", map);
 	}
 

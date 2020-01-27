@@ -51,7 +51,7 @@ public interface BoardService {
 	int addReplyLike(Integer rNo);
 	
 	// 검색 리스트 불러오기
-	List<Board> searchList(HashMap<Object, Object> map);
+	List<Board> searchList(HashMap<String, Object> map);
 	
 	
 	
