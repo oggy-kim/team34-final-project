@@ -86,7 +86,7 @@ if(title_el && title_header)
         </div>
     <hr class="major" />
 
-    <c:set var="page" value="1"/>
+    
     <!-- Reply Part -->
     <h3>${board.reply}개의 댓글이 있습니다.</h3>
                 <c:choose>
@@ -169,7 +169,6 @@ if(title_el && title_header)
                             <script>
                                 function openRereplyForm(rNo, aNo){
                                     const reReply = document.querySelector('.reply-content-' + rNo + ' form[name=reReplyBox-' + rNo + ']');
-                                    console.log("${loginMember}");
                                     if("${loginMember}" == "") {
                                         if(confirm("글쓰기는 로그인한 회원만 가능합니다. 로그인하시겠습니까?")) {
                                             location.href="${contextPath}/login";
@@ -230,93 +229,116 @@ if(title_el && title_header)
                         </div>
                         <ul class="actions">
                             <c:if test="${5 < fn:length(reply)}">
-                                <li><a id="seeMoreReply" onclick="javascript:seeMoreReply(${page});" class="button big">댓글 더 보기</a></li>
+                                <li><a id="seeMoreReply" onclick="javascript:seeMoreReply();" class="button big">댓글 ${fn:length(reply) - 5}개 더 보기</a></li>
                             </c:if>
                         </ul>
                         </c:otherwise>
                     </c:choose>
                     <script>
+                        function prettyDate(time){
+                            var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
+                            diff = (((new Date()).getTime() - date.getTime()) / 1000);
+                            diff = diff - 33000;
+                            if(diff < 0) diff = 0;
+                            day_diff = Math.floor(diff / 86400);
+                            if ( isNaN(day_diff) || day_diff < 0 )
+                            return;
+
+                            return day_diff == 0 && (
+                            diff < 60 && "방금 전" ||
+                            diff < 120 && "1분 전" ||
+                            diff < 3600 && Math.floor( diff / 60 ) + "분 전" ||
+                            // diff < 7200 && "1 시간 전" ||
+                            diff < 86400 && Math.floor( diff / 3600 ) + "시간 전") ||
+                            // day_diff == 1 && "어제" ||
+                            day_diff < 7 && day_diff + " 일전" ||
+                            day_diff < 31 && Math.floor( day_diff / 7 ) + "주 전" ||
+                            day_diff < 360 && Math.floor( day_diff / 30 ) + "개월 전" ||
+                            day_diff >= 360 && (Math.floor( day_diff / 360 )==0?1:Math.floor( day_diff / 360 )) + "년 전"
+                        }
+
+                        let page = 1;
                         function seeMoreReply() {
-                            console.log("${page}");
+                            clearReReplies();
+
+                            const startNum = page * 5;
+                            const endNum = (page + 1) * 5 - 1;
+                            console.log("startNum : " + startNum);
+                            console.log("endNum : " + endNum);
+                            console.log("page : " + page);
+                            console.log(${jsonReply});
+
                             const replyBox = document.querySelector('.reply-area');
-                            const output = `
-                            <c:forEach var="r" items="${reply}" begin="${startNum}" end="${endNum}">
-                            <div class="box reply">
-                            <div class="reply-profile">
-                            <table class="reply-profile">
+
+                            ${jsonReply}.splice(startNum, 5).map((mReply) => {
+                                const output = `
+                                <div class="box reply">
+                                <div class="reply-profile">
+                                    <table class="reply-profile">
                                 <tr>
-                                    <td><img src="${contextPath}/resources/images/member/${r.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-small"></td>
-                                    <td><p>${r.mNick} 님</p>
-                                        <p><fmt:parseNumber value="${r.writeDate.time}" integerOnly="true" var="writeDate"/>
-                                            <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
-                                            <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
-                                            <c:choose>
-                                                <c:when test="${diff lt 120}">
-                                                    방금 전
-                                                </c:when>
-                                                <c:when test="${diff lt (60*60)}">
-                                                    <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
-                                                    ${minute} 분 전
-                                                </c:when>
-                                                <c:when test="${diff lt (60*60*24)}">
-                                                    <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
-                                                    ${hour} 시간 전
-                                                </c:when>
-                                                <c:when test="${diff lt (60*60*24*30)}">
-                                                    <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
-                                                    ${day} 일 전
-                                                </c:when>
-                                                <c:when test="${diff lt (60*60*24*365)}">
-                                                    <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
-                                                    ${month} 달 전
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
-                                                    ${year} 년 전
-                                                </c:otherwise>
-                                            </c:choose></p>
+                                    <td><img src="${contextPath}/resources/images/member/\${mReply.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-small"></td>
+                                    <td><p>\${mReply.mNick} 님</p>
+                                        <p>
+                                        </p>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><br>${r.aboutMe}</td>
+                                    <td colspan="2"><br>\${mReply.aboutMe}</td>
                                 </tr>
                                 </table>
                             </div>
-                                <div class="reply-content-${r.rNo}">
-                                    <c:out value="${r.rContent}" escapeXml="false" />
-                                    <form name="reply-info-${r.rNo}" action="${contextPath}/board/${board.aNo}/like" method="POST">
-                                        <input type="hidden" name="rNo" value="${r.rNo}">
+                                <div class="reply-content-\${mReply.rNo}">
+                                    \${mReply.rContent}"
+                                    <form name="reply-info-\${mReply.rNo}" action="${contextPath}/board/${board.aNo}/like" method="POST">
+                                        <input type="hidden" name="rNo" value="\${mReply.rNo}">
                                     </form>
-                                    <a onclick="javascript:document.reply-info-${r.rNo}.submit()">
+                                    <a onclick="javascript:document.reply-info-\${mReply.rNo}.submit()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 20 20" fill="#fc2605"><path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75  C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
-                                        </svg> <strong>${r.like} </strong> </a> &nbsp; &nbsp;
-                                    <a title="댓글 달기" onclick="javascript:openRereplyForm(${r.rNo}, ${r.aNo});"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600">
+                                        </svg> <strong>\${mReply.like} </strong> </a> &nbsp; &nbsp;
+                                    <a title="댓글 달기" onclick="javascript:openRereplyForm(\${mReply.rNo}, \${mReply.aNo});"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600">
                                         <path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg></a>
-                                        <form name="reReplyBox" action="post/${aNo}/comment" method="POST" style="display: none">
-                                            <input type="hidden" name="aNo" value="${r.aNo}">
-                                            <input type="hidden" name="refRNo" value="${r.rNo}">
+                                        <form name="reReplyBox-\${mReply.rNo}" action="post/${aNo}/comment" method="POST" style="display: none">
+                                            <input type="hidden" name="aNo" value="\${mReply.aNo}">
+                                            <input type="hidden" name="refRNo" value="\${mReply.rNo}">
                                             <input type="text" name="rContent" style="width: 80%;">
-                                            &nbsp; &nbsp;
-                                            <button>댓글 달기</button>
+                                            <input type="button" onclick="insertReReply(\${mReply.rNo});" value="댓글 달기"/>
                                         </form>
-                                        <c:forEach var="rr" items="${reReply}">
-                                            <c:if test="${rr.refRNo eq r.rNo}">
-                                                <hr class="reply-content">
-                                                <div><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}님</a> ${rr.rContent} </div>
-                                            </c:if> 
-                                        </c:forEach>
+                                    <div id="reReplyBox-\${mReply.rNo}">
+                                    </div>
                                     </div>
                                 </div>
-                            </c:forEach>
                             `;
                             replyBox.innerHTML += output;
+                            });
+                            
+                            ${jsonReReply}.filter((mReReplies) => {
+                                return mReReplies.aNo === ${aNo}
+                            }).map((reReply) => {
+                                if(reReply.refRNo !== 0) {
+                                const reReplyBox = document.querySelector('#reReplyBox-' + reReply.refRNo);
+                                const output = `
+                                        <hr class="reply-content-\${reReply.rNo}">
+                                            <div><a href="${contextPath}/mypage/\${reReply.mNo}">\${reReply.mNick}님</a> \${reReply.rContent} </div>
+                                `;
+                                reReplyBox.innerHTML += output;
+                                }
+                            });
 
+                            page++;
+                            console.log("돌린 후 page : " + page);
                             const seeMoreReply = document.querySelector('#seeMoreReply');
-                            if(${page * offset} >= ${fn:length(reply)}) {
+                            if((page * 5) >= ${fn:length(reply)}) {
                                 seeMoreReply.parentNode.removeChild(seeMoreReply);
                             } else {
-                                seeMoreReply.innerHTML = "댓글 " + ${fn:length(reply) - offset * page} + "개 더 보기";
+                                seeMoreReply.innerHTML = "댓글 " + (${fn:length(reply)} - (5 * page)) + "개 더 보기";
                             }
-                        }
+                        };
+                        function clearReReplies() {
+                            const reReplyBoxes = document.querySelectorAll('div[id*="reReplyBox-"]');
+                            reReplyBoxes.forEach((reReplyBox) => {
+                                console.log(reReplyBox);
+                                reReplyBox.innerHTML = "";
+                            });
+                        };
                     </script>
                     
             <!-- Reply Insert -->

@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.team34.codehappy.member.Member;
 
 @Controller
@@ -130,7 +132,7 @@ public class BoardController {
 	
 	// 게시글 상세 보기 
 	@RequestMapping(value="{aNo}", method=RequestMethod.GET)
-	public ModelAndView boardDetail(ModelAndView mv, @PathVariable("aNo") int aNo, 
+	public ModelAndView boardDetail(Model model, ModelAndView mv, @PathVariable("aNo") int aNo, 
 			HttpServletRequest request, HttpServletResponse response) {
 		Board board = null;
 		List<Reply> rList = null;
@@ -179,11 +181,13 @@ public class BoardController {
 				}
 			}
 		}
-		
+		Gson gson = new Gson();
 		if(board != null) {
 			mv.addObject("name", "boarddetail").
 			   addObject("board", board).
 			   addObject("reply", replyList).
+			   addObject("jsonReply", gson.toJson(replyList)).
+			   addObject("jsonReReply", gson.toJson(reReplyList)).
 			   addObject("reReply", reReplyList).
 			   setViewName("board");
 		}
