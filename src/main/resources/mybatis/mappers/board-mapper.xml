@@ -90,11 +90,6 @@
 		WHERE MEMBER_NO = #{mNo} AND ARTICLE_NO = #{aNo}
 	</delete>
   
-	<select id="selectBoardList" resultMap="boardResultSet">
-		SELECT *
-		FROM BOARDVIEW
-		WHERE MEMBER_NO=#{mNo}
-	</select>
 
 	<select id="searchList" parameterType="hashmap" resultMap="boardResultSet">
 		SELECT *
@@ -103,4 +98,12 @@
 		AND TAG LIKE CONCAT('%',#{atag},'%')
 		ORDER BY CHANGE_DATE DESC
 	</select>
+	
+	<select id="selectBoardList" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARDVIEW
+		WHERE MEMBER_NO=#{mNo} AND ARTICLE_STAR>'0'
+	</select>
+	
+	
 </mapper>

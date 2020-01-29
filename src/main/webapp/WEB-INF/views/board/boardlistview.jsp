@@ -42,6 +42,7 @@
                 <tr class="board-list" value="${b.aNo}">
                     <td>
                         <img class="profile-small" src="${contextPath}/resources/images/member/${b.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'">
+                    </td>
                     <td><input type="hidden" name="aNo" value="${b.aNo}">${b.bHeader}<br>
                         <c:set var="aTag" value="${b.aTag}"/>
                         <c:forEach var="t" items="${fn:split(aTag, ',')}">

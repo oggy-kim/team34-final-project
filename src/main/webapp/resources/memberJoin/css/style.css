@@ -15,7 +15,7 @@ body a{
 	-ms-transition:0.5s all;
 	font-weight:400;
 }
-input[type="button"],input[type="submit"],input[type="text"],input[type="password"]{
+input[type="button"],input[type="submit"],input[type="text"],input[type="password"],input[type="aboutMe"]{
 	transition:0.5s all;
 	-webkit-transition:0.5s all;
 	-moz-transition:0.5s all;
@@ -112,6 +112,21 @@ p {
     
 }
 input[type="text"],input[type="password"],input[type="number"],input[type="email"],input[type="tel"] {
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    text-transform: none;
+    padding: 0.8em 0.5em 0.8em;
+	box-sizing:border-box;
+	width: 100%;
+    border: 2px solid #5acae9;
+    outline: none;
+    background: rgba(255, 255, 255, 0.32);
+    color: #fff;
+	
+}
+
+input[type="aboutMe"] {
     font-size: 15px;
     font-weight: 500;
     text-align: left;

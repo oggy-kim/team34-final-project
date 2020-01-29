@@ -31,7 +31,12 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					<div class="clear"></div>
 					<div class="agile-email">
 						<p>이메일 *</p>
-						<input type="email" name="mId" placeholder="이메일 *" required="">
+						<input type="email" name="mId" id="userId" placeholder="이메일 *" required="">
+						<!-- 아이디 사용가능 & 불가능 Start -->
+						<!-- <span class="guide ok">이 이메일은 사용 가능합니다.</span>
+						<span class="guide error">이 이메일은 사용 가능할 수 없습니다.</span>
+						<input type="hidden" name="idDuplicateCheck" id="idDuplicateCheck" value="0"> -->
+						<!-- 아이디 사용가능 & 불가능 End -->
 					</div>
 					<div class="clear"></div>
 					<div class="agile-password">
@@ -81,5 +86,49 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 				</form>
 		</div>
 	</section>
+	
+	<!-- <script>
+		$(function(){
+			$("#userId").on("keyup", function(){
+				var userId = $(this).val().trim();
+
+				if(userId.length < 4){
+					$(".guide").hide(); // span 태그 숨기기
+					$("idDupilcateCheck").val(0); // 중복 여부 확인 값 리셋
+
+					return;
+				}
+
+				$.ajax({
+					url:"dupid",
+					data:{mId:userId},
+					success:function(data){
+						if(data.usUsble == true){
+							$(".error").hide();
+							$(".ok").show();
+							$("#isDuplicateCheck").val(1);
+						} else {
+							$(".ok").hide();
+							$(".error").show();
+							$("#isDuplicateCheck").val(0);
+						}
+					},
+					error:function(){
+						console.log("ajax 통신 실패");
+					}
+				});
+			});
+		});
+
+		function validate(){
+			if($("#idDuplicateCheck").val() == 0){
+				alert('사용 가능한 이메일을 입력해주세요')
+				$("#userId").focus();
+				return false;
+			}
+			return false;
+		}
+	</script> -->
+	
 </body>
 </html>
