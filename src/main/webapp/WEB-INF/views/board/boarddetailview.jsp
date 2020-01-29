@@ -83,6 +83,9 @@ if(title_el && title_header)
             <form name="article_star" action="${contextPath}/board/${board.aNo}/star" method="POST">
                 <input type="hidden" name="star" value="${star}" />
             </form>
+            <c:if test="${loginMember.mNo eq board.mNo}">
+                <a class="button primary" href="${contextPath}/board/post/${board.aNo}">글 수정/삭제</a>
+            </c:if>
         </div>
     <hr class="major" />
 
@@ -139,6 +142,9 @@ if(title_el && title_header)
                             </div>
                                 <div class="reply-content-${r.rNo}">
                                     <c:out value="${r.rContent}" escapeXml="false" />
+                                    <c:if test="${loginMember.mNo eq r.mNo}">
+                                        <a class="button primary small" style="float: right;" href="${contextPath}/board/comment/${r.rNo}/delete.do">삭제</a>
+                                    </c:if>
                                     <form name="reply-info-${r.rNo}" action="${contextPath}/board/${board.aNo}/like" method="POST">
                                         <input type="hidden" name="rNo" value="${r.rNo}">
                                     </form>
@@ -238,7 +244,6 @@ if(title_el && title_header)
                         function prettyDate(time){
                             var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
                             diff = (((new Date()).getTime() - date.getTime()) / 1000);
-                            diff = diff - 33000;
                             if(diff < 0) diff = 0;
                             day_diff = Math.floor(diff / 86400);
                             if ( isNaN(day_diff) || day_diff < 0 )
@@ -287,7 +292,8 @@ if(title_el && title_header)
                                 </table>
                             </div>
                                 <div class="reply-content-\${mReply.rNo}">
-                                    \${mReply.rContent}"
+                                    \${mReply.rContent}
+                                    <a class="button primary small" id="deleteReply" style="float: right;" href="${contextPath}/board/comment/\${mReply.rNo}/delete.do">삭제</a>
                                     <form name="reply-info-\${mReply.rNo}" action="${contextPath}/board/${board.aNo}/like" method="POST">
                                         <input type="hidden" name="rNo" value="\${mReply.rNo}">
                                     </form>
@@ -308,6 +314,10 @@ if(title_el && title_header)
                                 </div>
                             `;
                             replyBox.innerHTML += output;
+
+                            if(${loginMember.mNo} != mReply.mNo) {
+                                document.querySelector('.reply-content-' + mReply.rNo + ' > #deleteReply').remove();
+                            }
                             });
                             
                             ${jsonReReply}.filter((mReReplies) => {

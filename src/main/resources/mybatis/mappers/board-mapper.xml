@@ -29,6 +29,7 @@
 		SELECT COUNT(*)
 		FROM BOARD
 		WHERE ARTICLE_STATUS='Y'
+		AND ARTICLE_TYPE = 1
 		<if test="value != null">
 	 	AND CONTENT_TYPE = #{value}
 	 	</if>
@@ -38,6 +39,7 @@
 		SELECT *
 		FROM BOARDVIEW
 		WHERE ARTICLE_STATUS = 'Y'
+		AND ARTICLE_TYPE = 1
 	 	<if test="value != null">
 	 	AND CONTENT_TYPE = #{value}
 	 	</if>
@@ -105,7 +107,7 @@
 			AND ((CONTENT LIKE CONCAT ('%', #{searchItem}, '%')) OR (HEADER LIKE CONCAT ('%', #{searchItem}, '%')))
 			</when>
 			<otherwise>
-			AND TAG LIKE CONCAT ('%', #{searchItem}, '%')
+			AND TAG LIKE CONCAT ('%', #{searchItem},',', '%')
 			</otherwise>
 		</choose>
 		<if test="aType != null">
@@ -120,4 +122,21 @@
 			<if test="sort == 'reply'">  TOTAL_REPLY DESC </if> 
 		</trim>
 	</select>
+
+
+	<update id="modifyBoard" parameterType="Board">
+		UPDATE BOARD
+		SET CONTENT_TYPE = #{cType},
+		    HEADER = #{bHeader}, 
+			CONTENT = #{bContent},
+			TAG = #{aTag}
+		WHERE ARTICLE_NO = #{aNo} 
+	</update>
+
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE BOARD
+		SET ARTICLE_STATUS = 'N'
+		WHERE ARTICLE_NO = #{aNo}
+	</update>
+
 </mapper>

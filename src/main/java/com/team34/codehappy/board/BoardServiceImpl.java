@@ -101,4 +101,14 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> searchList(HashMap<String, Object> map) {
 		return bDao.searchList(map);
 	}
+
+	@Override
+	public int modifyBoard(Board b) {
+		return bDao.modifyBoard(b);
+	}
+
+	@Override
+	public int deleteBoard(int aNo) {
+		return bDao.deleteBoard(aNo);
+	}
 }

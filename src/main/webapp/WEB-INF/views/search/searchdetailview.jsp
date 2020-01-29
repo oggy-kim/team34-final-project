@@ -102,8 +102,8 @@
                         results.map((result) => {
                             const changeDate = prettyDate(result.changeDate);
                                 let tagList = "";
-                                const tagsForEach = result.aTag.split(',').forEach(tag => {
-                                    tagList += `<a href="/?tag=\${tag}" class="button small">\${tag}</a> &nbsp;`;
+                                const tagsForEach = result.aTag.slice(0, -1).split(',').forEach(tag => {
+                                    tagList += `<a href="${contextPath}/search/?aTag=\${tag}" class="button small">\${tag}</a> &nbsp;`;
                                 });
                                 const dateType = result.replyDate === undefined ? "새글" : "댓글";
                                 const output = `
