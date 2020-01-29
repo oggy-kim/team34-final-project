@@ -7,8 +7,8 @@
     <div class="inner">
         <!-- Search -->
             <section id="search" class="alt">
-                <form method="post" action="#">
-                    <input type="text" name="query" id="query" placeholder="Search" />
+                <form method="GET" action="${contextPath}/search/">
+                    <input type="text" name="q" id="query" placeholder="Search" />
                 </form>
             </section>
 

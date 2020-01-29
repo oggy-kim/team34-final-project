@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.team34.codehappy.member.Member;
 
 @Controller
@@ -31,40 +33,7 @@ public class BoardController {
 	
 	private Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
-	@RequestMapping(value="fetch", method=RequestMethod.GET)
-	@ResponseBody
-	public List<Board> fetchView(Model model,
-			@RequestParam(value="type", required=false) String type,
-			@RequestParam(value="page", required=false) Integer page,
-			@RequestParam(value="limit", required=false) Integer limit) {
-		int currentPage = page != null ? page + 1 : 1;
-		int boardLimit = limit != null ? limit : 15;
-		
-		System.out.println("fetch 글 보기 limit : " + boardLimit);
-		System.out.println("글 전체 보기 type : " + type);
-		System.out.println("리스트 보기 전 currentPage : " + currentPage);
-		
-		
-		if(type == null || type.equals("none")) {
-			List<Board> list = bService.selectList(currentPage, boardLimit);
-			return list;
-		} else if(type.equals("frontend")) {
-			type = "1";
-		} else if(type.equals("backend")) {
-			type = "2";
-		} else if(type.equals("others")) {
-			type = "3";
-		} else if(type.equals("freetalk")) {
-			type = "4";
-		} else {
-			
-		}
-		List<Board> list = bService.selectList(type, currentPage, boardLimit);
-		return list;
-	}
-	
-	
-	
+	// 게시판 메인화면(리스트 불러오기)
 	@RequestMapping(method=RequestMethod.GET)
 	public ModelAndView boardList(ModelAndView mv,
 			@RequestParam(value="type", required=false) String type,
@@ -127,10 +96,43 @@ public class BoardController {
 		return mv;
 	}
 	
+	// '더보기'로 게시글 리스트 더 출력하기
+	@RequestMapping(value="fetch", method=RequestMethod.GET)
+	@ResponseBody
+	public List<Board> fetchView(Model model,
+			@RequestParam(value="type", required=false) String type,
+			@RequestParam(value="page", required=false) Integer page,
+			@RequestParam(value="limit", required=false) Integer limit) {
+		int currentPage = page != null ? page + 1 : 1;
+		int boardLimit = limit != null ? limit : 15;
+		
+		System.out.println("fetch 글 보기 limit : " + boardLimit);
+		System.out.println("글 전체 보기 type : " + type);
+		System.out.println("리스트 보기 전 currentPage : " + currentPage);
+		
+		
+		if(type == null || type.equals("none")) {
+			List<Board> list = bService.selectList(currentPage, boardLimit);
+			return list;
+		} else if(type.equals("frontend")) {
+			type = "1";
+		} else if(type.equals("backend")) {
+			type = "2";
+		} else if(type.equals("others")) {
+			type = "3";
+		} else if(type.equals("freetalk")) {
+			type = "4";
+		} else {
+			
+		}
+		List<Board> list = bService.selectList(type, currentPage, boardLimit);
+		return list;
+	}
+	
 	
 	// 게시글 상세 보기 
 	@RequestMapping(value="{aNo}", method=RequestMethod.GET)
-	public ModelAndView boardDetail(ModelAndView mv, @PathVariable("aNo") int aNo, 
+	public ModelAndView boardDetail(Model model, ModelAndView mv, @PathVariable("aNo") int aNo, 
 			HttpServletRequest request, HttpServletResponse response) {
 		Board board = null;
 		List<Reply> rList = null;
@@ -179,11 +181,13 @@ public class BoardController {
 				}
 			}
 		}
-		
+		Gson gson = new Gson();
 		if(board != null) {
 			mv.addObject("name", "boarddetail").
 			   addObject("board", board).
 			   addObject("reply", replyList).
+			   addObject("jsonReply", gson.toJson(replyList)).
+			   addObject("jsonReReply", gson.toJson(reReplyList)).
 			   addObject("reReply", reReplyList).
 			   setViewName("board");
 		}
@@ -283,9 +287,8 @@ public class BoardController {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
 		Reply r = new Reply();
-		
 		r.setaNo(aNo);
-		r.setrContent(editor);
+		r.setrContent(editor.substring(0, editor.length()- "<p>&nbsp;</p>  ".length()));
 		r.setmNo(loginMember.getmNo());
 		if(refRNo != null) {
 			r.setRefRNo(refRNo);
@@ -323,6 +326,7 @@ public class BoardController {
 	// 게시글 작성 화면으로 이동
 	@RequestMapping(value="post", method=RequestMethod.GET)
 	public ModelAndView insertBoard(ModelAndView mv) {
+		
 		mv.addObject("name", "boardinsert").
 		   setViewName("board");
 		return mv;
@@ -335,6 +339,8 @@ public class BoardController {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		b.setaType(1);	
 		b.setmNo(loginMember.getmNo());
+		b.setbContent(b.getbContent().substring(0, b.getbContent().length()- "<p>&nbsp;</p>  ".length()));
+		
 		
 		int result = bService.insertBoard(b);
 
@@ -342,4 +348,51 @@ public class BoardController {
 	}
 	
 	
+	// 게시글 수정 및 삭제 페이지
+	@RequestMapping(value="post/{aNo}", method=RequestMethod.GET)
+	public String modifyBoardForm(@PathVariable("aNo") int aNo, 
+			Model model, HttpServletRequest request) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		
+		System.out.println(loginMember.getmNo());
+		
+		Board b = bService.selectArticle(aNo, true);
+		if(!(b.getmNo() == loginMember.getmNo())) {
+			model.addAttribute("msg", "글쓴이만 접근 가능합니다.");
+			return "index";
+		} else {
+			System.out.println(b);
+			model.addAttribute("board", b);
+			model.addAttribute("name", "boardinsert");
+			return "board";
+		}
+	}
+	
+	// 게시글 수정
+	@RequestMapping(value="post/{aNo}", method=RequestMethod.POST)
+	public String modifyBoard(@PathVariable("aNo") int aNo,
+			Model Model, Board b) {
+		
+		int result = bService.modifyBoard(b);
+
+		return "redirect:/board/" + aNo;
+	}
+	
+	// 게시글 삭제
+	@RequestMapping(value="{aNo}/delete.do", method=RequestMethod.GET)
+	public String deleteBoard(@PathVariable("aNo") int aNo,
+			Model model, HttpServletRequest request) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		if(loginMember.getmNo() == bService.selectArticle(aNo, true).getmNo()) {
+			int result = bService.deleteBoard(aNo);
+			if (result > 0) {
+				model.addAttribute("msg", "글 삭제가 완료되었습니다.");
+			} else {
+				model.addAttribute("msg", "게시글 삭제에 실패하였습니다.");
+			}
+		}
+		
+		return "redirect:/board";
+		
+	}
 }

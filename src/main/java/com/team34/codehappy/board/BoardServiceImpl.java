@@ -98,7 +98,17 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> searchList(HashMap<Object, Object> map) {
+	public List<Board> searchList(HashMap<String, Object> map) {
 		return bDao.searchList(map);
+	}
+
+	@Override
+	public int modifyBoard(Board b) {
+		return bDao.modifyBoard(b);
+	}
+
+	@Override
+	public int deleteBoard(int aNo) {
+		return bDao.deleteBoard(aNo);
 	}
 }

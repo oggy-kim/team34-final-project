@@ -29,6 +29,7 @@
 		SELECT COUNT(*)
 		FROM BOARD
 		WHERE ARTICLE_STATUS='Y'
+		AND ARTICLE_TYPE = 1
 		<if test="value != null">
 	 	AND CONTENT_TYPE = #{value}
 	 	</if>
@@ -38,6 +39,7 @@
 		SELECT *
 		FROM BOARDVIEW
 		WHERE ARTICLE_STATUS = 'Y'
+		AND ARTICLE_TYPE = 1
 	 	<if test="value != null">
 	 	AND CONTENT_TYPE = #{value}
 	 	</if>
@@ -95,15 +97,42 @@
 		SELECT *
 		FROM BOARDVIEW
 		WHERE ARTICLE_STATUS = 'Y'
-		AND TAG LIKE CONCAT('%',#{atag},'%')
-		ORDER BY CHANGE_DATE DESC
+		<choose>
+			<when test="q != null">
+			AND ((CONTENT LIKE CONCAT ('%', #{searchItem}, '%')) OR (HEADER LIKE CONCAT ('%', #{searchItem}, '%')))
+			</when>
+			<otherwise>
+			AND TAG LIKE CONCAT ('%', #{searchItem},',', '%')
+			</otherwise>
+		</choose>
+		<if test="aType != null">
+			AND ARTICLE_TYPE = #{aType} 
+		</if>
+		<trim prefix="ORDER BY">
+			<if test="sort == null">  CHANGE_DATE DESC </if>
+			<if test="sort == 'recent'">  CHANGE_DATE DESC </if>                       
+			<if test="sort == 'new'">  WRITE_DATE DESC </if>    
+			<if test="sort == 'like'">  ARTICLE_LIKE DESC </if>                       
+			<if test="sort == 'star'">  ARTICLE_STAR DESC </if> 
+			<if test="sort == 'reply'">  TOTAL_REPLY DESC </if> 
+		</trim>
 	</select>
-	
 	<select id="selectBoardList" resultMap="boardResultSet">
 		SELECT *
 		FROM BOARDVIEW
 		WHERE MEMBER_NO=#{mNo} AND ARTICLE_STAR>'0'
 	</select>
-	
-	
+	<update id="modifyBoard" parameterType="Board">
+		UPDATE BOARD
+		SET CONTENT_TYPE = #{cType},
+		    HEADER = #{bHeader}, 
+			CONTENT = #{bContent},
+			TAG = #{aTag}
+		WHERE ARTICLE_NO = #{aNo} 
+	</update>
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE BOARD
+		SET ARTICLE_STATUS = 'N'
+		WHERE ARTICLE_NO = #{aNo}
+	</update>
 </mapper>

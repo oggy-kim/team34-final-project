@@ -97,5 +97,18 @@ public class BoardDao {
 	public int addReplyLike(Integer rNo) {
 		return sqlSession.update("BoardMapper.addReplyLike", rNo);
 	}
-	
+
+	public List<Board> searchList(HashMap<String, Object> map) {
+		return sqlSession.selectList("BoardMapper.searchList", map);
+	}
+
+
+	public int modifyBoard(Board b) {
+		return sqlSession.update("BoardMapper.modifyBoard", b);
+	}
+
+
+	public int deleteBoard(int aNo) {
+		return sqlSession.update("BoardMapper.deleteBoard", aNo);
+	}
 }

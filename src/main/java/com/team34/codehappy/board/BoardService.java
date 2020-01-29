@@ -51,7 +51,13 @@ public interface BoardService {
 	int addReplyLike(Integer rNo);
 	
 	// 검색 리스트 불러오기
-	List<Board> searchList(HashMap<Object, Object> map);
+	List<Board> searchList(HashMap<String, Object> map);
+	
+	// 게시글 수정하기
+	int modifyBoard(Board b);
+	
+	// 게시글 삭제하기
+	int deleteBoard(int aNo);
 	
 	
 	

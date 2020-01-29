@@ -7,34 +7,34 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here.
 	// For complete reference see:
 	// https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
-	// The toolbar groups arrangement, optimized for a single toolbar row.
+
+	// The toolbar groups arrangement, optimized for two toolbar rows.
 	config.toolbarGroups = [
-		{ name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
-		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
-		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+		{ name: 'clipboard',   groups: [ 'undo' ] },
+		{ name: 'links' },
+		{ name: 'insert' },
 		{ name: 'forms' },
+		{ name: 'others' },
+		'/',
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
 		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
-		{ name: 'links' },
-		{ name: 'insert', 	  groups: ['image']},
 		{ name: 'styles' },
 		{ name: 'colors' },
-		{ name: 'tools' },
-		{ name: 'others' },
 		{ name: 'about' }
 	];
 
-	// The default plugins included in the basic setup define some buttons that
-	// are not needed in a basic editor. They are removed here.
-	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
+	// Remove some buttons provided by the standard plugins, which are
+	// not needed in the Standard(s) toolbar.
+	config.removeButtons = 'Underline,Subscript,Superscript';
 
-	// Dialog windows are also simplified.
-	config.removeDialogTabs = 'link:advanced';
+	// Set the most common block elements.
+	config.format_tags = 'p;h1;h2;h3;pre';
 
 	config.allowedContent = true;
 
+	// Simplify the dialog windows.
+	config.removeDialogTabs = 'image:advanced;link:advanced';
+
 	config.extraPlugins = 'confighelper';
-	config.extraPlugins = 'uploadimage';
-	config.extraPlugins = 'uploadwidget';
-	config.imageUploadUrl = 'resources/images';
+	config.extraPlugins = 'codesnippet';
 };
