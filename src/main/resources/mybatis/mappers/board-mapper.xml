@@ -92,11 +92,6 @@
 		WHERE MEMBER_NO = #{mNo} AND ARTICLE_NO = #{aNo}
 	</delete>
   
-	<select id="selectBoardList" resultMap="boardResultSet">
-		SELECT *
-		FROM BOARDVIEW
-		WHERE MEMBER_NO=#{mNo}
-	</select>
 
 	<select id="searchList" parameterType="hashmap" resultMap="boardResultSet">
 		SELECT *
@@ -122,8 +117,11 @@
 			<if test="sort == 'reply'">  TOTAL_REPLY DESC </if> 
 		</trim>
 	</select>
-
-
+	<select id="selectBoardList" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARDVIEW
+		WHERE MEMBER_NO=#{mNo} AND ARTICLE_STAR>'0'
+	</select>
 	<update id="modifyBoard" parameterType="Board">
 		UPDATE BOARD
 		SET CONTENT_TYPE = #{cType},
@@ -132,11 +130,9 @@
 			TAG = #{aTag}
 		WHERE ARTICLE_NO = #{aNo} 
 	</update>
-
 	<update id="deleteBoard" parameterType="_int">
 		UPDATE BOARD
 		SET ARTICLE_STATUS = 'N'
 		WHERE ARTICLE_NO = #{aNo}
 	</update>
-
 </mapper>

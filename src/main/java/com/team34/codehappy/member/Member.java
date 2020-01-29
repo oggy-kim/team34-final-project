@@ -7,7 +7,8 @@ public class Member {
 	private String mId;
 	private String mPwd;
 	private String mNick;
-	private String mLevel;
+	private int mLevel;
+	private String levelName;
 	private String aboutMe;
 	private char mStatus;
 	private String myTag;
@@ -16,20 +17,22 @@ public class Member {
 	private int mPoint;
 	private int aNo;
 	private Date recentReply;
+	private String authKey; // 1월27일 수정
 
 	public Member() {
-		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Member(int mNo, String mId, String mPwd, String mNick, String mLevel, String aboutMe, char mStatus,
-			String myTag, Date joinDate, Date loginDate, int mPoint, int aNo, Date recentReply) {
+	public Member(int mNo, String mId, String mPwd, String mNick, int mLevel, String levelName, String aboutMe,
+			char mStatus, String myTag, Date joinDate, Date loginDate, int mPoint, int aNo, Date recentReply,
+			String authKey) {
 		super();
 		this.mNo = mNo;
 		this.mId = mId;
 		this.mPwd = mPwd;
 		this.mNick = mNick;
 		this.mLevel = mLevel;
+		this.levelName = levelName;
 		this.aboutMe = aboutMe;
 		this.mStatus = mStatus;
 		this.myTag = myTag;
@@ -38,6 +41,7 @@ public class Member {
 		this.mPoint = mPoint;
 		this.aNo = aNo;
 		this.recentReply = recentReply;
+		this.authKey = authKey;
 	}
 
 	public int getmNo() {
@@ -72,12 +76,20 @@ public class Member {
 		this.mNick = mNick;
 	}
 
-	public String getmLevel() {
+	public int getmLevel() {
 		return mLevel;
 	}
 
-	public void setmLevel(String mLevel) {
+	public void setmLevel(int mLevel) {
 		this.mLevel = mLevel;
+	}
+
+	public String getLevelName() {
+		return levelName;
+	}
+
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
 	}
 
 	public String getAboutMe() {
@@ -144,13 +156,23 @@ public class Member {
 		this.recentReply = recentReply;
 	}
 
+	public String getAuthKey() {
+		return authKey;
+	}
+
+	public void setAuthKey(String authKey) {
+		this.authKey = authKey;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [mNo=" + mNo + ", mId=" + mId + ", mPwd=" + mPwd + ", mNick=" + mNick + ", mLevel=" + mLevel
-				+ ", aboutMe=" + aboutMe + ", mStatus=" + mStatus + ", myTag=" + myTag + ", joinDate=" + joinDate
-				+ ", loginDate=" + loginDate + ", mPoint=" + mPoint + ", aNo=" + aNo + ", recentReply=" + recentReply
-				+ "]";
+				+ ", levelName=" + levelName + ", aboutMe=" + aboutMe + ", mStatus=" + mStatus + ", myTag=" + myTag
+				+ ", joinDate=" + joinDate + ", loginDate=" + loginDate + ", mPoint=" + mPoint + ", aNo=" + aNo
+				+ ", recentReply=" + recentReply + ", authKey=" + authKey + "]";
 	}
+
 	
+
 	
 }

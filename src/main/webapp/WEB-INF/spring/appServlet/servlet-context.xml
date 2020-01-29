@@ -21,6 +21,15 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- ajax에서 ModelAndView를 이용한 방식을 사용하기 위해서는 다음과 같은 두개의 빈을 등록해야 한다. -->
+   	<beans:bean id="jsonView" class="net.sf.json.spring.web.servlet.view.JsonView"/>
+   	
+   	<!-- viewResolver라 하면, viewName과 실제 view단을 연결해주는 역할을 하는데
+	      하단에 등록할 BeanNameViewResolver는 요청한 viewName과 실제 bean 이름을 매핑해주는 역할을 한다. -->
+	 <beans:bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+	      <beans:property name="order" value="0"/>
+	 </beans:bean>
+	 
 	<context:component-scan base-package="com.team34.codehappy" />
 	
 	

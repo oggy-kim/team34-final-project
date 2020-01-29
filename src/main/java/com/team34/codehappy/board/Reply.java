@@ -3,18 +3,18 @@ package com.team34.codehappy.board;
 import java.util.Date;
 
 public class Reply {
-	private int rNo;
-	private int mNo;
-	private String mNick;
-	private String mPoint;
-	private String aboutMe;
-	private int aNo;
-	private int like;
-	private String rContent;
-	private Date writeDate;
-	private Date modifyDate;
-	private char rStatus;
-	private int refRNo;
+	private int rNo; // 댓글 고유번호
+	private int mNo; // 댓글 작성자
+	private String mNick; // 회원 닉네임
+	private String mPoint; // 회원 점수
+	private String aboutMe; // 회원 자기소개
+	private int aNo; // 댓글 소속 글번호
+	private int like; // 댓글 좋아요
+	private String rContent; // 댓글 내용
+	private Date writeDate; // 댓글 작성 시간
+	private Date modifyDate; // 댓글 수정 시간
+	private char rStatus; // 댓글 상태
+	private int refRNo; // 참고 댓글 번호
 	
 	public Reply() {}
 

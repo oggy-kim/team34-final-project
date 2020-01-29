@@ -2411,7 +2411,7 @@ button,
     height: 18rem;
     background-color:#dddddd;
     padding: 1em;
-    margin: 1em;
+    margin: 0.5em;
   }
 
   .row.myactivity > div:nth-child(1) {
@@ -2420,6 +2420,10 @@ button,
 
   .row.myactivity > div:nth-child(2) {
     border-top: 0.3rem solid #50e3c2;
+  }
+
+  .row.myactivity > div:nth-child(3) {
+    border-top: 0.3rem solid #abe350;
   }
 
   .modifyForm {
@@ -2806,6 +2810,7 @@ button,
     will-change: transform;
     animation: spin 1s infinite linear
   }
+
   
   @keyframes spin {
     from {
