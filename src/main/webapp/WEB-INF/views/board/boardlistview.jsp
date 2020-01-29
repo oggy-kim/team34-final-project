@@ -113,7 +113,6 @@
                 function prettyDate(time){
                     var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
                     diff = (((new Date()).getTime() - date.getTime()) / 1000);
-                    diff = diff - 33000;
                     if(diff < 0) diff = 0;
                     day_diff = Math.floor(diff / 86400);
                     if ( isNaN(day_diff) || day_diff < 0 )
@@ -154,8 +153,8 @@
                             articles.map((article) => {
                                 const changeDate = prettyDate(article.changeDate);
                                 let tagList = "";
-                                const tagsForEach = article.aTag.split(',').forEach(tag => {
-                                    tagList += `<a href="/?tag=\${tag}" class="button small">\${tag}</a> &nbsp;`;
+                                const tagsForEach = article.aTag.slice(0, -1).split(',').forEach(tag => {
+                                    tagList += `<a href="${contextPath}/search/?aTag=\${tag}" class="button small">\${tag}</a> &nbsp;`;
                                 });
                                 const dateType = article.replyDate === undefined ? "새글" : "댓글";
                                 const output = `

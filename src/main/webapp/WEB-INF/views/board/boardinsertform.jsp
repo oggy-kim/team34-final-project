@@ -18,7 +18,7 @@
         <h2>게시판 - 글쓰기</h2>
     </header>
     <script src="${contextPath}/resources/ckeditor/ckeditor.js"></script>
-                <form method="POST" onsubmit="return writeValidate();">
+                <form id="insertForm" method="POST" onsubmit="return writeValidate();">
                     <div class="box">
                         <div class="col-6 col-12-xsmall">
                             <select name="cType" id="demo-category">
@@ -74,9 +74,9 @@
                                     inputTagBox.focus();
                                     return;
                                 }
-                                tagBox.innerHTML += "<span id='selectedTag' class='button primary' onclick='removeTagFunction();' id='tagList'>" + inputTagBox.value.slice(0, -1) + "</span> &nbsp;";
+                                tagBox.innerHTML += "<span id='selectedTag' class='button secondary' onclick='removeTagFunction();' id='tagList'>" + inputTagBox.value.slice(0, -1) + "</span> &nbsp;";
                                 aTag.push(inputTagBox.value.slice(0, -1));
-                                document.querySelector('input[name$=aTag]').value = aTag.join(',');
+                                document.querySelector('input[name$=aTag]').value = aTag.join(',') + ',';
                                 console.log(aTag);
                                 }
                             }
@@ -88,8 +88,45 @@
                         </script>
                         <input type="hidden" name="aTag" value="">
                         </div>
-                        <input type="submit" value="게시" class="button primary" vertical-align="middle">
+                        <c:choose>
+                            <c:when test="${board ne null}">
+                                <script>
+                                    const category = document.querySelector('#demo-category');
+                                    const name = document.querySelector('#demo-name');
+                                    const content = document.querySelector('#editor');
+                                    const tagbox = document.querySelector('#tagBox');
+                                    name.value = "${board.bHeader}";
+                                    category.value = ${board.cType};
+                                    content.value = `<c:out value="${board.bContent}" escapeXml="false"/>`;
+                                    <c:set var="aTag" value="${board.aTag}"/>
+                                    <c:forEach var="t" items="${fn:split(aTag, ',')}">
+                                        tagbox.innerHTML += "<span id='selectedTag' class='button secondary' onclick='removeTagFunction();' id='tagList'>${t}</span>&nbsp;";
+                                    </c:forEach>
+
+                                    const tagList = document.querySelectorAll('#tagBox > #selectedTag');
+                                    tagList.forEach((tag) => {
+                                        aTag.push(tag.innerText);
+                                    })
+                                    document.querySelector('input[name$=aTag]').value = aTag.join(',') + ',';
+                                </script>
+                                <input type="submit" value="글 수정" class="button primary" vertical-align="middle">
+                                <a class="button primary" vertical-align="middle" onclick="deleteBoard();">글 삭제</a>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="submit" value="게시" class="button primary" vertical-align="middle">
+                            </c:otherwise> 
+                    </c:choose>
                 </form>
+
+                <script>
+                    function deleteBoard() {
+                        if(confirm('한번 삭제한 글은 확인할 수 없습니다. 삭제하시겠습니까?')) {
+                            location.href="${contextPath}/board/${aNo}/delete.do";
+                        }
+                    }
+                </script>
+
+                
                 <script>
                     function writeValidate() {
                         if(!document.querySelector('#selectedTag')) {
@@ -110,5 +147,4 @@
                         return true;
                     }
                 </script>
-
 </section>
