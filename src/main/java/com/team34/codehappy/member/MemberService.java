@@ -19,6 +19,6 @@ public interface MemberService {
    public int updateNick(Member m);
    
    // 5. 아이디 중복확인
-   // public int checkIdDup(String id);
+   public int checkIdDup(String mId);
   
 }

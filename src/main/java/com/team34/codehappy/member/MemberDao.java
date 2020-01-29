@@ -35,9 +35,9 @@ public class MemberDao {
 		sqlSession.update("MemberMapper.updateMlevel", m);
 	}
 
-//	public int checkIdDup(String id) {
-//		return sqlSession.selectOne("MemberMapper.idCheck", id);
-//	}
+	public int checkIdDup(String mId) {
+		return sqlSession.selectOne("MemberMapper.idCheck", mId);
+	}
 
 	
 	

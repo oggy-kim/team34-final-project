@@ -54,10 +54,10 @@
    </update>
    <!-- 회원 이메일 인증 관련 query 끝 -->
    
-   <!-- <select id="idCheck" parameterType="string" resultType="_int">
+   <select id="idCheck" parameterType="string" resultType="_int">
    		SELECT COUNT(*)
    		FROM MEMBERVIEW
    		WHERE MEMBER_ID=#{mId}
-   </select> -->
+   </select>
  
 </mapper>

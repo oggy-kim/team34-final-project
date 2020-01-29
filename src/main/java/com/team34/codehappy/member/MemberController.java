@@ -145,18 +145,18 @@ public class MemberController {
 	}
 	
 	// 아이디 중복체크
-//	@RequestMapping("dupid")
-//	public ModelAndView isDuplicateCheck(String id, ModelAndView mv) {
-//		
-//		boolean isUsable = mService.checkIdDup(id) == 0 ? true : false;
-//		
-//		Map map = new HashMap();
-//		map.put("isUsable", isUsable);
-//		mv.addAllObjects(map);
-//		mv.setViewName("jsonView");
-//		
-//		return mv;
-//	}
+	@RequestMapping("dupid")
+	public ModelAndView isDuplicateCheck(String mId, ModelAndView mv) {
+		
+		boolean isUsable = mService.checkIdDup(mId) == 0 ? true : false;
+		
+		Map map = new HashMap();
+		map.put("isUsable", isUsable);
+		mv.addAllObjects(map);
+		mv.setViewName("jsonView");
+		
+		return mv;
+	}
 
 	@RequestMapping(value = "mypage/{mNo}", method = RequestMethod.GET)
 	public String myPage(Model model, @PathVariable("mNo") int mNo, HttpServletRequest request,

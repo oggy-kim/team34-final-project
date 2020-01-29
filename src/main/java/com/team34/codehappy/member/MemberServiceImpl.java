@@ -64,10 +64,10 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.updateNick(m);
 	}
 
-//	@Override
-//	public int checkIdDup(String id) {
-//		return mDao.checkIdDup(id);
-//	}
+	@Override
+	public int checkIdDup(String mId) {
+		return mDao.checkIdDup(mId);
+	}
 
 
 
