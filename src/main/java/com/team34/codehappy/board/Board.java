@@ -3,22 +3,22 @@ package com.team34.codehappy.board;
 import java.util.Date;
 
 public class Board {
-	private int aNo;
-	private int mNo;
-	private String mNick;
-	private int aType;
-	private String aboutMe;
-	private int mPoint;
-	private String aTag;
-	private int view;
-	private int like;
-	private Date writeDate;
-	private Date replyDate;
-	private Date changeDate;
-	private String bHeader;
-	private String bContent;
-	private char aStatus;
-	private int cType;
+	private int aNo; // 게시판 번호
+	private int mNo; // 게시글 작성자
+	private String mNick; // 회원 닉네임
+	private int aType; // 게시판 분료 (1:게시판 / 2: 블로그)
+	private String aboutMe; // 회원 자기소개
+	private int mPoint; // 회원 점수
+	private String aTag; // 글 분류 태그
+	private int view; // 글 조회 수
+	private int like; // 글 좋아요 수
+	private Date writeDate; // 글 작성일
+	private Date replyDate; // 댓글 작성시간
+	private Date changeDate; // 게시물 & 댓글 바뀐 시간
+	private String bHeader; // 게시글 제목
+	private String bContent; // 게시글 내용
+	private char aStatus; // 게시글 상태
+	private int cType; // 게시물 내용 분류
 	private int star;
 	private int reply;
 
