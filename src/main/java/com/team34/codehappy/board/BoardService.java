@@ -3,6 +3,8 @@ package com.team34.codehappy.board;
 import java.util.HashMap;
 import java.util.List;
 
+import com.team34.codehappy.member.Member;
+
 public interface BoardService {
 	
 	// 글 갯수 count
@@ -58,6 +60,12 @@ public interface BoardService {
 	
 	// 게시글 삭제하기
 	int deleteBoard(int aNo);
+	
+	// 삭제 댓글 정보 확인을 위한 불러오기
+	Reply selectReplyMember(int rNo);
+	
+	// 댓글 삭제하기
+	int deleteReply(int rNo);
 	
 	
 	

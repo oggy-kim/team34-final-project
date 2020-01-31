@@ -2383,7 +2383,7 @@ button,
   }
 
   div[class^="reply-content-"] {
-    margin : 1em;
+    margin : 0;
     width : 100%;
   }
 
@@ -2392,7 +2392,7 @@ button,
     cursor: pointer;
   }
 
-  hr[class^="reply-content"] {
+  hr[class^="reReply-content"] {
     margin: 0.5em;
   }
 

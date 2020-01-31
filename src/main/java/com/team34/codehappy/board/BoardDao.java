@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.team34.codehappy.board.*;
+import com.team34.codehappy.member.Member;
 
 @Repository("bDao")
 public class BoardDao {
@@ -106,5 +107,15 @@ public class BoardDao {
 
 	public int deleteBoard(int aNo) {
 		return sqlSession.update("BoardMapper.deleteBoard", aNo);
+	}
+
+
+	public Reply selectReplyMember(int rNo) {
+		return sqlSession.selectOne("ReplyMapper.selectReplyMember", rNo);
+	}
+
+
+	public int deleteReply(int rNo) {
+		return sqlSession.update("ReplyMapper.deleteReply", rNo);
 	}
 }

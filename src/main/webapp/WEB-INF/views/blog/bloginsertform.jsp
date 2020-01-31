@@ -28,32 +28,16 @@
                                 <option value="3">그외 프로그래밍</option>
                                 <option value="4">자유게시판</option>
                             </select>
-                            <input type="text" name="bHeader" id="demo-name" placeholder="제목(10자이상 입력)  ex) Javascript와 Java는 어떻게 다른가요?" />
+                            <input type="text" name="bHeader" id="demo-name" placeholder="제목(10자이상 입력)  ex) Javascript와 Java는 어떻게 다른가요오?" />
                         </div>
                         <br>
-                        <textarea name="bContent" id="editor2" rows="10" cols="50" placeholder="코드해피를 위해 도움이 되는 글을 올려주세요. <p> 규칙에 위배되는 글 작성시 삭제 처리됩니다. ">
+                        <textarea name="bContent" id="editor2" rows="10" cols="50" placeholder="코드해피를 위해 도움이 되는 글을 올려주세요. <p> 규칙에 위배되는 글 작성시 삭제 처리됩니다요. ">
                         </textarea>
                         <script>
                             CKEDITOR.replace( 'editor2', {
                                 height: 500,
                                 extraPlugins : 'confighelper',
-                                toolbarGroups : [
-		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
-		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
-		{ name: 'forms', groups: [ 'forms' ] },
-		'/',
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
-		{ name: 'links', groups: [ 'links' ] },
-		{ name: 'insert', groups: [ 'insert' ] },
-		'/',
-		{ name: 'styles', groups: [ 'styles' ] },
-		{ name: 'colors', groups: [ 'colors' ] },
-		{ name: 'tools', groups: [ 'tools' ] },
-		{ name: 'others', groups: [ 'others' ] },
-		{ name: 'about', groups: [ 'about' ] }
-	]
+                                filebrowserUploadUrl: '${contextPath}/blog/imageUpload.do'
                             });
                         </script>
                         <br>

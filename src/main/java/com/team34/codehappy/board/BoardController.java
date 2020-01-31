@@ -395,4 +395,25 @@ public class BoardController {
 		return "redirect:/board";
 		
 	}
+	
+	// 댓글 삭제
+	@RequestMapping(value="comment/{rNo}/delete.do", method=RequestMethod.GET)
+	public String deleteReply(@PathVariable("rNo") int rNo,
+			Model model, HttpServletRequest request) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		Reply r = bService.selectReplyMember(rNo);
+		
+		if(loginMember.getmNo() == r.getmNo()) {
+			int result = bService.deleteReply(rNo);
+			if (result > 0) {
+				model.addAttribute("msg", "댓글 삭제가 완료되었습니다.");
+			} else {
+				model.addAttribute("msg", "댓글 삭제에 실패하였습니다.");
+			}
+		}
+		
+		return "redirect:/board/" + r.getaNo();
+		
+	}
+	
 }
