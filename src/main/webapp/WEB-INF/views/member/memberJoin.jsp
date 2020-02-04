@@ -11,7 +11,6 @@
       display:none;
       font-size:15px;
    }
-   
    .ok{
       color:green;
    }
@@ -19,12 +18,26 @@
    .error{
       color:red;
    }
-
+   .error1{
+      color:red;
+   }
    .pwdHiddenP {
 	   display: none;
 	   font-size:15px;
    }
+ 
+   .guide2{
+      display:none;
+      font-size:15px;
+   }
    
+   .ok2{
+      color:green;
+   }
+   
+   .error2{
+      color:red;
+   }
 </style>
 <!-- Meta tag Keywords -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,10 +57,15 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 		</div>
 		<div class="agile-voltsub">
 			<h2>계정 만들기</h2>
-				<form action="minsert" method="post" id="joinForm">
+				<form action="minsert" method="post" id="joinForm" onsubmit="return joinValidate();">
 					<div class="nick-name">
 						<p>닉네임 *</p>
-						<input type="text" name="mNick" placeholder="닉네임 *" required="" autofocus>
+						<input type="text" name="mNick" id="mNick" placeholder="닉네임 *" required="" autofocus>
+						<!-- 닉네임 사용가능 & 불가능 Start -->
+						<p class="guide2 ok2">이 닉네임은 사용 가능합니다.</p>
+						<p class="guide2 error2">이 닉네임은 사용할 수 없습니다.</p>
+						<input type="hidden" name="nickDuplicateCheck" id="nickDuplicateCheck" value="0">
+						<!-- 닉네임 사용가능 & 불가능 End -->
 					</div>
 					<div class="clear"></div>
 					<div class="agile-email">
@@ -56,6 +74,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 						<!-- 아이디 사용가능 & 불가능 Start -->
 						<p class="guide ok">이 이메일 주소는 사용 가능합니다.</p>
 						<p class="guide error">이 이메일 주소는  사용할 수 없습니다.</p>
+						<p class="guide error1">이메일 형식에 맞춰주세요.</p>
 						<input type="hidden" name="idDuplicateCheck" id="idDuplicateCheck" value="0">
 						<!-- 아이디 사용가능 & 불가능 End -->
 					</div>
@@ -126,28 +145,28 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 	
 	<script>
 		$(function(){
-			$("#mId").on("keyup", function(){
-				var mId = $(this).val().trim();
+			$("#mNick").focusout(function(){
+				var mNick = $(this).val();
 				
-				if(mId.length < 4){
-					$(".guide").hide(); // p 태그 숨기기
-					$("idDupilcateCheck").val(0); // 중복 여부 확인 값 리셋
+				if(mNick.length < 2){
+					$(".guide2").hide();
+					$("#nickDuplicateCheck").val(0);
 
-					return;
+					return false;
 				}
 
 				$.ajax({
-					url:"dupid",
-					data:{mId:mId},
+					url:"dupnick",
+					data:{mNick:mNick},
 					success:function(data){
 						if(data.isUsable == true){
-							$(".error").hide();
-							$(".ok").show();
-							$("#isDuplicateCheck").val(1);
+							$(".error2").hide();
+							$(".ok2").show();
+							$("#nickDuplicateCheck").val(1);
 						} else {
-							$(".ok").hide();
-							$(".error").show();
-							$("#isDuplicateCheck").val(0);
+							$(".ok2").hide();
+							$(".error2").show();
+							$("#nickDuplicateCheck").val(0);
 						}
 					},
 					error:function(){
@@ -157,6 +176,49 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 			});
 		});
 		
+		$(function(){
+			$("#mId").focusout(function(){
+				var mId = $(this).val().trim();
+				
+				if(mId.length < 2){
+					$(".guide").hide();
+					$("#idDuplicateCheck").val(0);
+
+					return false;
+				}
+				
+				if(/@/.test($('#mId').val())){
+					$(".error1").hide();
+				} else {
+					$(".error1").show();
+					$(".error").hide();
+					$(".ok").hide();
+					$('#mId').focus();
+					return false;
+				}
+
+				$.ajax({
+					url:"dupid",
+					data:{mId:mId},
+					success:function(data){
+						if(data.isUsable == true){
+							$(".error").hide();
+							$(".ok").show();
+							$("#idDuplicateCheck").val(1);
+							console.log($("#idDuplicateCheck").val());
+						} else {
+							$(".ok").hide();
+							$(".error").show();
+							$("#idDuplicateCheck").val(0);
+							console.log($("#idDuplicateCheck").val());
+						}
+					},
+					error:function(){
+						console.log("ajax 통신 실패");
+					}
+				});
+			});
+		});
 		$(function(){
 			$("#mPwd").on("keyup", function(){
 				var mPwd = $(this).val().trim();
@@ -212,14 +274,67 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 			});
 		});
 			
-		function validate(){
+		function joinValidate(){
+			if(/[A-Z]+/.test($('#mPwd').val())){
+				alert("비밀번호 영대문자는 제외해주세요.");
+				$('#mPwd').focus();
+				return false;
+			}
+			
+			if(/[a-z]+/.test($('#mPwd').val())){
+
+			} else {
+				alert("비밀번호 영소문자를 포함해주세요.");
+				$('#mPwd').focus();
+				return false;
+			}
+			
+			if(/[0-9]+/.test($('#mPwd').val())){
+
+			} else {
+				alert("비밀번호에 숫자를 포함해 주세요.");
+				$('#mPwd').focus();
+				return false;
+				
+			}
+			
+			if(/[~!@#$%^&*()_+|<>?:{}]+/.test($('#mPwd').val())){
+
+			} else {
+				alert("비밀번호 특수 문자 포함해 주세요");
+				$('#mPwd').focus();
+				return false;
+			}
+			
+			if($('#mPwd').val().length<6){
+				alert("비밀번호는 6글자 이상입니다!!");
+				$('#mPwd').focus();
+				return false;
+			}
+			
+			if($('#mPwd').val() != $('#mPwd2').val()){
+				alert("비밀번호가 일치하지 않습니다.")
+				$('#mPwd2').focus();
+				return false;
+			}
+			
+			if($('#mNick').val().length<2){
+				alert("닉네임은 두 글자 이상입니다.");
+				$('#mNick').focus();
+				return false;
+			}
+			
+			if($("#nickDuplicateCheck").val() == 0){
+				alert('사용 가능한 닉네임을 입력해주세요')
+				$("#mNick").focus();
+				return false;
+			}
 			if($("#idDuplicateCheck").val() == 0){
 				alert('사용 가능한 이메일을 입력해주세요')
 				$("#mId").focus();
 				return false;
 			}
-			return true;
-		}
+		};
 	</script>
 	
 </body>

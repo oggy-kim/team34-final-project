@@ -246,9 +246,6 @@
              <version>1.6.2</version>
          </dependency>
 		<!-- 회원가입 email 인증하기 끝 -->
-		
-		
-		
 	</dependencies>
     <build>
         <plugins>
