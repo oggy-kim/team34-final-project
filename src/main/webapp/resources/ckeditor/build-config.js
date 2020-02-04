@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/license
  */
 
@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/d93dc4101adac92fb93b2ad004308993
+ * (2) https://ckeditor.com/cke4/builder/e3ab2420a90a86e3df9715242ecc226b
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/d93dc4101adac92fb93b2ad004308993
+ * (3) https://ckeditor.com/cke4/builder/download/e3ab2420a90a86e3df9715242ecc226b
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -26,7 +26,7 @@
 
 var CKBUILDER_CONFIG = {
 	skin: 'moono-lisa',
-	preset: 'basic',
+	preset: 'standard',
 	ignore: [
 		'.DS_Store',
 		'.bender',
@@ -54,19 +54,47 @@ var CKBUILDER_CONFIG = {
 	plugins : {
 		'about' : 1,
 		'basicstyles' : 1,
+		'blockquote' : 1,
 		'clipboard' : 1,
 		'codesnippet' : 1,
+		'confighelper' : 1,
+		'contextmenu' : 1,
+		'elementspath' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
+		'filebrowser' : 1,
 		'floatingspace' : 1,
+		'format' : 1,
+		'horizontalrule' : 1,
+		'htmlwriter' : 1,
+		'image' : 1,
+		'image2' : 1,
 		'indentlist' : 1,
 		'link' : 1,
 		'list' : 1,
+		'magicline' : 1,
+		'maximize' : 1,
+		'pastefromgdocs' : 1,
+		'pastefromword' : 1,
+		'pastetext' : 1,
+		'pastetools' : 1,
+		'removeformat' : 1,
+		'resize' : 1,
+		'scayt' : 1,
+		'showborders' : 1,
+		'sourcearea' : 1,
+		'specialchar' : 1,
+		'stylescombo' : 1,
+		'tab' : 1,
+		'table' : 1,
+		'tableselection' : 1,
+		'tabletools' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
-		'wysiwygarea' : 1,
+		'uploadfile' : 1,
 		'uploadimage' : 1,
-		'uploadwidget' : 1
+		'wsc' : 1,
+		'wysiwygarea' : 1
 	},
 	languages : {
 		'en' : 1,

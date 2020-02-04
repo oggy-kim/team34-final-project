@@ -35,6 +35,7 @@
 <script src="${contextPath}/resources/js/breakpoints.min.js"></script>
 <script src="${contextPath}/resources/js/util.js"></script>
 <script src="${contextPath}/resources/js/main.js"></script>
+<script src="${contextPath}/resources/js/common/prettydate.js"></script>
 
 </body>
 </html>

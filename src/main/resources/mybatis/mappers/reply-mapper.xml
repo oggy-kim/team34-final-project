@@ -36,5 +36,17 @@
 		FROM REPLYVIEW
 		WHERE MEMBER_NO=#{mNo}
 	</select>
+
+	<select id="selectReplyMember" resultMap="ReplyResultSet">
+		SELECT MEMBER_NO, ARTICLE_NO
+		FROM REPLY
+		WHERE REPLY_NO = #{rNo}
+	</select>
+
+	<update id="deleteReply" parameterType="_int">
+		UPDATE REPLY
+		SET REPLY_STATUS = 'N'
+		WHERE REPLY_NO = #{rNo}
+	</update>
 	
 </mapper>

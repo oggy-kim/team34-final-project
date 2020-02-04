@@ -22,6 +22,6 @@
     <script src="resources/js/breakpoints.min.js"></script>
     <script src="resources/js/util.js"></script>
     <script src="resources/js/main.js"></script>
-    <script src="resources/js/fetch.js"></script>
+    <script src="${contextPath}/resources/js/common/prettydate.js"></script>
 </body>
 </html>

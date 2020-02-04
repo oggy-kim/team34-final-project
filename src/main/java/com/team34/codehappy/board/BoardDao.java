@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.team34.codehappy.board.*;
+import com.team34.codehappy.member.Member;
 
 @Repository("bDao")
 public class BoardDao {
@@ -85,11 +86,7 @@ public class BoardDao {
 	public List<Board> selectArticleByUser(int mNo) {
 		return sqlSession.selectList("BoardMapper.selectBoardList", mNo);
 	}
-
-	public List<Board> searchList(HashMap<Object, Object> map) {
-		return sqlSession.selectList("BoardMapper.searchList", map);
-	}
-
+  
 	public List<Reply> selectReplyByUser(int mNo) {
 		return sqlSession.selectList("ReplyMapper.selectReplyList", mNo);
 	}
@@ -97,5 +94,28 @@ public class BoardDao {
 	public int addReplyLike(Integer rNo) {
 		return sqlSession.update("BoardMapper.addReplyLike", rNo);
 	}
-	
+
+	public List<Board> searchList(HashMap<String, Object> map) {
+		return sqlSession.selectList("BoardMapper.searchList", map);
+	}
+
+
+	public int modifyBoard(Board b) {
+		return sqlSession.update("BoardMapper.modifyBoard", b);
+	}
+
+
+	public int deleteBoard(int aNo) {
+		return sqlSession.update("BoardMapper.deleteBoard", aNo);
+	}
+
+
+	public Reply selectReplyMember(int rNo) {
+		return sqlSession.selectOne("ReplyMapper.selectReplyMember", rNo);
+	}
+
+
+	public int deleteReply(int rNo) {
+		return sqlSession.update("ReplyMapper.deleteReply", rNo);
+	}
 }

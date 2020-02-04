@@ -1,6 +1,5 @@
 package com.team34.codehappy.member;
 
-
 import com.team34.codehappy.member.Member;
 
 public interface MemberService {
@@ -33,7 +32,5 @@ public interface MemberService {
 
    // 임시 비밀번호 변경
    public int updatePwd2(Member m);
-
-
   
 }

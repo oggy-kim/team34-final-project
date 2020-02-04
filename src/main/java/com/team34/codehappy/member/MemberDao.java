@@ -30,7 +30,7 @@ public class MemberDao {
 	public void updateAuthKey(Member m) {
 		sqlSession.update("MemberMapper.updateAuthKey", m);
 	}
-
+  
 	public void updateMlevel(Member m) {
 		sqlSession.update("MemberMapper.updateMlevel", m);
 	}
@@ -54,9 +54,6 @@ public class MemberDao {
 	public int updatePwd2(Member m) {
 		return sqlSession.update("MemberMapper.updatePwd2", m);
 	}
-
-
-
 
 
 }

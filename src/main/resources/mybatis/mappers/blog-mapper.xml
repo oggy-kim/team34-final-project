@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BlogMapper">
+	<resultMap type="Board" id="blogResultSet">
+		<id property="aNo" column="ARTICLE_NO"/>
+		<result property="mNo" column="MEMBER_NO"/>
+		<result property="mNick" column="MEMBER_NICK"/>
+		<result property="aType" column="ARTICLE_TYPE"/>
+		<result property="aboutMe" column="ABOUT_ME"/>
+		<result property="mPoint" column="MEMBER_POINT"/>
+		<result property="aTag" column="TAG"/>
+		<result property="view" column="ARTICLE_VIEW"/>
+		<result property="like" column="ARTICLE_LIKE"/>
+		<result property="writeDate" column="WRITE_DATE"/>
+		<result property="replyDate" column="REPLY_DATE"/>
+		<result property="changeDate" column="CHANGE_DATE"/>
+		<result property="bHeader" column="HEADER"/>
+		<result property="bContent" column="CONTENT"/>
+		<result property="aStatus" column="ARTICLE_STATUS"/>
+		<result property="cType" column="CONTENT_TYPE"/>
+		<result property="star" column="ARTICLE_STAR"/>
+		<result property="reply" column="TOTAL_REPLY"/>
+	</resultMap>
+
+	<select id="getListCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE ARTICLE_STATUS='Y'
+		AND ARTICLE_TYPE = 2
+		<if test="value != null">
+	 	AND CONTENT_TYPE = #{value}
+	 	</if>
+	</select>
+	
+	<select id="selectList" parameterType="String" resultMap="blogResultSet">
+		SELECT *
+		FROM BOARDVIEW
+		WHERE ARTICLE_STATUS = 'Y'
+		AND ARTICLE_TYPE = 2
+	 	<if test="value != null">
+	 	AND CONTENT_TYPE = #{value}
+	 	</if>
+		ORDER BY WRITE_DATE DESC
+	</select>
+
+	<select id="selectArticle" resultMap="blogResultSet">
+		SELECT *
+		FROM BOARDVIEW
+		WHERE ARTICLE_NO = #{aNo}
+	</select>
+</mapper>

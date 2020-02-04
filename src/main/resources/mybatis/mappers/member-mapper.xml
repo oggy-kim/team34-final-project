@@ -53,7 +53,6 @@
    		WHERE MEMBER_ID=#{mId}
    </update>
    <!-- 회원 이메일 인증 관련 query 끝 -->
-   
    <select id="idCheck" parameterType="String" resultType="_int">
    		SELECT COUNT(*)
    		FROM MEMBERVIEW
@@ -83,5 +82,4 @@
 		SET MEMBER_PWD=#{mPwd}
 		WHERE MEMBER_ID=#{mId}
    </update>
- 	
 </mapper>

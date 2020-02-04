@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.team34.codehappy.member.Member;
+
 @Service("bService")
 public class BoardServiceImpl implements BoardService {
 	@Autowired
@@ -98,7 +100,27 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<Board> searchList(HashMap<Object, Object> map) {
+	public List<Board> searchList(HashMap<String, Object> map) {
 		return bDao.searchList(map);
+	}
+
+	@Override
+	public int modifyBoard(Board b) {
+		return bDao.modifyBoard(b);
+	}
+
+	@Override
+	public int deleteBoard(int aNo) {
+		return bDao.deleteBoard(aNo);
+	}
+
+	@Override
+	public Reply selectReplyMember(int rNo) {
+		return bDao.selectReplyMember(rNo);
+	}
+
+	@Override
+	public int deleteReply(int rNo) {
+		return bDao.deleteReply(rNo);
 	}
 }

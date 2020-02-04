@@ -11,8 +11,6 @@
       display:none;
       font-size:15px;
    }
-   
-   
    .ok{
       color:green;
    }
@@ -20,16 +18,14 @@
    .error{
       color:red;
    }
-   
    .error1{
       color:red;
    }
-   
    .pwdHiddenP {
 	   display: none;
 	   font-size:15px;
    }
-   
+ 
    .guide2{
       display:none;
       font-size:15px;
@@ -42,7 +38,6 @@
    .error2{
       color:red;
    }
-   
 </style>
 <!-- Meta tag Keywords -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -224,7 +219,6 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 				});
 			});
 		});
-
 		$(function(){
 			$("#mPwd").on("keyup", function(){
 				var mPwd = $(this).val().trim();
@@ -335,15 +329,12 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 				$("#mNick").focus();
 				return false;
 			}
-			
 			if($("#idDuplicateCheck").val() == 0){
 				alert('사용 가능한 이메일을 입력해주세요')
 				$("#mId").focus();
 				return false;
-				
 			}
 		};
-		
 	</script>
 	
 </body>

@@ -19,7 +19,6 @@
                             <label for="upload_file" class="button small">사진업로드</label>
                         </div>
                     </div>
-                    	
                     <div class="nicknamefont">
                         <div class="col-4 col-12-small">
                             <h1>${loginMember.mNick}</h1>
@@ -204,7 +203,6 @@
                             
                         }
                     </script>
-
             </section>
             
 

@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,10 +41,7 @@ public class MemberController {
 
 	@Autowired
 	private BoardService bService;
-	
-	//@Autowired
-	//private JavaMailSender mailSender;
-	
+
 	private Logger logger = LoggerFactory.getLogger(MemberController.class);
 
 	// 로그인 암호화 처리
@@ -111,7 +109,7 @@ public class MemberController {
 	public String enrollView() {
 		return "member/memberJoin";
 	}
-	
+
 	// 회원가입 요청 
 //	@RequestMapping("minsert")
 //	public String memberInsert(Member m, Model model) {
@@ -143,7 +141,20 @@ public class MemberController {
 		model.addAttribute("msg", "회원가입 인증 메일이 발송되었습니다.");
 		
 		return "member/login";
+	}
+	
+	// 회원가입 이메일 인증 요청 마무리
+	@RequestMapping(value = "emailConfirm", method = RequestMethod.GET)
+	public String emailConfirm(Member m, Model model) throws Exception {
 		
+		m.setmLevel(8);
+		
+		mService.updateMlevel(m);
+		
+		model.addAttribute("auth_check", 8);
+		model.addAttribute("mId", m.getmId());
+		
+		return "emailConfirm";
 	}
 	
 	// 회원가입 이메일 인증 요청 마무리
@@ -168,6 +179,20 @@ public class MemberController {
 				new Date(), new Date(), 180, 0, new Date(), null);
 		model.addAttribute("loginMember", m);
 		return "redirect:/";
+	}
+	
+	// 아이디 중복체크
+	@RequestMapping("dupid")
+	public ModelAndView isDuplicateCheck(String mId, ModelAndView mv) {
+		
+		boolean isUsable = mService.checkIdDup(mId) == 0 ? true : false;
+		
+		Map map = new HashMap();
+		map.put("isUsable", isUsable);
+		mv.addAllObjects(map);
+		mv.setViewName("jsonView");
+		
+		return mv;
 	}
 
 	// 비밀번호 재설정 페이지로 이동
@@ -288,10 +313,7 @@ public class MemberController {
 		System.out.println(m);
 
 		if (result > 0) {
-
 			model.addAttribute("msg", "정보 수정 완료.");
-			
-
 		} else {
 			throw new MemberException("정보 수정 실패!");
 		}
@@ -299,6 +321,5 @@ public class MemberController {
 		return "mypage";
 		
 	}
-	
 
 }

@@ -59,7 +59,6 @@ public class MemberServiceImpl implements MemberService{
    public void updateMlevel(Member m) throws Exception{
 	   mDao.updateMlevel(m);
    }
-  
 	@Override
 	public int updateMemberNick(Member m) {
 		return mDao.updateMemberNick(m);
@@ -84,11 +83,4 @@ public class MemberServiceImpl implements MemberService{
 	public int updatePwd(Member m) {
 		return mDao.updatePwd(m);
 	}
-
-	@Override
-	public int updatePwd2(Member m) {
-		return mDao.updatePwd2(m);
-	}
-
-
 }
