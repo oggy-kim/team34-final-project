@@ -26,14 +26,31 @@
                             <h4>${loginMember.aboutMe}</h4>
                             <a class="button small" href="#aboutMe">자기소개 수정</a>
                         </div>
+                        <br>
+                        <div class="col-4 col-12-small">
+                            <a class="button small" onclick="updatePwd();">비밀번호 변경</a>
+                        </div>
+                        <br>
+                        <div class="col-4 col-12-small">
+                            <a class="button small" onclick="deleteMember(${loginMember.mNo});">**회원 탈퇴**</a>
+                        </div>
                     </div>
                         <div class="col-6 col-12-small">
                             <a class="button small" href="#modifynick">닉네임 수정</a>
                         </div>
-                
-            
                 </div>
+
+                <script>
+                    function deleteMember(mNo) {
+                        if(confirm('삭제하시겠습니까?')) {
+                            location.href="${contextPath}/member/" + mNo;
+                        }
+                    }
+
+                </script>
+                
                 <br>
+
                 <div class="row myactivity">
                     <div class="col-4 col-12-medium mypoint">
                         <h4>My 게시글 더 보기</h4>
@@ -181,33 +198,14 @@
                     </div>
                 </div>
                 <br>
-                <!-- nav 탭 시작!! -->
-                    <!-- <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#questions">질문</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#answer">답변</a>
-                        </li>
-                    </ul>
+                    <!-- 비밀번호 재설정 윈도우 창 띄우기!! -->
+                    <script>
+                        function updatePwd(){
+                            window.open('updatePwd','비밀번호 재설정','width=550, height=400, left=300, top=150');
+                            
+                        }
+                    </script>
 
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="#questions">
-                        	<c:forEach var="b" items="${ bList }">
-                        		<c:out value="${ b.aNo }"></c:out>
-                        		<c:out value="${ b.bContent }"></c:out>
-                        	</c:forEach>
-                            <p>테스트1</p>
-                        </div>
-                         <div class="tab-pane fade" id="#answer">
-                        	<c:forEach var="r" items="${ rList }">
-                        		<c:out value="${ r.rNo }"></c:out>
-                        		<c:out value="${ r.rContent }"></c:out>
-							</c:forEach>                        	
-                            <p>테스트2</p>
-                        </div>
-                    </div> -->
-		
             </section>
             
 

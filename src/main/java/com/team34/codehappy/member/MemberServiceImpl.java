@@ -1,5 +1,6 @@
 package com.team34.codehappy.member;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,12 @@ public class MemberServiceImpl implements MemberService{
 	public int updateNick(Member m) {
 		return mDao.updateNick(m);
 	}
-
+	
+//	@Override
+//	public int updateAboutme(Member m) {
+//		return mDao.updateAboutme(m);
+//	}
+	
 	@Override
 	public int checkIdDup(String mId) {
 		return mDao.checkIdDup(mId);
@@ -72,6 +78,21 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int checkNickDup(String mNick) {
 		return mDao.checkNickDup(mNick);
+	}
+
+	@Override
+	public int deleteMember(int mNo) {
+		return mDao.deleteMember(mNo);
+	}
+
+	@Override
+	public int updatePwd(Member m) {
+		return mDao.updatePwd(m);
+	}
+
+	@Override
+	public int updatePwd2(Member m) {
+		return mDao.updatePwd2(m);
 	}
 
 

@@ -40,6 +40,12 @@
    		WHERE MEMBER_NO=#{mNo}
    </update>
    
+    <!-- <update id="updateAboutme" parameterType="Member">
+		UPDATE MEMBER
+   		SET MEMBER_ID=#{mId}, ABOUT_ME=#{aboutMe}
+   		WHERE MEMBER_NO=#{mNo}
+   </update> -->
+   
    <!-- 회원 이메일 인증 관련 query 시작 -->
    <update id="updateAuthKey" parameterType="Member">
    		UPDATE MEMBER
@@ -54,16 +60,34 @@
    </update>
    <!-- 회원 이메일 인증 관련 query 끝 -->
    
-   <select id="idCheck" parameterType="string" resultType="_int">
+   <select id="idCheck" parameterType="String" resultType="_int">
    		SELECT COUNT(*)
    		FROM MEMBERVIEW
    		WHERE MEMBER_ID=#{mId}
    </select>
    
-   <select id="nickCheck" parameterType="string" resultType="_int">
+   <select id="nickCheck" parameterType="String" resultType="_int">
    		SELECT COUNT(*)
    		FROM MEMBERVIEW
    		WHERE MEMBER_NICK=#{mNick}
    </select>
- 
+   
+   <update id="deleteMember" parameterType="Member">
+   		UPDATE MEMBER
+   		SET MEMBER_STATUS='N'
+   		WHERE MEMBER_NO=#{mNo}
+   </update>
+   
+   <update id="updatePwd" parameterType="Member">
+		UPDATE MEMBER
+		SET MEMBER_PWD=#{mPwd}
+		WHERE MEMBER_NO=#{mNo}
+   </update>
+   
+   <update id="updatePwd2" parameterType="Member">
+		UPDATE MEMBER
+		SET MEMBER_PWD=#{mPwd}
+		WHERE MEMBER_ID=#{mId}
+   </update>
+ 	
 </mapper>

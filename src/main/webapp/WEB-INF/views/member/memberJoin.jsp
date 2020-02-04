@@ -20,7 +20,11 @@
    .error{
       color:red;
    }
-
+   
+   .error1{
+      color:red;
+   }
+   
    .pwdHiddenP {
 	   display: none;
 	   font-size:15px;
@@ -75,6 +79,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 						<!-- 아이디 사용가능 & 불가능 Start -->
 						<p class="guide ok">이 이메일 주소는 사용 가능합니다.</p>
 						<p class="guide error">이 이메일 주소는  사용할 수 없습니다.</p>
+						<p class="guide error1">이메일 형식에 맞춰주세요.</p>
 						<input type="hidden" name="idDuplicateCheck" id="idDuplicateCheck" value="0">
 						<!-- 아이디 사용가능 & 불가능 End -->
 					</div>
@@ -145,8 +150,8 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 	
 	<script>
 		$(function(){
-			$("#mNick").on("keyup", function(){
-				var mNick = $(this).val().trim();
+			$("#mNick").focusout(function(){
+				var mNick = $(this).val();
 				
 				if(mNick.length < 2){
 					$(".guide2").hide();
@@ -177,13 +182,23 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 		});
 		
 		$(function(){
-			$("#mId").on("keyup", function(){
+			$("#mId").focusout(function(){
 				var mId = $(this).val().trim();
 				
-				if(mId.length < 4){
+				if(mId.length < 2){
 					$(".guide").hide();
-					$("#idDupilcateCheck").val(0);
+					$("#idDuplicateCheck").val(0);
 
+					return false;
+				}
+				
+				if(/@/.test($('#mId').val())){
+					$(".error1").hide();
+				} else {
+					$(".error1").show();
+					$(".error").hide();
+					$(".ok").hide();
+					$('#mId').focus();
 					return false;
 				}
 
@@ -194,11 +209,13 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 						if(data.isUsable == true){
 							$(".error").hide();
 							$(".ok").show();
-							$("#idDupilcateCheck").val(1);
+							$("#idDuplicateCheck").val(1);
+							console.log($("#idDuplicateCheck").val());
 						} else {
 							$(".ok").hide();
 							$(".error").show();
-							$("#idDupilcateCheck").val(0);
+							$("#idDuplicateCheck").val(0);
+							console.log($("#idDuplicateCheck").val());
 						}
 					},
 					error:function(){
@@ -325,7 +342,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 				return false;
 				
 			}
-		}
+		};
 		
 	</script>
 	

@@ -70,8 +70,6 @@
 	</bean>
 	 <!-- 회원가입 email 인증하기 끝 -->
 	 
-	 
-	 
 	  <tx:advice id="txAdvice" transaction-manager="transactionManager">
 	  		<tx:attributes>
 	  			<tx:method name="select*" read-only="true" rollback-for="Exception"/> <!-- select로 시작하는 메소드 -->

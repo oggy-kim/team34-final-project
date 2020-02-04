@@ -26,7 +26,11 @@ public class MemberDao {
 	public int updateNick(Member m) {
 		return sqlSession.update("MemberMapper.updateNick", m);
 	}
-
+	
+//	public int updateAboutme(Member m) {
+//		return sqlSession.update("MemberMapper.updateAboutme", m);
+//	}
+	 
 	public void updateAuthKey(Member m) {
 		sqlSession.update("MemberMapper.updateAuthKey", m);
 	}
@@ -43,7 +47,19 @@ public class MemberDao {
 		return sqlSession.selectOne("MemberMapper.nickCheck", mNick);
 	}
 
-	
-	
+	public int deleteMember(int mNo) {
+		return sqlSession.update("MemberMapper.deleteMember", mNo);
+	}
+
+	public int updatePwd(Member m) {
+		return sqlSession.update("MemberMapper.updatePwd", m);
+	}
+
+	public int updatePwd2(Member m) {
+		return sqlSession.update("MemberMapper.updatePwd2", m);
+	}
+
+
+
 
 }

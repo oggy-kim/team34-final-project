@@ -1,7 +1,7 @@
 body{
 	padding:0;
 	margin:0;
-	background: url('/resources/images/memberJoin/4.jpg')no-repeat 0px 0px;
+	background:url("4.jpg")no-repeat 0px 0px;
 	background-position: 65% 65%;
 	background-size: cover;
 	background-attachment:fixed;
@@ -72,7 +72,7 @@ img{
 }
 @font-face{
 	font-family: 'Exo';
-	src:url('/resources/memberJoin/fonts/Exo.ttf') format('truetype');
+	src:url("Exo.ttf") format('truetype');
 }
 /*--header--*/
 .agile-voltheader h1 {
