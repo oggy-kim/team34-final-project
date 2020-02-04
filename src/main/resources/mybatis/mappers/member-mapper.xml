@@ -34,17 +34,11 @@
 		VALUES(#{mId}, #{mPwd}, #{mNick}, DEFAULT, DEFAULT, DEFAULT, #{myTag}, DEFAULT, DEFAULT, #{authKey})
    </insert>
    
-   <update id="updateNick" parameterType="Member">
+   <update id="updateMemberNick" parameterType="Member">
 		UPDATE MEMBER
    		SET MEMBER_ID=#{mId}, MEMBER_NICK=#{mNick}, ABOUT_ME=#{aboutMe}
    		WHERE MEMBER_NO=#{mNo}
    </update>
-   
-    <!-- <update id="updateAboutme" parameterType="Member">
-		UPDATE MEMBER
-   		SET MEMBER_ID=#{mId}, ABOUT_ME=#{aboutMe}
-   		WHERE MEMBER_NO=#{mNo}
-   </update> -->
    
    <!-- 회원 이메일 인증 관련 query 시작 -->
    <update id="updateAuthKey" parameterType="Member">

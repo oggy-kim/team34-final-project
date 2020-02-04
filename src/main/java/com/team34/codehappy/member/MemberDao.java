@@ -23,14 +23,10 @@ public class MemberDao {
 	    sqlSession.insert("MemberMapper.insertMember", m);
    }
 
-	public int updateNick(Member m) {
-		return sqlSession.update("MemberMapper.updateNick", m);
+	public int updateMemberNick(Member m) {
+		return sqlSession.update("MemberMapper.updateMemberNick", m);
 	}
 	
-//	public int updateAboutme(Member m) {
-//		return sqlSession.update("MemberMapper.updateAboutme", m);
-//	}
-	 
 	public void updateAuthKey(Member m) {
 		sqlSession.update("MemberMapper.updateAuthKey", m);
 	}
@@ -58,6 +54,7 @@ public class MemberDao {
 	public int updatePwd2(Member m) {
 		return sqlSession.update("MemberMapper.updatePwd2", m);
 	}
+
 
 
 

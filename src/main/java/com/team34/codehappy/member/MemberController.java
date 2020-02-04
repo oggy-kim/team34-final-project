@@ -283,42 +283,22 @@ public class MemberController {
 	public String memberUpdate(Member m, Model model, @PathVariable("mNo") int mNo) {
 		m.setmNo(mNo);
 
-		int result = mService.updateNick(m);
+		int result = mService.updateMemberNick(m);
 
 		System.out.println(m);
 
 		if (result > 0) {
 
-			model.addAttribute("msg", "수정 완료.");
-			model.addAttribute("loginMember", m);
+			model.addAttribute("msg", "정보 수정 완료.");
+			
 
 		} else {
-			throw new MemberException("수정 실패!");
+			throw new MemberException("정보 수정 실패!");
 		}
 
 		return "mypage";
 		
 	}
 	
-//	@RequestMapping(value = "mypage/{mNo}", method = RequestMethod.POST)
-//	public String memberUpdate2(Member m, Model model, @PathVariable("mNo") int mNo) {
-//		m.setmNo(mNo);
-//
-//		int result = mService.updateAboutme(m);
-//
-//		System.out.println(m);
-//
-//		if (result > 0) {
-//
-//			model.addAttribute("msg", "자기소개 수정 완료.");
-//			model.addAttribute("loginMember", m);
-//
-//		} else {
-//			throw new MemberException("수정 실패!");
-//		}
-//
-//		return "mypage";
-//		
-//	}
-	
+
 }

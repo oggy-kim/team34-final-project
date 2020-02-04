@@ -61,14 +61,9 @@ public class MemberServiceImpl implements MemberService{
    }
   
 	@Override
-	public int updateNick(Member m) {
-		return mDao.updateNick(m);
+	public int updateMemberNick(Member m) {
+		return mDao.updateMemberNick(m);
 	}
-	
-//	@Override
-//	public int updateAboutme(Member m) {
-//		return mDao.updateAboutme(m);
-//	}
 	
 	@Override
 	public int checkIdDup(String mId) {
@@ -94,7 +89,6 @@ public class MemberServiceImpl implements MemberService{
 	public int updatePwd2(Member m) {
 		return mDao.updatePwd2(m);
 	}
-
 
 
 }

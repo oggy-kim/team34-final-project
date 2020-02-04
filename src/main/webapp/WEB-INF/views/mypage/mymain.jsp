@@ -19,7 +19,7 @@
                             <label for="upload_file" class="button small">사진업로드</label>
                         </div>
                     </div>
-                    	<!-- <h4 id="float-xs-right"><a href="#">설정</a></h4> -->
+                    	
                     <div class="nicknamefont">
                         <div class="col-4 col-12-small">
                             <h1>${loginMember.mNick}</h1>
@@ -67,8 +67,7 @@
                                     <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
                                     <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
                                     <c:choose>
-                                        <c:when test="${diff lt 120}">
-                                            방금 전
+                                        <c:when test="${diff lt 120}">방금 전
                                         </c:when>
                                         <c:when test="${diff lt (60*60)}">
                                             <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>

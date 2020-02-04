@@ -16,12 +16,9 @@ public interface MemberService {
    // 회원 레벨 업데이트
    public void updateMlevel(Member m)throws Exception;
 
-   // 닉네임 수정
-   public int updateNick(Member m);
+   // 닉네임 정보 수정
+   public int updateMemberNick(Member m);
    
-   // 자기소개 수정
-   // public int updateAboutme(Member m);
-
    // 아이디 중복확인
    public int checkIdDup(String mId);
 
@@ -36,6 +33,7 @@ public interface MemberService {
 
    // 임시 비밀번호 변경
    public int updatePwd2(Member m);
+
 
   
 }
