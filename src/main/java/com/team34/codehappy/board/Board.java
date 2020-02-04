@@ -21,13 +21,14 @@ public class Board {
 	private int cType; // 게시물 내용 분류
 	private int star;
 	private int reply;
+	private String imageUrl;
 
 	public Board() {
 	}
 
 	public Board(int aNo, int mNo, String mNick, int aType, String aboutMe, int mPoint, String aTag, int view, int like,
 			Date writeDate, Date replyDate, Date changeDate, String bHeader, String bContent, char aStatus, int cType,
-			int star, int reply) {
+			int star, int reply, String imageUrl) {
 		super();
 		this.aNo = aNo;
 		this.mNo = mNo;
@@ -47,7 +48,10 @@ public class Board {
 		this.cType = cType;
 		this.star = star;
 		this.reply = reply;
+		this.imageUrl = imageUrl;
 	}
+
+
 
 	public int getaNo() {
 		return aNo;
@@ -193,12 +197,22 @@ public class Board {
 		this.reply = reply;
 	}
 
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [aNo=" + aNo + ", mNo=" + mNo + ", mNick=" + mNick + ", aType=" + aType + ", aboutMe=" + aboutMe
 				+ ", mPoint=" + mPoint + ", aTag=" + aTag + ", view=" + view + ", like=" + like + ", writeDate="
 				+ writeDate + ", replyDate=" + replyDate + ", changeDate=" + changeDate + ", bHeader=" + bHeader
 				+ ", bContent=" + bContent + ", aStatus=" + aStatus + ", cType=" + cType + ", star=" + star + ", reply="
-				+ reply + "]";
+				+ reply + ", imageUrl=" + imageUrl + "]";
 	}
+
+	
 }

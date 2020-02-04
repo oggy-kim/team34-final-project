@@ -194,6 +194,47 @@ public class BoardController {
 		return mv;
 	}
 	
+	// 댓글 좋아요 클릭
+	@RequestMapping(value="{aNo}/comment/like", method=RequestMethod.POST)
+	public String addReplyLike(Model model, @PathVariable("aNo") int aNo, Integer rNo,
+			HttpServletRequest request, HttpServletResponse response) {
+		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
+		
+		// 글 읽음 상태에 대한 쿠키값 설정(1일 내 좋아요 증가 2회 방지)
+		boolean flag = false;
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null) {
+			for(Cookie c: cookies) {
+				if(c.getName().equals("rNoLike"+rNo)) {
+					flag = true;
+					model.addAttribute("msg", "연속된 좋아요 클릭은 안돼요~");
+					return "redirect:/board/" + aNo;
+				}
+			}
+			
+			Reply r = bService.selectReplyMember(rNo);
+			
+			if(!flag) {
+				Cookie c = new Cookie("aNoLike"+rNo, String.valueOf(rNo));
+				c.setMaxAge(1 * 24 * 60 * 60);
+				response.addCookie(c);
+				if(loginMember != null && loginMember.getmNo() == r.getmNo()) {
+					model.addAttribute("msg", "본인 댓글에 좋아요를 누르실 수 없습니다.");
+					return "redirect:/board/" + aNo;
+				}
+				int result = bService.addReplyLike(rNo);
+				
+				if(result > 0) {
+					model.addAttribute("msg", "좋아요 클릭 완료!");
+				} else {
+					System.out.println("추후에 수정필요(Exception)");
+				}
+			}
+		}
+		return "redirect:/board/" + aNo;
+	}
+	
+	
 	// 게시글 좋아요 클릭
 	@RequestMapping(value="{aNo}/like", method=RequestMethod.POST)
 	public String addLike(Model model, @PathVariable("aNo") int aNo, Integer mNo, Integer rNo, HttpServletRequest request, HttpServletResponse response) {
@@ -203,46 +244,23 @@ public class BoardController {
 			boolean flag = false;
 			Cookie[] cookies = request.getCookies();
 			if(cookies != null) {
-				if(rNo != null) {
 				for(Cookie c: cookies) {
-					if(c.getName().equals("rNoLike"+rNo)) {
+					if(c.getName().equals("aNoLike"+aNo)) {
 						flag = true;
 						model.addAttribute("msg", "연속된 좋아요 클릭은 안돼요~");
 						return "redirect:/board/" + aNo;
 					}
 				}
-				} else {
-					for(Cookie c: cookies) {
-						if(c.getName().equals("aNoLike"+aNo)) {
-							flag = true;
-							model.addAttribute("msg", "연속된 좋아요 클릭은 안돼요~");
-							return "redirect:/board/" + aNo;
-						}
-					}
-				}
-				int result = 0;
+				
 				if(!flag) {
-					if(rNo != null) {
-						Cookie c = new Cookie("rNoLike"+rNo, String.valueOf(rNo));
-						c.setMaxAge(1 * 24 * 60 * 60);
-						response.addCookie(c);
-						if(loginMember != null && loginMember.getmNo() == mNo) {
-							model.addAttribute("msg", "본인 글에 좋아요를 누르실 수 없습니다.");
-							return "redirect:/board/" + aNo;
-						}
-						result = bService.addReplyLike(rNo);
-						}
-					
-					else {
-						Cookie c = new Cookie("aNoLike"+aNo, String.valueOf(aNo));
-						c.setMaxAge(1 * 24 * 60 * 60);
-						response.addCookie(c);
-						if(loginMember != null && loginMember.getmNo() == mNo) {
-							model.addAttribute("msg", "본인 글에 좋아요를 누르실 수 없습니다.");
-							return "redirect:/board/" + aNo;
-						}
-						result = bService.addLike(aNo);
-						}
+					Cookie c = new Cookie("aNoLike"+aNo, String.valueOf(aNo));
+					c.setMaxAge(1 * 24 * 60 * 60);
+					response.addCookie(c);
+					if(loginMember != null && loginMember.getmNo() == mNo) {
+						model.addAttribute("msg", "본인 글에 좋아요를 누르실 수 없습니다.");
+						return "redirect:/board/" + aNo;
+					}
+					int result = bService.addLike(aNo);
 					
 					if(result > 0) {
 						model.addAttribute("msg", "좋아요 클릭 완료!");
@@ -288,7 +306,8 @@ public class BoardController {
 		
 		Reply r = new Reply();
 		r.setaNo(aNo);
-		r.setrContent(editor.substring(0, editor.length()- "<p>&nbsp;</p>  ".length()));
+//		r.setrContent(editor.substring(0, editor.length()- "<p>&nbsp;</p>  ".length()));
+		r.setrContent(editor);
 		r.setmNo(loginMember.getmNo());
 		if(refRNo != null) {
 			r.setRefRNo(refRNo);
@@ -339,8 +358,7 @@ public class BoardController {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		b.setaType(1);	
 		b.setmNo(loginMember.getmNo());
-		b.setbContent(b.getbContent().substring(0, b.getbContent().length()- "<p>&nbsp;</p>  ".length()));
-		
+//		b.setbContent(b.getbContent().substring(0, b.getbContent().length()- "<p>&nbsp;</p>  ".length()));
 		
 		int result = bService.insertBoard(b);
 

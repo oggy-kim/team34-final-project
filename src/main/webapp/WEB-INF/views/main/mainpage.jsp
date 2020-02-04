@@ -3,10 +3,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:useBean id="now" class="java.util.Date" />
+
+<script>
+    let title_el = document.querySelector("title");
+    let title_header = document.querySelector("#header strong");
+    
+    if(title_el && title_header)
+        title_el.innerHTML = "CODEHAPPY - Main";
+        title_header.innerHTML = "CODEHAPPY Main💡🐷";
+</script>
 <!-- 메인페이지 주요 게시글 -->
             <section>
                 <header class="major">
-                    <h2>HOT TOPIC 🔥</h2>
+                    <h2>게시판 HOT TOPIC 🔥</h2>
                 </header>
                 <div class="table-wrapper">
                     <table class="board-wrapper">
@@ -21,43 +30,23 @@
                         </thead>
                         <tbody>
                             <div hidden id="spinner"></div>
+                            <script src=https://cdn.jsdelivr.net/npm/promise-polyfill@8.1/dist/polyfill.min.js></script>
+                            <script src=https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0/dist/fetch.umd.min.js></script>
+                            <script src="https://polyfill.io/v3/polyfill.js?features=fetch"></script>
+                            <script src="${contextPath}/resources/js/fetch.js"></script>
                             <script>
-                                function prettyDate(time){
-                                    var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
-                                    diff = (((new Date()).getTime() - date.getTime()) / 1000);
-                                    if(diff < 0) diff = 0;
-                                    day_diff = Math.floor(diff / 86400);
-                                    if ( isNaN(day_diff) || day_diff < 0 )
-                                    return;
-
-                                    return day_diff == 0 && (
-                                    diff < 60 && "방금 전" ||
-                                    diff < 120 && "1분 전" ||
-                                    diff < 3600 && Math.floor( diff / 60 ) + "분 전" ||
-                                    // diff < 7200 && "1 시간 전" ||
-                                    diff < 86400 && Math.floor( diff / 3600 ) + "시간 전") ||
-                                    // day_diff == 1 && "어제" ||
-                                    day_diff < 7 && day_diff + "일 전" ||
-                                    day_diff < 31 && Math.floor( day_diff / 7 ) + "주 전" ||
-                                    day_diff < 360 && Math.floor( day_diff / 30 ) + "개월 전" ||
-                                    day_diff >= 360 && (Math.floor( day_diff / 360 )==0?1:Math.floor( day_diff / 360 )) + "년 전"
-                                }
                                 const spinner = document.getElementById("spinner");
                                 const list = document.querySelector(".board-wrapper tbody");
                                 spinner.removeAttribute('hidden');
                                 fetch("${contextPath}/board/fetch/?limit=5")
                                     .then((res) => {
-                                        if(res.status == 200 || res.status == 201) {
-                                            console.log(res.status);
-                                            console.log(res);
-                                            console.log("통신성공");
+                                        if(res.ok) {
                                             return res.json();
                                         } else {
                                             console.log(res.status);
                                         }
                                     })
                                     .then((articles) => {
-                                            console.log(articles);
                                             articles.map((article) => {
                                                 const changeDate = prettyDate(article.changeDate);
                                                 const writeDate = prettyDate(article.writeDate);
@@ -84,8 +73,10 @@
                                
                                 const board = document.querySelector('.board-wrapper')
                                 board.onclick = function(e) {
-                                    console.log(e.target.parentElement.getAttribute('value'));
-                                    location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+                                    if(e.target.tagName !== 'TH') {
+                                        console.log(e.target.parentElement.getAttribute('value'));
+                                        location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+                                    }
                                 }
                             </script>
                         </tbody>

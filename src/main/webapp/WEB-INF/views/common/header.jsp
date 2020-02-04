@@ -11,15 +11,18 @@
                     <li><a href="${contextPath}/enrollView" class="button">회원가입</a></li>
                 </c:when>
                 <c:otherwise>
-                    <strong>${loginMember.mId}</strong> 님,&nbsp;
-                    <li><a href="${contextPath}/mypage/${ loginMember.mNo }" class="button">Mypage</a></li>
-                    <li><a href="${contextPath}/logout" class="button">로그아웃</a></li>
+                    <strong>${loginMember.mNick}</strong> 님,&nbsp;
+                    <li><a class="button small" onclick="gotoChatRoom();">채팅참여</a></li>
+                    <li><a href="${contextPath}/mypage/${ loginMember.mNo }" class="button small">Mypage</a></li>
+                    <li><a href="${contextPath}/logout" class="button small">로그아웃</a></li>
                 </c:otherwise>
             </c:choose>
-            <!-- <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-            <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-            <li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
-            <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-            <li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li> -->
+            <script>
+                const gotoChatRoom = () => {
+                    const room = prompt('입장할 채팅방 이름을 입력하세요.')
+                    const url = `http://localhost:3000/?username=${loginMember.mNick}&userno=${loginMember.mNo}&room=\${room}`;
+                    window.open(url, 'CODEHAPPY - 채팅', 'width=520, height=700');
+                } 
+            </script>
         </ul>
 </header>

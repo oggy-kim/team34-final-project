@@ -16,8 +16,6 @@ public class MainController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
 		return "index";
 	}
 	

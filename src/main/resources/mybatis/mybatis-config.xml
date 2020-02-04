@@ -18,5 +18,6 @@
 		<mapper resource="mybatis/mappers/board-mapper.xml"/>
 		<mapper resource="mybatis/mappers/member-mapper.xml"/>
 		<mapper resource="mybatis/mappers/reply-mapper.xml"/>
+		<mapper resource="mybatis/mappers/blog-mapper.xml"/>
 	</mappers>
 </configuration>

@@ -15,5 +15,5 @@
 			alert('${ msg }');
 			<c:remove var="msg"/>
 		</c:if>
-	</script>
+    </script>
 <c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>

@@ -1,5 +1,7 @@
 package com.team34.codehappy.blog;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,28 @@ public class BlogServiceImpl implements BlogService {
 	@Override
 	public int insertBlog(Board b) {
 		return blogDao.insertBlog(b);
+	}
+
+	@Override
+	public List<Board> selectList(int currentPage, int boardLimit) {
+		List<Board> list = blogDao.selectList(currentPage, boardLimit);
+		return list;
+	}
+
+	@Override
+	public List<Board> selectList(String type, int currentPage, int boardLimit) {
+		List<Board> list = blogDao.selectList(type, currentPage, boardLimit);
+		return list;
+	}
+
+	@Override
+	public int getListCount() {
+		return blogDao.getListCount();
+	}
+
+	@Override
+	public int getListCount(String type) {
+		return blogDao.getListCount(type);
 	}
 	
 	

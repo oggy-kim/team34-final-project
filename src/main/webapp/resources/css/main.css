@@ -2337,6 +2337,10 @@ button,
     height: 50px;
   }
 
+  img.profile-small:hover {
+    cursor: pointer;
+  }
+
   img.profile-xsmall {
     border-radius: 50%;
     width: 30px;

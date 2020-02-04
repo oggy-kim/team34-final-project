@@ -36,7 +36,6 @@
                         <script>
                             CKEDITOR.replace( 'editor2', {
                                 height: 500,
-                                extraPlugins : 'confighelper',
                                 filebrowserUploadUrl: '${contextPath}/blog/imageUpload.do'
                             });
                         </script>

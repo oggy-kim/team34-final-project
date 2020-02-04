@@ -19,7 +19,7 @@
     </header>
         <h3>게시판 (${fn:length(articleSearchResult)} 개 검색결과)</h3> 
     <div class="table-wrapper">
-        <table class="board-wrapper">
+        <table class="board-wrapper" id="board">
             <tbody>
                 <c:if test="${fn:length(articleSearchResult) eq 0}">해당 검색어에 대한 검색결과가 없습니다.</c:if>
                 <c:forEach var="b" items="${articleSearchResult}" begin="0" end="9">
@@ -88,11 +88,10 @@
             <a class="button primary" href="${contextPath}/searchdetail/?${searchType}=${searchItem}&aType=1">검색결과 자세히</a>
         </c:if>
 
-
         <hr>
         <h3>블로그 (${fn:length(blogSearchResult)} 개 검색결과)</h3> 
     <div class="table-wrapper">
-        <table class="board-wrapper">
+        <table class="board-wrapper" id="blog">
             <tbody>
                 <c:if test="${fn:length(blogSearchResult) eq 0}">해당 검색어에 대한 검색결과가 없습니다.</c:if>
                 <c:forEach var="b" items="${blogSearchResult}" begin="0" end="9">
@@ -160,13 +159,20 @@
             <a class="button primary" href="${contextPath}/searchdetail/?${searchType}=${searchItem}&aType=2">검색결과 자세히</a>
         </c:if>
         <script>
-            const board = document.querySelector('.board-wrapper')
+            const board = document.querySelector('.table-wrapper')
             board.onclick = function(e) {
-                // location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
-                if(e.target.className === "profile-small") {
-                    location.href = "${contextPath}/board/" + e.target.parentElement.parentElement.getAttribute('value');
-                } else {
-                    location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+                if(e.target.parentElement.parentElement.parentElement.id === 'board') {
+                    if(e.target.className === "profile-small") {
+                        location.href = "${contextPath}/board/" + e.target.parentElement.parentElement.getAttribute('value');
+                    } else {
+                        location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+                    }
+                } else if(e.target.parentElement.parentElement.parentElement.id === 'blog') {
+                    if(e.target.className === "profile-small") {
+                        location.href = "${contextPath}/blog/" + e.target.parentElement.parentElement.getAttribute('value');
+                    } else {
+                        location.href = "${contextPath}/blog/" + e.target.parentElement.getAttribute('value');
+                    }
                 }
             }
         </script>

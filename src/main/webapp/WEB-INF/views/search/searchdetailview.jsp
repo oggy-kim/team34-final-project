@@ -10,8 +10,8 @@
         let title_header = document.querySelector("#header strong");
         
         if(title_el && title_header)
-            title_el.innerHTML = "CODEHAPPY - Board";
-            title_header.innerHTML = "CODEHAPPY 게시판입니다.";
+            title_el.innerHTML = "CODEHAPPY - ${searchItem} 검색결과 자세히";
+            title_header.innerHTML = "CODEHAPPY 검색 🕵️‍♂️🔍";
         </script>
 <section>
     <header class="major">
@@ -34,18 +34,15 @@
         <option value="reply">댓글 많은 순</option>
     </select>
     <br><br>
-
     <script>
-        const $sortOption = document.querySelector('#sortOption');
+    const $sortOption = document.querySelector('#sortOption');
         $sortOption.addEventListener('change', (e) => {
             console.log(e.target.value);
             const url = "${contextPath}/searchdetail/fetch/?${searchType}=${searchItem}&aType=${aType}&sort=" + e.target.value;
             fetchResult(url);
-        })
-    
-    </script>
-    
+    })
 
+    </script>
     <div class="table-wrapper">
         <table class="board-wrapper">
             <thead>
@@ -60,38 +57,15 @@
             </thead>
             <tbody>
                 <script>
-                    function prettyDate(time){
-                        var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
-                        diff = (((new Date()).getTime() - date.getTime()) / 1000);
-                        diff = diff - 33000;
-                        if(diff < 0) diff = 0;
-                        day_diff = Math.floor(diff / 86400);
-                        if ( isNaN(day_diff) || day_diff < 0 )
-                        return;
-
-                        return day_diff == 0 && (
-                        diff < 60 && "방금 전" ||
-                        diff < 120 && "1분 전" ||
-                        diff < 3600 && Math.floor( diff / 60 ) + "분 전" ||
-                        // diff < 7200 && "1 시간 전" ||
-                        diff < 86400 && Math.floor( diff / 3600 ) + "시간 전") ||
-                        // day_diff == 1 && "어제" ||
-                        day_diff < 7 && day_diff + "일 전" ||
-                        day_diff < 31 && Math.floor( day_diff / 7 ) + "주 전" ||
-                        day_diff < 360 && Math.floor( day_diff / 30 ) + "개월 전" ||
-                        day_diff >= 360 && (Math.floor( day_diff / 360 )==0?1:Math.floor( day_diff / 360 )) + "년 전"
-                    }
-
                     const list = document.querySelector(".board-wrapper tbody");
 
                     let page = 1;
                     const offset = 15;
 
-                    function fetchResult(url) {
+                    const fetchResult = (url) => {
                     return fetch(url)
                     .then(res => {
                         if(res.ok) {
-                            console.log("통신성공!");
                             return res.json();
                         } else {
                             console.log(res);
@@ -128,7 +102,6 @@
                 
                     const board = document.querySelector('.board-wrapper')
                     board.onclick = function(e) {
-                        // location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
                         if(e.target.className === "profile-small") {
                             location.href = "${contextPath}/board/" + e.target.parentElement.parentElement.getAttribute('value');
                         } else {

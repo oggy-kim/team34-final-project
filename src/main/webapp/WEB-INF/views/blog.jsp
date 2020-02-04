@@ -14,8 +14,14 @@
                     <c:when test="${name eq 'blogmain'}">
                         <c:import url="./blog/blogmain.jsp"/>
                     </c:when> 
+                    <c:when test="${name eq 'bloglist'}">
+                        <c:import url="./blog/bloglistview.jsp"/>
+                    </c:when> 
                     <c:when test="${name eq 'bloginsert'}">
                         <c:import url="./blog/bloginsertform.jsp"/>
+                    </c:when> 
+                    <c:when test="${name eq 'blogdetail'}">
+                        <c:import url="./blog/blogdetailview.jsp"/>
                     </c:when> 
                     <c:otherwise>
                         ${name}
@@ -32,6 +38,7 @@
 <script src="${contextPath}/resources/js/breakpoints.min.js"></script>
 <script src="${contextPath}/resources/js/util.js"></script>
 <script src="${contextPath}/resources/js/main.js"></script>
+<script src="${contextPath}/resources/js/common/prettydate.js"></script>
 
 </body>
 </html>

@@ -28,14 +28,24 @@
                             <li><a href="${contextPath}/board/?type=freetalk">프리톡</a></li>
                         </ul>
                     </li>
-                    <li><a href="#" onclick="javascript:alert('블로그는 현재 개발중입니다. 곧 만나요!')">블로그</a></li>
+                    <li>
+                        <span class="opener">블로그</span>
+                        <ul>
+                            <li><a href="${contextPath}/blog/main">블로그 메인</a></li>
+                            <li><a href="${contextPath}/blog/?type=all">블로그 모아보기</a></li>
+                            <li><a href="${contextPath}/blog/?type=frontend">프론트엔드</a></li>
+                            <li><a href="${contextPath}/blog/?type=backend">백엔드</a></li>
+                            <li><a href="${contextPath}/blog/?type=others">그외 프로그래밍</a></li>
+                            <li><a href="${contextPath}/blog/?type=freetalk">프리톡</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
 
         <!-- Section -->
             <section>
                 <header class="major">
-                    <a href="#" onclick="javascript:alert('마이페이지는 현재 개발중입니다. 조금만 기다려주세요!')"><h2><img src="${contextPath}/resources/images/member/${loginMember.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-xsmall"> About Me &#x1F913;</h2></a>
+                    <a href="${contextPath}/mypage/${loginMember.mNo}"><h2><img src="${contextPath}/resources/images/member/${loginMember.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-xsmall"> About Me &#x1F913;</h2></a>
                 </header>
                 <div class="mini-posts">
                     <article>
@@ -67,13 +77,18 @@
                     <li class="icon solid fa-home">Github Link : 
                         <a href="https://github.com/oggy-kim/team34-final-project"><img src="${contextPath}/resources/images/common/github.png" width="20px"></a>
                     </li>
+                    <c:if test="${loginMember.levelName eq '주관리자'}">
+                        <li><a href="${contextPath}/admin">🔑</a></li>
+                    </c:if>
                 </ul>
             </section>
 
         <!-- Footer -->
             <footer id="footer">
                 <p class="copyright">&copy; http://Codehappy.site . All rights reserved. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-                
+                본 사이트는 IE 외의 모든 브라우저를 지원합니다.
+                <br>
+                Internet Explorer로 접속하신 경우 홈페이지의 기능을 활용하실 수 없습니다. Chrome, Safari, Firefox, Edge 등 브라우저로 접속해주세요.
             </footer>
     </div>
 </div>
