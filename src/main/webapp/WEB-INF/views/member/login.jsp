@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<title>Login Form</title>
+<title>CODEHAPPY - Login</title>
 <script src="https://kit.fontawesome.com/0d0e2ec841.js"	crossorigin="anonymous"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,7 +19,7 @@
 
         function hideURLbar() {
             window.scrollTo(0, 1);
-        }
+		}
 	</script>
 
 
@@ -31,11 +31,9 @@
 
 <!-- web font -->
 <link href="//fonts.googleapis.com/css?family=Hind:300,400,500,600,700"	rel="stylesheet">
-<!-- //web font -->
-<link rel="icon" type="image/png" href="http://example.com/myicon.png">
+<link rel="icon" type="image/png" href="${ pageContext.servletContext.contextPath }/resources/images/common/siteicon.png">
 </head>
 <body>
-
 	<script>
 		<c:if test="${!empty msg }">
 			alert('${ msg }');

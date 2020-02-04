@@ -40,7 +40,7 @@
     <div class="posts">
 
     <script>
-    fetch('${contextPath}/blog/fetch/?limit=4')
+    fetch('${contextPath}/blog/fetch/?limit=6')
         .then((res) => {
             if(res.ok) {
                 return res.json();

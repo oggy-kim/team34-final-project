@@ -27,6 +27,13 @@
 		WHERE MEMBER_ID=#{mId}
 		AND MEMBER_STATUS='Y'
 	</select>
+
+	<select id="selectMemberByMNo" parameterType="Member" resultMap="MemberResultSet">
+		SELECT *
+		FROM MEMBERVIEW
+		WHERE MEMBER_NO=#{mNo}
+		AND MEMBER_STATUS='Y'
+	</select>
 	
 	<insert id="insertMember" parameterType="Member">
 		INSERT INTO  

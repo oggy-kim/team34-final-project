@@ -32,5 +32,8 @@ public interface MemberService {
 
    // 임시 비밀번호 변경
    public int updatePwd2(Member m);
+
+   // 회원 정보불러오기
+   public Member selectMemberByMNo(int mNo);
   
 }

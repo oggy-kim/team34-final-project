@@ -35,7 +35,7 @@
                         </div>
                     </div>
                         <div class="col-6 col-12-small">
-                            <a class="button small" href="#modifynick">닉네임 수정</a>
+                            <a class="button small" href="#modifynick">임 수정</a>
                         </div>
                 </div>
 
@@ -49,17 +49,16 @@
                 </script>
                 
                 <br>
-
                 <div class="row myactivity">
                     <div class="col-4 col-12-medium mypoint">
-                        <h4>My 게시글 더 보기</h4>
+                        <h4>My 게시글 보기</h4>
                         <tbody>
                             <c:if test="${fn:length(bList) eq 0}">작성한 게시글이 없습니다.</c:if>
                             <c:set var="offset" value="1"/>
                             <c:forEach var="b" items="${bList}" begin="0" end="4">
                             <tr class="board-list" value="${b.aNo}">
                                 <td>
-                                    <input type="hidden" name="aNo" value="${b.aNo}">${b.bHeader} + ${b.replyDate}<br>
+                                    <input type="hidden" name="aNo" value="${b.aNo}">${b.bHeader} / 
                                 </td>
                                 <td>
                                     <fmt:parseNumber value="${b.writeDate.time}" integerOnly="true" var="writeDate"/>
@@ -106,7 +105,7 @@
                              <c:forEach var="r" items="${rList}" begin="0" end="4">
                                 <tr class="reply-list" value="${r.rNo}">
                                     <td>
-                                        <input type="hidden" name="rNo" value="${r.rNo}">${r.rContent}<br>
+                                        <input type="hidden" name="rNo" value="${r.rNo}">${r.rContent} / 
                                     </td>
                                     <td>
                                         <fmt:parseNumber value="${r.writeDate.time}" integerOnly="true" var="writeDate"/>
@@ -154,7 +153,7 @@
                             <c:forEach var="b" items="${bList}" begin="0" end="4">
                                 <tr class="board-list" value="${b.aNo}">
                                     <td>
-                                        <input type="hidden" name="aNo" value="${b.aNo}">${b.bHeader} + ${b.star}<br>
+                                        <input type="hidden" name="aNo" value="${b.aNo}">${b.bHeader} / 
                                     </td>
                                     <td>
                                         <fmt:parseNumber value="${b.writeDate.time}" integerOnly="true" var="writeDate"/>

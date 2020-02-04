@@ -62,16 +62,19 @@ public class MemberController {
 		System.out.println(loginMember);
 
 		if (loginMember != null && bcryptPasswordEncoder.matches(m.getmPwd(), loginMember.getmPwd())) {
-
-			if (logger.isDebugEnabled()) {
-				logger.info(loginMember.getmId() + "로그인");
+			if (loginMember.getLevelName() != "회원가입중") {
+				model.addAttribute("loginMember", loginMember);
+				return "index";
+			} else if(loginMember.getLevelName() == "회원가입중") {
+				model.addAttribute("msg", "이메일 인증 먼저 진행해주세요.");
+			} else {
+				throw new MemberException("로그인 실패하였습니다.");
 			}
-			model.addAttribute("loginMember", loginMember);
 			return "index";
 		} else {
-			throw new MemberException("로그인 실패하였습니다.");
+			model.addAttribute("msg", "비밀번호 오류입니다.");
+			return "redirect:/login";
 		}
-
 	}
 	
 	// 비밀번호 찾기 이동! GET 방식
@@ -109,25 +112,6 @@ public class MemberController {
 	public String enrollView() {
 		return "member/memberJoin";
 	}
-
-	// 회원가입 요청 
-//	@RequestMapping("minsert")
-//	public String memberInsert(Member m, Model model) {
-//		String encPwd = bcryptPasswordEncoder.encode(m.getmPwd());
-//
-//		m.setmPwd(encPwd);
-//
-//		int result = mService.insertMember(m);
-//
-//		if (result > 0) {
-//			model.addAttribute("msg", "회원가입 인증 메일이 발송되었습니다.");
-//			model.addAttribute("loginMember", mService.loginMember(m));
-//
-//			return "index";
-//		} else {
-//			throw new MemberException("회원가입 실패");
-//		}
-//	}
 	
 	// 회원가입 이메일 인증 요청
 	@RequestMapping(value = "minsert", method = RequestMethod.POST)
@@ -155,20 +139,6 @@ public class MemberController {
 		model.addAttribute("mId", m.getmId());
 		
 		return "emailConfirm";
-	}
-	
-	// 회원가입 이메일 인증 요청 마무리
-	@RequestMapping(value = "emailConfirm", method = RequestMethod.GET)
-	public String emailConfirm(Member m, Model model) throws Exception {
-		
-		m.setmLevel(8);
-		
-		mService.updateMlevel(m);
-		
-		model.addAttribute("auth_check", 8);
-		model.addAttribute("mId", m.getmId());
-		
-		return "emailConfirm";
 		
 	}
 	
@@ -179,20 +149,6 @@ public class MemberController {
 				new Date(), new Date(), 180, 0, new Date(), null);
 		model.addAttribute("loginMember", m);
 		return "redirect:/";
-	}
-	
-	// 아이디 중복체크
-	@RequestMapping("dupid")
-	public ModelAndView isDuplicateCheck(String mId, ModelAndView mv) {
-		
-		boolean isUsable = mService.checkIdDup(mId) == 0 ? true : false;
-		
-		Map map = new HashMap();
-		map.put("isUsable", isUsable);
-		mv.addAllObjects(map);
-		mv.setViewName("jsonView");
-		
-		return mv;
 	}
 
 	// 비밀번호 재설정 페이지로 이동
@@ -310,10 +266,10 @@ public class MemberController {
 
 		int result = mService.updateMemberNick(m);
 
-		System.out.println(m);
-
 		if (result > 0) {
-			model.addAttribute("msg", "정보 수정 완료.");
+			Member updateM = mService.selectMemberByMNo(mNo);
+			model.addAttribute("loginMember", updateM)
+				 .addAttribute("msg", "정보 수정 완료.");
 		} else {
 			throw new MemberException("정보 수정 실패!");
 		}

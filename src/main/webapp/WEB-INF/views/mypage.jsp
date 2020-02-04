@@ -28,24 +28,31 @@
                             <div class="popup">
                                     <div id="nick-div">
                                             <div id="nick-margin">
-                                                <h2 id="nick-h2">닉네임을 등록해주세요.</h2>
-                                                <h3 id="nick-h3">(9글자 내외)</h3>
+                                                <h2 id="nick-h2">변경할 닉네임</h2>
+                                                <h3 id="nick-h3">(9글자 내)</h3>
                                             </div>
                                         </div>
                                 <a class="close" href="#">&times;</a>
                                 <br>
                                 <div class="contented">
-                                    <input type="text" name="mNick" id="mNick" value="${ loginMember.mNick }">
+                                    <input type="text" name="mNick" id="mNick" value="${ loginMember.mNick }" autocomplete="off">
                                 </div>
                                 <br>
                                 <div class="actionButton">
-                                    <input type="submit" value="확인">&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="submit" value="확인" onclick="return mNickValidate();">&nbsp;&nbsp;
                                     <button type="button" onclick="location.href='${ mymain }'">취소</button>
                                 </div>
                             </div>
             </div>
+
+            <script>
+                function mNickValidate() {
+                    return false;
+
+                }
+            </script>
             <!-- 닉네임 변경 끝 -->
-            <!-- 자기소개 변경 시작 -->
+            <!-- 개 변경 시작 -->
             <div class="aboutmeForm" id="aboutMe">
                 <div class="popup2">
                         <div id="nick-div2">

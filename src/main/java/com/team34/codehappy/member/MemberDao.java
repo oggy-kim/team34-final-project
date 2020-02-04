@@ -55,5 +55,9 @@ public class MemberDao {
 		return sqlSession.update("MemberMapper.updatePwd2", m);
 	}
 
+	public Member selectMember(int mNo) {
+		return sqlSession.selectOne("MemberMapper.selectMemberByMNo", mNo);
+	}
+
 
 }

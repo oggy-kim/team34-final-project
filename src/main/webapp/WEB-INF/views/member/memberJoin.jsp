@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<title>Codehappy</title>
+<title>CODEHAPPY - 회원가입</title>
 <style>
 	.guide{
       display:none;
@@ -49,11 +49,12 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 <link rel="stylesheet" href="${ pageContext.servletContext.contextPath }/resources/memberJoin/css/style.css" type="text/css" media="all" /><!-- Style-CSS -->
 <link href="//fonts.googleapis.com/css?family=Heebo:300" rel="stylesheet">
 <link href="//fonts.googleapis.com/css?family=Exo" rel="stylesheet">
+<link rel="icon" type="image/png" href="${ pageContext.servletContext.contextPath }/resources/images/common/siteicon.png">
 </head>
 <body>
 	<section class="agile-volt">
 		<div class="agile-voltheader">
-			<h1>Code <label>happy</label>!!</h1>
+			<h1><img src="${contextPath}/resources/images/common/sitelogo.png" style="width:250px;"></h1>
 		</div>
 		<div class="agile-voltsub">
 			<h2>계정 만들기</h2>
