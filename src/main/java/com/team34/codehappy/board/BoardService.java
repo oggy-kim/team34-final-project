@@ -67,6 +67,9 @@ public interface BoardService {
 	// 댓글 삭제하기
 	int deleteReply(int rNo);
 	
+	// 회원별 찜리스트 불러오기
+	List<Board> selectStarArticleByUser(int mNo);
+	
 	
 	
 	

@@ -15,10 +15,10 @@
 </script>
 <section>
     <header class="major">
-        <h2>블로그 - 글쓰기</h2>
+        <h2>게시판 - 글쓰기</h2>
     </header>
     <script src="${contextPath}/resources/ckeditor/ckeditor.js"></script>
-                <form method="POST" onsubmit="return writeValidate();">
+                <form id="insertForm" method="POST" onsubmit="return writeValidate();">
                     <div class="box">
                         <div class="col-6 col-12-xsmall">
                             <select name="cType" id="demo-category">
@@ -28,10 +28,10 @@
                                 <option value="3">그외 프로그래밍</option>
                                 <option value="4">자유게시판</option>
                             </select>
-                            <input type="text" name="bHeader" id="demo-name" placeholder="제목(10자이상 입력)  ex) Javascript와 Java는 어떻게 다른가요오?" />
+                            <input type="text" name="bHeader" id="demo-name" placeholder="제목(10자이상 입력)  ex) Javascript와 Java는 어떻게 다른가요?" />
                         </div>
                         <br>
-                        <textarea name="bContent" id="editor2" rows="10" cols="50" placeholder="코드해피를 위해 도움이 되는 글을 올려주세요. <p> 규칙에 위배되는 글 작성시 삭제 처리됩니다요. ">
+                        <textarea name="bContent" id="editor2" rows="10" cols="50" placeholder="코드해피를 위해 도움이 되는 글을 올려주세요. <p> 규칙에 위배되는 글 작성시 삭제 처리됩니다. ">
                         </textarea>
                         <script>
                             CKEDITOR.replace( 'editor2', {
@@ -74,7 +74,7 @@
                                     inputTagBox.focus();
                                     return;
                                 }
-                                tagBox.innerHTML += "<span id='selectedTag' class='button primary' onclick='removeTagFunction();' id='tagList'>" + inputTagBox.value.slice(0, -1) + "</span> &nbsp;";
+                                tagBox.innerHTML += "<span id='selectedTag' class='button secondary' onclick='removeTagFunction();' id='tagList'>" + inputTagBox.value.slice(0, -1) + "</span> &nbsp;";
                                 aTag.push(inputTagBox.value.slice(0, -1));
                                 document.querySelector('input[name$=aTag]').value = aTag.join(',') + ',';
                                 console.log(aTag);
@@ -88,8 +88,45 @@
                         </script>
                         <input type="hidden" name="aTag" value="">
                         </div>
-                        <input type="submit" value="게시" class="button primary" vertical-align="middle">
+                        <c:choose>
+                            <c:when test="${board ne null}">
+                                <script>
+                                    const category = document.querySelector('#demo-category');
+                                    const name = document.querySelector('#demo-name');
+                                    const content = document.querySelector('#editor2');
+                                    const tagbox = document.querySelector('#tagBox');
+                                    name.value = "${board.bHeader}";
+                                    category.value = ${board.cType};
+                                    content.value = `<c:out value="${board.bContent}" escapeXml="false"/>`;
+                                    <c:set var="aTag" value="${board.aTag}"/>
+                                    <c:forEach var="t" items="${fn:split(aTag, ',')}">
+                                        tagbox.innerHTML += "<span id='selectedTag' class='button secondary' onclick='removeTagFunction();' id='tagList'>${t}</span>&nbsp;";
+                                    </c:forEach>
+
+                                    const tagList = document.querySelectorAll('#tagBox > #selectedTag');
+                                    tagList.forEach((tag) => {
+                                        aTag.push(tag.innerText);
+                                    })
+                                    document.querySelector('input[name$=aTag]').value = aTag.join(',') + ',';
+                                </script>
+                                <input type="submit" value="글 수정" class="button primary" vertical-align="middle">
+                                <a class="button primary" vertical-align="middle" onclick="deleteBoard();">글 삭제</a>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="submit" value="게시" class="button primary" vertical-align="middle">
+                            </c:otherwise> 
+                    </c:choose>
                 </form>
+
+                <script>
+                    function deleteBoard() {
+                        if(confirm('한번 삭제한 글은 확인할 수 없습니다. 삭제하시겠습니까?')) {
+                            location.href="${contextPath}/blog/${aNo}/delete.do";
+                        }
+                    }
+                </script>
+
+                
                 <script>
                     function writeValidate() {
                         if(!document.querySelector('#selectedTag')) {
@@ -102,13 +139,17 @@
                             document.querySelector('#demo-category').focus();
                             return false;
                         }
-                        if(document.querySelector('#demo-name').value.length <= 10) {
-                            alert('10자 이상의 제목을 입력해주세요.');
+                        if(document.querySelector('#demo-name').value.length <= 5) {
+                            alert('5자 이상의 제목을 입력해주세요.');
+                            document.querySelector('#demo-name').focus();
+                            return false;
+                        }
+                        if(document.querySelector('#demo-name').value.length > 30) {
+                            alert('30자 이하의 제목을 입력해주세요.');
                             document.querySelector('#demo-name').focus();
                             return false;
                         }
                         return true;
                     }
                 </script>
-
 </section>

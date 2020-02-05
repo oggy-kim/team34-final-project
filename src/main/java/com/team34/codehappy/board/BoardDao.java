@@ -118,4 +118,9 @@ public class BoardDao {
 	public int deleteReply(int rNo) {
 		return sqlSession.update("ReplyMapper.deleteReply", rNo);
 	}
+
+
+	public List<Board> selectStarArticleByUser(int mNo) {
+		return sqlSession.selectList("BoardMapper.selectStarArticleByUser", mNo);
+	}
 }

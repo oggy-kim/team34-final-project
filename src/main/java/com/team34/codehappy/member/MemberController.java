@@ -1,9 +1,11 @@
 package com.team34.codehappy.member;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +26,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.JsonObject;
 import com.team34.codehappy.board.Board;
 import com.team34.codehappy.board.BoardService;
 import com.team34.codehappy.board.Reply;
@@ -250,12 +254,13 @@ public class MemberController {
 		}
 		List<Board> bList = bService.selectArticleByUser(mNo);
 		List<Reply> rList = bService.selectReplyByUser(mNo);
-
+		List<Board> sList = bService.selectStarArticleByUser(mNo);
+		
 		model.addAttribute("bList", bList);
 		model.addAttribute("rList", rList);
-
-		System.out.println(bList);
-		System.out.println(rList);
+		model.addAttribute("sList", sList);
+	
+		System.out.println(sList);
 
 		return "mypage";
 	}
@@ -277,5 +282,23 @@ public class MemberController {
 		return "mypage";
 		
 	}
-
+	
+	// 프로필 사진 업데이트
+	@ResponseBody
+	@RequestMapping(value = "mypage/updateProfilePic", method=RequestMethod.POST)
+	public JsonObject updateProfilePic(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("avatar") MultipartFile formData) throws Exception {
+		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+		String originalFile = formData.getOriginalFilename();
+		String storedFileName = String.valueOf(loginMember.getmNo()) + ".png";
+		String url = request.getSession().getServletContext().getRealPath("/resources/images/member/");
+		
+		File file = new File(url + storedFileName);
+		formData.transferTo(file);
+		
+		JsonObject json = new JsonObject();
+		json.addProperty("success", 1);
+		
+		return json;
+	}	
 }

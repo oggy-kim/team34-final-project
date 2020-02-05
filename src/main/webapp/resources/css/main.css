@@ -2291,6 +2291,15 @@ button,
   .board-list td {
     vertical-align: middle;
   }
+  .reply-list:hover {
+    cursor: pointer;
+    transition: all 0.5s;
+    background-color: rgba(222, 224, 226, 0.75);
+    font-weight: 500;
+  }
+  .reply-list td {
+    vertical-align: middle;
+  }
 
 
   .profile-info {
@@ -2412,7 +2421,7 @@ button,
   }
 
   .row.myactivity > div {
-    height: 18rem;
+    height: 28rem;
     background-color:#dddddd;
     padding: 1em;
     margin: 0.5em;
@@ -2824,4 +2833,4 @@ button,
       transform: rotate(360deg);
     }
   }
- 
+

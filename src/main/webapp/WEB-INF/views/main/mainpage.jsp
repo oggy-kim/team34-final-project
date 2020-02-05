@@ -30,9 +30,6 @@
                         </thead>
                         <tbody>
                             <div hidden id="spinner"></div>
-                            <script src=https://cdn.jsdelivr.net/npm/promise-polyfill@8.1/dist/polyfill.min.js></script>
-                            <script src=https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0/dist/fetch.umd.min.js></script>
-                            <script src="https://polyfill.io/v3/polyfill.js?features=fetch"></script>
                             <script src="${contextPath}/resources/js/fetch.js"></script>
                             <script>
                                 const spinner = document.getElementById("spinner");
@@ -82,7 +79,7 @@
                         </tbody>
                     </table>
                     <ul class="actions">
-                        <li><a href="board" class="button primary big">더 보기</a></li>
+                        <li><a href="board" class="button primary">전체 글 보기</a></li>
                     </ul>
                 </div>
             </section>

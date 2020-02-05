@@ -25,6 +25,13 @@
 		<result property="reply" column="TOTAL_REPLY"/>
 	</resultMap>
 
+	<resultMap type="Board" id="starResultSet">
+		<id property="aNo" column="ARTICLE_NO"/>
+		<result property="mNo" column="S.MEMBER_NO"/>
+		<result property="writeDate" column="WRITE_DATE"/>
+		<result property="bHeader" column="HEADER"/>
+	</resultMap>
+
 	<select id="getListCount" parameterType="String" resultType="_int">
 		SELECT COUNT(*)
 		FROM BOARD
@@ -135,4 +142,11 @@
 		SET ARTICLE_STATUS = 'N'
 		WHERE ARTICLE_NO = #{aNo}
 	</update>
+
+	<select id="selectStarArticleByUser" resultMap="boardResultSet">
+		SELECT S.MEMBER_NO, ARTICLE_NO, HEADER, WRITE_DATE
+		FROM STAR S
+		LEFT JOIN BOARD B USING(ARTICLE_NO)
+		WHERE S.MEMBER_NO = #{mNo}
+	</select>
 </mapper>

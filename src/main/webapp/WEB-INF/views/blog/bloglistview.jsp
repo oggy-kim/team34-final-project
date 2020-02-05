@@ -157,9 +157,9 @@
         const board = document.querySelector('.board-wrapper')
         board.onclick = function(e) {
             if(e.target.className === "profile-small") {
-                location.href = "${contextPath}/board/" + e.target.parentElement.parentElement.getAttribute('value');
+                location.href = "${contextPath}/blog/" + e.target.parentElement.parentElement.getAttribute('value');
             } else {
-                location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+                location.href = "${contextPath}/blog/" + e.target.parentElement.getAttribute('value');
             }
         }
     </script> 

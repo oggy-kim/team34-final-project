@@ -16,4 +16,10 @@ public interface BlogService {
 	
 	int getListCount(String type);
 
+	Board selectEditorsPick();
+
+	int removeEditorsPick(int beforeANo);
+
+	int addEditorsPick(int aNo);
+
 }

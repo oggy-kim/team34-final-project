@@ -51,4 +51,22 @@
 		FROM BOARDVIEW
 		WHERE ARTICLE_NO = #{aNo}
 	</select>
+
+	<select id="selectEditorsPick" resultMap="blogResultSet">
+		SELECT HEADER, CONTENT, ARTICLE_NO
+		FROM BOARD
+		WHERE EDITORS_PICK = 'Y'
+	</select>
+
+	<update id="removeEditorsPick" parameterType="_int">
+		UPDATE BOARD
+		SET EDITORS_PICK = 'N'
+		WHERE ARTICLE_NO = #{beforeANo}
+	</update>
+	<update id="addEditorsPick" parameterType="_int">
+		UPDATE BOARD
+		SET EDITORS_PICK = 'Y'
+		WHERE ARTICLE_NO = #{aNo}
+	</update>
+
 </mapper>

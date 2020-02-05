@@ -36,6 +36,8 @@
 <script src="${contextPath}/resources/js/util.js"></script>
 <script src="${contextPath}/resources/js/main.js"></script>
 <script src="${contextPath}/resources/js/common/prettydate.js"></script>
+<script src="${contextPath}/resources/js/board.js"></script>
+
 
 </body>
 </html>

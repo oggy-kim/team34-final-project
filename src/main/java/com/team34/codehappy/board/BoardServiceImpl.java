@@ -123,4 +123,9 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteReply(int rNo) {
 		return bDao.deleteReply(rNo);
 	}
+
+	@Override
+	public List<Board> selectStarArticleByUser(int mNo) {
+		return bDao.selectStarArticleByUser(mNo);
+	}
 }

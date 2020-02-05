@@ -42,4 +42,16 @@ public class BlogDao {
 	public int getListCount(String type) {
 		return sqlSession.selectOne("BlogMapper.getListCount", type);
 	}
+
+	public Board selectEditorsPick() {
+		return sqlSession.selectOne("BlogMapper.selectEditorsPick");
+	}
+
+	public int removeEditorsPick(int beforeANo) {
+		return sqlSession.update("BlogMapper.removeEditorsPick", beforeANo);
+	}
+
+	public int addEditorsPick(int aNo) {
+		return sqlSession.update("BlogMapper.addEditorsPick", aNo);
+	}
 }

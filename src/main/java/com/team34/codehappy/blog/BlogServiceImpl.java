@@ -39,6 +39,21 @@ public class BlogServiceImpl implements BlogService {
 	public int getListCount(String type) {
 		return blogDao.getListCount(type);
 	}
+
+	@Override
+	public Board selectEditorsPick() {
+		return blogDao.selectEditorsPick();
+	}
+
+	@Override
+	public int removeEditorsPick(int beforeANo) {
+		return blogDao.removeEditorsPick(beforeANo);
+	}
+
+	@Override
+	public int addEditorsPick(int aNo) {
+		return blogDao.addEditorsPick(aNo);
+	}
 	
 	
 }

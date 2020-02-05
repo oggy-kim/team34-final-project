@@ -15,22 +15,6 @@
 </script>
         <!-- Editor's Pick -->
         <section id="banner">
-            <div class="content">
-                <header class="major">
-                    <h2>블로그 Editor's Pick📝</h2>
-                </header>
-                <header>
-                    <h1>우리가 자바를 자바야 하는 이유</h1>
-                    <p>자바는 우리 삶에 매우 중요하다</p>
-                </header>
-                <p>우리가 자바를 자바야 하는 이유우리가 자바를 자바야 하는 이유우리가 자바를 자바야 하는 이유우리가 자바를 자바야 하는 이유우리가 자바를 자바야 하는 이유우리가 자바를 자바야 하는 이유우리가 자바를 자바야 하는 이유우리가 자바를 자바야 하는 이유</p>
-                <ul class="actions">
-                    <li><a href="#" class="button big">더 보기</a></li>
-                </ul>
-            </div>
-            <span class="image object">
-                <img src="${contextPath}/resources/images/mainpage/editorspick.jpg" alt="" />
-            </span>
         </section>
 
 <section>
@@ -40,6 +24,45 @@
     <div class="posts">
 
     <script>
+    fetch('${contextPath}/blog/fetch/editorspick')
+        .then((res) => {
+                if(res.ok) {
+                    return res.json();
+                } else {
+                    console.log(res.status);
+                }
+            })
+        .then((editorsPick) => {
+            const banner = document.querySelector('#banner');
+            const cuttedContent = textLengthOverCut(removeTags(editorsPick.bContent), 150, "...");
+
+            console.log(banner);
+            console.log(cuttedContent);
+
+            const output = `
+            <div class="content">
+                <header class="major">
+                    <h2>블로그 Editor's Pick📝</h2>
+                </header>
+                <header>
+                    <h1>\${editorsPick.bHeader}</h1>
+                </header>
+                <p>\${cuttedContent}</p>
+                <ul class="actions">
+                    <li><a href="${contextPath}/blog/\${editorsPick.aNo}" class="button big">더 보기</a></li>
+                </ul>
+            </div>
+            <span class="image object">
+                <img src="\${editorsPick.imageUrl}" onerror="this.src='${contextPath}/resources/images/blog/default.png'" />
+            </span>`;
+            banner.innerHTML = output;
+        })
+        .catch((e) => {
+            console.log(e)
+        });
+
+
+
     fetch('${contextPath}/blog/fetch/?limit=6')
         .then((res) => {
             if(res.ok) {
@@ -67,7 +90,9 @@
                 `;
                 posts.innerHTML += output;
             })
-        });
+        }).catch((e) => {
+            console.log(e)
+        }) ;
 
         function removeTags(content){
             var rex = /(<([^>]+)>)/ig;
