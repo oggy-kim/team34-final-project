@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<jsp:useBean id="now" class="java.util.Date" />
 
 <!-- Sidebar -->
 <div id="sidebar">
@@ -49,11 +51,54 @@
                 </header>
                 <div class="mini-posts">
                     <article>
-                        <p>{코드포인트} : <strong>${loginMember.mPoint} 점</strong> </p>
+                        <p>
+                            가입한지
+                            <fmt:parseNumber value="${loginMember.joinDate.time}" integerOnly="true" var="joinDate"/>
+                            <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
+                            <c:set var="totalDate" value="${nowDate / 1000 - joinDate / 1000}"/>
+                            <fmt:parseNumber var="dayday" integerOnly="true" value="${totalDate / (60*60*24) + 1 }"/>
+                            ${dayday}일째, <br> {코딩포인트} : <strong>${loginMember.mPoint} 점</strong> (상위 ${loginMember.pointRanking} %)</p>
                     </article>
                     <article>
-                        <p>나의 최근 게시글 업데이트</p>
-                        <h5>** 개발중입니다. **</h5>
+                        <p>내 게시글에 대한 댓글이 
+                            <c:choose>
+                                <c:when test="${loginMember.recentReply eq null}">
+                                    없습니다.
+                                </c:when>
+                                <c:otherwise>
+
+                               
+                            <fmt:parseNumber value="${loginMember.recentReply.time}" integerOnly="true" var="recentReply"/>
+                            <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
+                            <c:set var="diff" value="${nowDate / 1000 - recentReply / 1000}"/>
+                            <c:choose>
+                                <c:when test="${diff lt 120}">
+                                     방금 전 달렸습니다.
+                                </c:when>
+                                <c:when test="${diff lt (60*60)}">
+                                    <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
+                                     ${minute} 분 전에 있습니다.
+                                </c:when>
+                                <c:when test="${diff lt (60*60*24)}">
+                                    <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
+                                     ${hour} 시간 전에 있습니다.
+                                </c:when>
+                                <c:when test="${diff lt (60*60*24*30)}">
+                                    <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
+                                     ${day} 일 전에 있습니다.
+                                </c:when>
+                                <c:when test="${diff lt (60*60*24*365)}">
+                                    <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
+                                    ${month} 달 전에 있습니다.
+                                </c:when>
+                                <c:otherwise>
+                                    <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
+                                    ${year} 년 전에 있습니다.
+                                </c:otherwise>
+                            </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+                        </p>
                     </article>
                 </div>
                 <c:if test="${loginMember eq null}">

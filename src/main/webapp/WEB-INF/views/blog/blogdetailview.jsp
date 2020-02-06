@@ -59,15 +59,6 @@ if(title_el && title_header)
             <td>${board.aboutMe}</td>
             </tr>
     </table>
-    <script>
-        document.querySelector('.profile-small').addEventListener('click', (e) => {
-            if(confirm('${board.mNick}님과 대화를 하시겠습니까?')) {
-                const room = prompt('채팅방 이름을 입력해주세요. 해당 채팅방 이름을 상대방에게 알려주면 대화방 참여가 가능합니다.') 
-                const url = `http://localhost:3000/?username=${loginMember.mNick}&userno=${loginMember.mNo}&room=\${room}`;
-                window.open(url, 'CODEHAPPY - 채팅', 'width=520, height=700');
-            };
-        });
-    </script>
 
     <!-- Question Contents -->
     <div class="box">
@@ -238,150 +229,144 @@ if(title_el && title_header)
                         </ul>
                         </c:otherwise>
                     </c:choose>
-                    <script>
-function openRereplyForm(rNo, aNo){
-    const reReply = document.querySelector('.reply-content-' + rNo + ' form[name=reReplyBox-' + rNo + ']');
-    if("${loginMember}" == "") {
-        if(confirm("글쓰기는 로그인한 회원만 가능합니다. 로그인하시겠습니까?")) {
-            location.href="${contextPath}/login";
-        };
-        return false;
-    }
+<script>
+    $
 
-    if(reReply.style.display == 'none' || reReply.style.display == '') {
-        reReply.style.display = 'flex';
-    } else {
-        reReply.style.display = 'none';
-    }
-};
 
-function insertReReply(rNo) {
-    const reReplyBox = document.querySelector('form[name=reReplyBox-' + rNo + ']');
-    const aNo = reReplyBox.aNo.value;
-    const refRNo = reReplyBox.refRNo.value;
-    const rContent = reReplyBox.rContent.value;
-
-    const data = 
-        {aNo: aNo,
-        refRNo: refRNo,
-        rContent: rContent
+    function openRereplyForm(rNo, aNo){
+        const reReply = document.querySelector('.reply-content-' + rNo + ' form[name=reReplyBox-' + rNo + ']');
+        if("${loginMember}" == "") {
+            if(confirm("글쓰기는 로그인한 회원만 가능합니다. 로그인하시겠습니까?")) {
+                location.href="${contextPath}/login";
+            };
+            return false;
         }
 
-
-    fetch('${contextPath}/blog/post/' + aNo + '/recomment', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        credentials: "same-origin",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then((res) => {
-        if(res.ok) {
-            return res.json();
+        if(reReply.style.display == 'none' || reReply.style.display == '') {
+            reReply.style.display = 'flex';
         } else {
-            console.log(res);
+            reReply.style.display = 'none';
         }
-    }).then((replies) => {
-        const reReplyBox = document.querySelector('div[id=reReplyBox-' + refRNo);
-        reReplyBox.innerHTML = "";
-        replies.filter((reply) => {
-            return reply.refRNo == refRNo;
-        }).map((reply) => {
-            const output = `
-            <hr class="reReply-content-\${reply.rNo}">
-            <div class="reReply-content-\${reply.rNo}"><a href="${contextPath}/mypage/\${reply.mNo}">\${reply.mNick}님</a> \${reply.rContent} </div>
-            `;
-            reReplyBox.innerHTML += output;
+    };
+
+    function insertReReply(rNo) {
+        const reReplyBox = document.querySelector('form[name=reReplyBox-' + rNo + ']');
+        const aNo = reReplyBox.aNo.value;
+        const refRNo = reReplyBox.refRNo.value;
+        const rContent = reReplyBox.rContent.value;
+
+        const data = {aNo, refRNo, rContent};
+
+
+        fetch('${contextPath}/blog/post/' + aNo + '/recomment', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            credentials: "same-origin",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((res) => {
+            if(res.ok) {
+                return res.json();
+            } else {
+                console.log(res);
+            }
+        }).then((replies) => {
+            const reReplyBox = document.querySelector('div[id=reReplyBox-' + refRNo);
+            reReplyBox.innerHTML = "";
+            replies.filter((reply) => {
+                return reply.refRNo == refRNo;
+            }).map((reply) => {
+                const output = `
+                <hr class="reReply-content-\${reply.rNo}">
+                <div class="reReply-content-\${reply.rNo}"><a href="${contextPath}/mypage/\${reply.mNo}">\${reply.mNick}님</a> \${reply.rContent} </div>
+                `;
+                reReplyBox.innerHTML += output;
             })
-    }).catch((e) => {
-        console.log(e);
-    });
+        }).catch((e) => {
+            console.log(e);
+        });
 };
 
 
 
-                        function seeMoreReply() {
-                            clearReReplies();
-                            loadReplies();
-                            loadReReplies();
-                            hideDeletedReplies();
-                            hideDeletedReReplies();
-                            seeMoreBtnCheck();
-                        };
+    function seeMoreReply() {
+        clearReReplies();
+        loadReplies();
+        loadReReplies();
+        hideDeletedReplies();
+        hideDeletedReReplies();
+        seeMoreBtnCheck();
+    };
 
-                        let page = 1;
+    let page = 1;
 
-function clearReReplies() {
-    const reReplyBoxes = document.querySelectorAll('div[id*="reReplyBox-"]');
-    reReplyBoxes.forEach((reReplyBox) => {
-        reReplyBox.innerHTML = "";
-    });
-};
+    function clearReReplies() {
+        const reReplyBoxes = document.querySelectorAll('div[id*="reReplyBox-"]');
+        reReplyBoxes.forEach((reReplyBox) => {
+            reReplyBox.innerHTML = "";
+        });
+    };
 
-function loadReplies() {
-    const startNum = page * 5;
-    const endNum = (page + 1) * 5 - 1;
-    console.log("startNum : " + startNum);
-    console.log("endNum : " + endNum);
-    console.log("page : " + page);
+    function loadReplies() {
+        const startNum = page * 5;
+        const endNum = (page + 1) * 5 - 1;
 
-    const replyBox = document.querySelector('.reply-area');
+        const replyBox = document.querySelector('.reply-area');
 
-    ${jsonReply}.splice(startNum, 5).map((mReply) => {
-        const writeDate = prettyDate(mReply.writeDate);
-        const output = `
-        <div class="box reply">
-        <div class="reply-profile">
-            <table class="reply-profile">
-        <tr>
-            <td><img src="${contextPath}/resources/images/member/\${mReply.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-small"></td>
-            <td><p>\${mReply.mNick} 님</p>
-                <p>\${writeDate}</p>
-        </tr>
-        <tr>
-            <td colspan="2"><br>\${mReply.aboutMe}</td>
-        </tr>
-        </table>
-    </div>
-        <div class="reply-content-wrapper-\${mReply.rNo}">
-        <div class="reply-content-\${mReply.rNo}">
-            \${mReply.rContent}
-            <a class="button primary small" id="deleteReply" style="float: right;" href="${contextPath}/blog/comment/\${mReply.rNo}/delete.do">삭제</a>
-            <form name="reply_info_\${mReply.rNo}" action="${contextPath}/blog/${board.aNo}/comment/like" method="POST">
-                <input type="hidden" name="rNo" value="\${mReply.rNo}">
-            </form>
-            <a onclick="javascript:document.reply_info_\${mReply.rNo}.submit()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 20 20" fill="#fc2605"><path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75  C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
-                </svg> <strong>\${mReply.like} </strong> </a> &nbsp; &nbsp;
-            <a title="댓글 달기" onclick="javascript:openRereplyForm(\${mReply.rNo}, \${mReply.aNo});"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600">
-                <path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg></a>
-                <form name="reReplyBox-\${mReply.rNo}" action="post/${aNo}/comment" method="POST" style="display: none">
-                    <input type="hidden" name="aNo" value="\${mReply.aNo}">
-                    <input type="hidden" name="refRNo" value="\${mReply.rNo}">
-                    <input type="text" name="rContent" style="width: 90%;">
-                    <input type="button" class="primary small" onclick="insertReReply(\${mReply.rNo});" value="댓글 달기"/>
-                </form>
-            </div>
-            <div id="reReplyBox-\${mReply.rNo}">
-            </div>
-            </div>
+        ${jsonReply}.splice(startNum, 5).map((mReply) => {
+            const writeDate = prettyDate(mReply.writeDate);
+            const output = `
+            <div class="box reply">
+            <div class="reply-profile">
+                <table class="reply-profile">
+            <tr>
+                <td><img src="${contextPath}/resources/images/member/\${mReply.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-small"></td>
+                <td><p>\${mReply.mNick} 님</p>
+                    <p>\${writeDate}</p>
+            </tr>
+            <tr>
+                <td colspan="2"><br>\${mReply.aboutMe}</td>
+            </tr>
+            </table>
         </div>
-    `;
-    replyBox.innerHTML += output;
+            <div class="reply-content-wrapper-\${mReply.rNo}">
+            <div class="reply-content-\${mReply.rNo}">
+                \${mReply.rContent}
+                <a class="button primary small" id="deleteReply" style="float: right;" href="${contextPath}/blog/comment/\${mReply.rNo}/delete.do">삭제</a>
+                <form name="reply_info_\${mReply.rNo}" action="${contextPath}/blog/${board.aNo}/comment/like" method="POST">
+                    <input type="hidden" name="rNo" value="\${mReply.rNo}">
+                </form>
+                <a onclick="javascript:document.reply_info_\${mReply.rNo}.submit()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 20 20" fill="#fc2605"><path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75  C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
+                    </svg> <strong>\${mReply.like} </strong> </a> &nbsp; &nbsp;
+                <a title="댓글 달기" onclick="javascript:openRereplyForm(\${mReply.rNo}, \${mReply.aNo});"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="2em" height="2em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1792 1600">
+                    <path d="M1792 1056q0 166-127 451q-3 7-10.5 24t-13.5 30t-13 22q-12 17-28 17q-15 0-23.5-10t-8.5-25q0-9 2.5-26.5t2.5-23.5q5-68 5-123q0-101-17.5-181t-48.5-138.5t-80-101t-105.5-69.5t-133-42.5t-154-21.5t-175.5-6H640v256q0 26-19 45t-45 19t-45-19L19 621Q0 602 0 576t19-45L531 19q19-19 45-19t45 19t19 45v256h224q713 0 875 403q53 134 53 333z" fill="#626262"/></svg></a>
+                    <form name="reReplyBox-\${mReply.rNo}" action="post/${aNo}/comment" method="POST" style="display: none">
+                        <input type="hidden" name="aNo" value="\${mReply.aNo}">
+                        <input type="hidden" name="refRNo" value="\${mReply.rNo}">
+                        <input type="text" name="rContent" style="width: 90%;">
+                        <input type="button" class="primary small" onclick="insertReReply(\${mReply.rNo});" value="댓글 달기"/>
+                    </form>
+                </div>
+                <div id="reReplyBox-\${mReply.rNo}">
+                </div>
+                </div>
+            </div>
+        `;
+        replyBox.innerHTML += output;
 
-    if("${loginMember}" === '' || "${loginMember.mNo}" != mReply.mNo) {
-        document.querySelector('.reply-content-' + mReply.rNo + ' > #deleteReply').remove();
-    }
+        if("${loginMember}" === '' || "${loginMember.mNo}" != mReply.mNo) {
+            document.querySelector('.reply-content-' + mReply.rNo + ' > #deleteReply').remove();
+        }
         });
         };
 
-        function loadReReplies() {
+    function loadReReplies() {
         ${jsonReReply}.filter((mReReplies) => {
                 return mReReplies.aNo === ${aNo};
             }).map((reReply) => {
                 if(reReply.refRNo !== 0) {
-                console.log("---reReply---");
-                console.log(reReply);
                 const reReplyBox = document.querySelector('#reReplyBox-' + reReply.refRNo);
                 const output = `
                         <hr class="reReply-content-\${reReply.rNo}">
@@ -395,9 +380,9 @@ function loadReplies() {
                 }
             }       
         });
-        };
+    };
 
-        function hideDeletedReplies() {
+    function hideDeletedReplies() {
         ${jsonReply}.filter((replies) => {
             return replies.rStatus === 'N'
         }).map((reply) => {
@@ -405,17 +390,18 @@ function loadReplies() {
             replyBox.innerHTML = `<div>⚠️ 삭제된 댓글입니다.</div>`;
         });
 
-        }
-        function hideDeletedReReplies() {
+    }
+        
+    function hideDeletedReReplies() {
         ${jsonReReply}.filter((replies) => {
             return replies.rStatus === 'N'
         }).map((reply) => {
             const reReplyBox = document.querySelector("div[class=reReply-content-" + reply.rNo);
             reReplyBox.innerHTML = `<div class="reReply-content-\${reply.rNo}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⚠️ 삭제된 대댓글입니다.</div>`;
         });
-        }
+    }
 
-        function seeMoreBtnCheck() {
+    function seeMoreBtnCheck() {
         page++;
         const seeMoreReply = document.querySelector('#seeMoreReply');
         if((page * 5) >= ${fn:length(reply)}) {
@@ -423,35 +409,35 @@ function loadReplies() {
         } else {
             seeMoreReply.innerHTML = "댓글 " + (${fn:length(reply)} - (5 * page)) + "개 더 보기";
         }
-        }
-        </script>
+    }
+    </script>
                     
-            <!-- Reply Insert -->
-                <script src="${contextPath}/resources/ckeditor/ckeditor.js"></script>
-                <form method="POST" action="post/${aNo}/comment" >
-                    <div class="box writeReply">
-                        <img src="${contextPath}/resources/images/member/${loginMember.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'"class="profile-small">
-                        <input type="submit" value="댓글 달기" vertical-align="middle">
-                        <br>
-                        <textarea name="editor" id="editor" rows="5" cols="50" placeholder="코드해피를 위해 도움이 되는 글을 올려주세요. <p> 규칙에 위배되는 글 작성시 삭제 처리됩니다.">
-                        </textarea>
-                        <script>
-                            CKEDITOR.replace( 'editor', {
-                                height: '100px',
-                                extraPlugins : 'confighelper'
-                            } );
-                        </script>
-                    </div>
-                </form>
-                
-            
-                <!-- 게스트 댓글작성 기능 비활성화 -->
-                <c:if test="${loginMember eq null}">
-                    <script>
-                        const writeReply = document.querySelector('.writeReply');
-                        writeReply.style = "filter:blur(4px);pointer-events:none";
-                    </script>
-                    <h5 align="center">로그인 후 댓글 작성이 가능합니다.</h5>
-                </c:if>
+    <!-- Reply Insert -->
+    <script src="${contextPath}/resources/ckeditor/ckeditor.js"></script>
+    <form method="POST" action="post/${aNo}/comment" >
+        <div class="box writeReply">
+            <img src="${contextPath}/resources/images/member/${loginMember.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'"class="profile-small">
+            <input type="submit" value="댓글 달기" vertical-align="middle">
+            <br>
+            <textarea name="editor" id="editor" rows="5" cols="50" placeholder="코드해피를 위해 도움이 되는 글을 올려주세요. <p> 규칙에 위배되는 글 작성시 삭제 처리됩니다.">
+            </textarea>
+            <script>
+                CKEDITOR.replace( 'editor', {
+                    height: '100px',
+                    extraPlugins : 'confighelper'
+                } );
+            </script>
+        </div>
+    </form>
+    
+
+    <!-- 게스트 댓글작성 기능 비활성화 -->
+    <c:if test="${loginMember eq null}">
+        <script>
+            const writeReply = document.querySelector('.writeReply');
+            writeReply.style = "filter:blur(4px);pointer-events:none";
+        </script>
+        <h5 align="center">로그인 후 댓글 작성이 가능합니다.</h5>
+    </c:if>
 
 </section>

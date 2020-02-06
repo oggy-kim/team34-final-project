@@ -59,16 +59,6 @@ if(title_el && title_header)
             <td>${board.aboutMe}</td>
             </tr>
     </table>
-    <script>
-        document.querySelector('.profile-small').addEventListener('click', (e) => {
-            if(confirm('${board.mNick}님과 대화를 하시겠습니까?')) {
-                const room = prompt('채팅방 이름을 입력해주세요. 해당 채팅방 이름을 상대방에게 알려주면 대화방 참여가 가능합니다.') 
-                const url = `http://localhost:3000/?username=${loginMember.mNick}&userno=${loginMember.mNo}&room=\${room}`;
-                window.open(url, 'CODEHAPPY - 채팅', 'width=520, height=700');
-            };
-        });
-    </script>
-
     <!-- Question Contents -->
     <div class="box">
         ${board.bContent}

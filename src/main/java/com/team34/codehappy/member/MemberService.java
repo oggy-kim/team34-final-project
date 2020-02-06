@@ -34,5 +34,5 @@ public interface MemberService {
 
    // 회원 정보불러오기
    public Member selectMemberByMNo(int mNo);
-  
+
 }

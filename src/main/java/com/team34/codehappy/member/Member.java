@@ -17,7 +17,8 @@ public class Member {
 	private int mPoint;
 	private int aNo;
 	private Date recentReply;
-	private String authKey; // 1월27일 수정
+	private String authKey;// 1월27일 수정
+	private int pointRanking;
 
 	public Member() {
 		// TODO Auto-generated constructor stub
@@ -25,7 +26,7 @@ public class Member {
 
 	public Member(int mNo, String mId, String mPwd, String mNick, int mLevel, String levelName, String aboutMe,
 			char mStatus, String myTag, Date joinDate, Date loginDate, int mPoint, int aNo, Date recentReply,
-			String authKey) {
+			String authKey, int pointRanking) {
 		super();
 		this.mNo = mNo;
 		this.mId = mId;
@@ -42,6 +43,7 @@ public class Member {
 		this.aNo = aNo;
 		this.recentReply = recentReply;
 		this.authKey = authKey;
+		this.pointRanking = pointRanking;
 	}
 
 	public int getmNo() {
@@ -164,15 +166,20 @@ public class Member {
 		this.authKey = authKey;
 	}
 
+	public int getPointRanking() {
+		return pointRanking;
+	}
+
+	public void setPointRanking(int pointRanking) {
+		this.pointRanking = pointRanking;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [mNo=" + mNo + ", mId=" + mId + ", mPwd=" + mPwd + ", mNick=" + mNick + ", mLevel=" + mLevel
 				+ ", levelName=" + levelName + ", aboutMe=" + aboutMe + ", mStatus=" + mStatus + ", myTag=" + myTag
 				+ ", joinDate=" + joinDate + ", loginDate=" + loginDate + ", mPoint=" + mPoint + ", aNo=" + aNo
-				+ ", recentReply=" + recentReply + ", authKey=" + authKey + "]";
+				+ ", recentReply=" + recentReply + ", authKey=" + authKey + ", pointRanking=" + pointRanking + "]";
 	}
 
-	
-
-	
 }

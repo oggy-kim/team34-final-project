@@ -60,6 +60,4 @@ public class MemberDao {
 	public Member selectMember(int mNo) {
 		return sqlSession.selectOne("MemberMapper.selectMemberByMNo", mNo);
 	}
-
-
 }

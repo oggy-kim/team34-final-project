@@ -120,7 +120,7 @@
 
                 <script>
                     function deleteBoard() {
-                        if(confirm('한번 삭제한 글은 확인할 수 없습니다. 삭제하시겠습니까?')) {
+                        if(confirm('한번 삭제한 글은 다시 확인할 수 없습니다. 삭제하시겠습니까?')) {
                             location.href="${contextPath}/blog/${aNo}/delete.do";
                         }
                     }
@@ -139,13 +139,13 @@
                             document.querySelector('#demo-category').focus();
                             return false;
                         }
-                        if(document.querySelector('#demo-name').value.length <= 5) {
-                            alert('5자 이상의 제목을 입력해주세요.');
+                        if(document.querySelector('#demo-name').value.length <= 10) {
+                            alert('10자 이상의 제목을 입력해주세요.');
                             document.querySelector('#demo-name').focus();
                             return false;
                         }
-                        if(document.querySelector('#demo-name').value.length > 30) {
-                            alert('30자 이하의 제목을 입력해주세요.');
+                        if(document.querySelector('#demo-name').value.length > 50) {
+                            alert('50자 이하의 제목을 입력해주세요.');
                             document.querySelector('#demo-name').focus();
                             return false;
                         }

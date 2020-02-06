@@ -70,11 +70,6 @@ public class BlogController {
 			int currentPage = page != null ? page : 1;
 			int boardLimit = limit != null ? limit : 15;
 			
-			System.out.println("글 보기 limit : " + boardLimit);
-			System.out.println("글 전체 보기 type : " + type);
-			System.out.println("글 전체 보기 currentPage : " + currentPage);
-			System.out.println("글 전체 보기 page : " + page);
-			
 			if(type == null || type.equals("all")) {
 				List<Board> list = blogService.selectList(currentPage, boardLimit);
 				
@@ -181,7 +176,6 @@ public class BlogController {
 			starMap.put("mNo", loginMember.getmNo());
 			starMap.put("aNo", aNo);
 			int star = bService.getStarCountByArticle(starMap);
-			System.out.println("star : " + star);
 			mv.addObject("star", star);
 		}
 		
@@ -263,25 +257,14 @@ public class BlogController {
 		String storedFileName = UUID.randomUUID().toString().replaceAll("-", "") + originalFileExtension;
 		
 		String url = request.getSession().getServletContext().getRealPath("/resources/images/blog/");
-		
-		String test = request.getSession().getServletContext().getContextPath();
-		System.out.println(test);
-		
 
 		File file = new File(url + storedFileName);
 		upload.transferTo(file);
-		
-		System.out.println(url);
-		System.out.println(storedFileName);
-		
-		System.out.println(file.getAbsolutePath());
 		
 		JsonObject json = new JsonObject();
 		json.addProperty("uploaded", 1);
 		json.addProperty("fileName", storedFileName);
 		json.addProperty("url", "/codehappy/resources/images/blog/" + storedFileName);
-		
-		System.out.println(storedFileName);
 
 		return json;
 	}
@@ -417,8 +400,6 @@ public class BlogController {
 				HttpServletRequest request) {
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			
-			System.out.println(map);
-			
 			Reply r = new Reply();
 			
 			
@@ -439,14 +420,11 @@ public class BlogController {
 				Model model, HttpServletRequest request) {
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			
-			System.out.println(loginMember.getmNo());
-			
 			Board b = bService.selectArticle(aNo, true);
 			if(!(b.getmNo() == loginMember.getmNo())) {
 				model.addAttribute("msg", "글쓴이만 접근 가능합니다.");
 				return "index";
 			} else {
-				System.out.println(b);
 				model.addAttribute("board", b);
 				model.addAttribute("name", "bloginsert");
 				return "blog";
@@ -506,7 +484,6 @@ public class BlogController {
 	public String changeEditorsPick(@PathVariable("aNo") int aNo,
 			Model model, HttpServletRequest request) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
-		System.out.println("getmLevel : " + loginMember.getmLevel());
 		if(!loginMember.getLevelName().equals("주관리자")) {
 			model.addAttribute("msg", "관리자만 해당 기능 수행이 가능합니다.");
 		} else {

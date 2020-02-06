@@ -19,6 +19,7 @@
 		<result property="aNo" column="ARTICLE_NO"/>
 		<result property="recentReply" column="REPLY_DATE"/>
 		<result property="authKey" column="AUTHKEY"/>
+		<result property="pointRanking" column="RANKING"/>
 	</resultMap>
 	
 	<select id="selectOne" parameterType="Member" resultMap="MemberResultSet">
@@ -81,7 +82,7 @@
    
    <update id="deleteMember" parameterType="Member">
    		UPDATE MEMBER
-   		SET MEMBER_STATUS='N'
+   		SET MEMBER_STATUS='N', MEMBER_LEVEL=99
    		WHERE MEMBER_NO=#{mNo}
    </update>
    

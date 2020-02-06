@@ -43,11 +43,6 @@ public class BoardController {
 		int currentPage = page != null ? page : 1;
 		int boardLimit = limit != null ? limit : 15;
 		
-		System.out.println("글 보기 limit : " + boardLimit);
-		System.out.println("글 전체 보기 type : " + type);
-		System.out.println("글 전체 보기 currentPage : " + currentPage);
-		System.out.println("글 전체 보기 page : " + page);
-		
 		if(type == null) {
 			List<Board> list = bService.selectList(currentPage, boardLimit);
 			
@@ -105,12 +100,7 @@ public class BoardController {
 			@RequestParam(value="limit", required=false) Integer limit) {
 		int currentPage = page != null ? page + 1 : 1;
 		int boardLimit = limit != null ? limit : 15;
-		
-		System.out.println("fetch 글 보기 limit : " + boardLimit);
-		System.out.println("글 전체 보기 type : " + type);
-		System.out.println("리스트 보기 전 currentPage : " + currentPage);
-		
-		
+
 		if(type == null || type.equals("none")) {
 			List<Board> list = bService.selectList(currentPage, boardLimit);
 			return list;
@@ -306,7 +296,6 @@ public class BoardController {
 		
 		Reply r = new Reply();
 		r.setaNo(aNo);
-//		r.setrContent(editor.substring(0, editor.length()- "<p>&nbsp;</p>  ".length()));
 		r.setrContent(editor);
 		r.setmNo(loginMember.getmNo());
 		if(refRNo != null) {
@@ -325,11 +314,7 @@ public class BoardController {
 			HttpServletRequest request) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
-		System.out.println(map);
-		
 		Reply r = new Reply();
-		
-		
 		
 		r.setaNo(Integer.parseInt(map.get("aNo").toString()));
 		r.setmNo(loginMember.getmNo());
@@ -345,7 +330,6 @@ public class BoardController {
 	// 게시글 작성 화면으로 이동
 	@RequestMapping(value="post", method=RequestMethod.GET)
 	public ModelAndView insertBoard(ModelAndView mv) {
-		
 		mv.addObject("name", "boardinsert").
 		   setViewName("board");
 		return mv;
@@ -358,7 +342,6 @@ public class BoardController {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		b.setaType(1);	
 		b.setmNo(loginMember.getmNo());
-//		b.setbContent(b.getbContent().substring(0, b.getbContent().length()- "<p>&nbsp;</p>  ".length()));
 		
 		int result = bService.insertBoard(b);
 
@@ -372,14 +355,11 @@ public class BoardController {
 			Model model, HttpServletRequest request) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
-		System.out.println(loginMember.getmNo());
-		
 		Board b = bService.selectArticle(aNo, true);
 		if(!(b.getmNo() == loginMember.getmNo())) {
 			model.addAttribute("msg", "글쓴이만 접근 가능합니다.");
 			return "index";
 		} else {
-			System.out.println(b);
 			model.addAttribute("board", b);
 			model.addAttribute("name", "boardinsert");
 			return "board";
@@ -390,9 +370,7 @@ public class BoardController {
 	@RequestMapping(value="post/{aNo}", method=RequestMethod.POST)
 	public String modifyBoard(@PathVariable("aNo") int aNo,
 			Model Model, Board b) {
-		
 		int result = bService.modifyBoard(b);
-
 		return "redirect:/board/" + aNo;
 	}
 	

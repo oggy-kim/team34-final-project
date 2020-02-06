@@ -5,17 +5,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,8 +42,6 @@ public class MemberController {
 	@Autowired
 	private BoardService bService;
 
-	private Logger logger = LoggerFactory.getLogger(MemberController.class);
-
 	// 로그인 암호화 처리
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -63,21 +57,23 @@ public class MemberController {
 	public String memberlogin(Member m, Model model) {
 
 		Member loginMember = mService.loginMember(m);
-		System.out.println(loginMember);
 
 		if (loginMember != null && bcryptPasswordEncoder.matches(m.getmPwd(), loginMember.getmPwd())) {
-			if (loginMember.getLevelName() != "회원가입중") {
+			if (!loginMember.getLevelName().equals("회원가입중")) {
 				model.addAttribute("loginMember", loginMember);
+				System.out.println("------ 로그인 발생 ------");
+				System.out.println(new Date());
+				System.out.println(loginMember.getmNick() + "님이 로그인하셨습니다.");
 				return "index";
-			} else if(loginMember.getLevelName() == "회원가입중") {
+			} else if(loginMember.getLevelName().equals("회원가입중")) {
 				model.addAttribute("msg", "이메일 인증 먼저 진행해주세요.");
+				return "member/login";
 			} else {
 				throw new MemberException("로그인 실패하였습니다.");
 			}
-			return "index";
 		} else {
 			model.addAttribute("msg", "비밀번호 오류입니다.");
-			return "redirect:/login";
+			return "member/login";
 		}
 	}
 	
@@ -113,7 +109,7 @@ public class MemberController {
 
 	// 회원가입 페이지로 이동
 	@RequestMapping("enrollView")
-	public String enrollView() {
+	public String enrollView(Model model) {
 		return "member/memberJoin";
 	}
 	
@@ -144,15 +140,6 @@ public class MemberController {
 		
 		return "emailConfirm";
 		
-	}
-	
-	// 임시 로그인
-	@RequestMapping(value = "tempLogin", method = RequestMethod.GET)
-	public String tempLogin(Model model) {
-		Member m = new Member(25, "5@naver.com", "5", "옥철_TEST", 1, "주관리자", "옥철_TESTID", 'Y', "kotlin,javascript,python",
-				new Date(), new Date(), 180, 0, new Date(), null);
-		model.addAttribute("loginMember", m);
-		return "redirect:/";
 	}
 
 	// 비밀번호 재설정 페이지로 이동
@@ -193,7 +180,7 @@ public class MemberController {
 			job.put("result", true);
 		}
 		
-		return job.toJSONString(); // toJSONString();
+		return job.toJSONString();
 	}
 	
 	
@@ -274,8 +261,6 @@ public class MemberController {
 		model.addAttribute("bList", bList);
 		model.addAttribute("rList", rList);
 		model.addAttribute("sList", sList);
-	
-		System.out.println(bList);
 
 		return "mypage";
 	}
@@ -285,19 +270,15 @@ public class MemberController {
 		m.setmNo(mNo);
 		
 		HashMap<String, Object> map = new HashMap<>();
-			map.put("mNo", String.valueOf(m.getmNo()));
-			
-			System.out.println(m.getAboutMe());
+		map.put("mNo", String.valueOf(m.getmNo()));
+		
 		if(m.getAboutMe() != "") {
 			map.put("aboutMe", m.getAboutMe());
-			
 		} else {
 			map.put("mNick", m.getmNick());
 		}
-		System.out.println(map);
 
 		int result = mService.updateMemberNick(map);
-		System.out.println(result);
 
 		if (result > 0) {
 			Member updateM = mService.selectMemberByMNo(mNo);
