@@ -1,5 +1,7 @@
 package com.team34.codehappy.member;
 
+import java.util.HashMap;
+
 import com.team34.codehappy.member.Member;
 
 public interface MemberService {
@@ -16,7 +18,7 @@ public interface MemberService {
    public void updateMlevel(Member m)throws Exception;
 
    // 닉네임 정보 수정
-   public int updateMemberNick(Member m);
+   public int updateMemberNick(HashMap<String, String> map);
    
    // 아이디 중복확인
    public int checkIdDup(String mId);

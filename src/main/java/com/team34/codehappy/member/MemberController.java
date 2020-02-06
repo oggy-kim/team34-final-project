@@ -180,7 +180,7 @@ public class MemberController {
 		}
 	}
 	
-	// 비밀번호 확인
+	// 비밀번호 재설정 확인
 	@RequestMapping(value = "mypage/pwdCheck", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String pwdCheck(@RequestParam(value="mPwd") String mPwd, HttpSession session) {
@@ -230,9 +230,24 @@ public class MemberController {
 		return mv;
 	}
 	
-	// 닉네임 중복체크
+	// 회원가입 닉네임 중복체크
 	@RequestMapping("dupnick")
 	public ModelAndView inckDuplicateCheck(String mNick, ModelAndView mv) {
+			
+		boolean isUsable = mService.checkNickDup(mNick) == 0 ? true : false;
+			
+		Map map = new HashMap();
+		map.put("isUsable", isUsable);
+		mv.addAllObjects(map);
+		mv.setViewName("jsonView");
+			
+			return mv;
+			
+	}
+	
+	// 마이페이지 닉네임 중복체크
+	@RequestMapping("mypage/dupnick")
+	public ModelAndView inckDuplicateCheck1(String mNick, ModelAndView mv) {
 		
 		boolean isUsable = mService.checkNickDup(mNick) == 0 ? true : false;
 		
@@ -268,8 +283,21 @@ public class MemberController {
 	@RequestMapping(value = "mypage/{mNo}", method = RequestMethod.POST)
 	public String memberUpdate(Member m, Model model, @PathVariable("mNo") int mNo) {
 		m.setmNo(mNo);
+		
+		HashMap<String, String> map = new HashMap<>();
+			map.put("mNo", String.valueOf(m.getmNo()));
+			
+			System.out.println(m.getAboutMe());
+		if(m.getAboutMe() != "") {
+			map.put("aboutMe", m.getAboutMe());
+			
+		} else {
+			map.put("mNick", m.getmNick());
+		}
+		System.out.println(map);
 
-		int result = mService.updateMemberNick(m);
+		int result = mService.updateMemberNick(map);
+		System.out.println(result);
 
 		if (result > 0) {
 			Member updateM = mService.selectMemberByMNo(mNo);

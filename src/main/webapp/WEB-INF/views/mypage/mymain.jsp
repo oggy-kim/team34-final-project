@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <jsp:useBean id="now" class="java.util.Date" />
 
 <!-- 메인페이지 주요 게시글 -->
@@ -155,6 +156,7 @@
                             <h1>${loginMember.mNick}</h1>
                             <h4>${loginMember.aboutMe}</h4>
                             <a class="button small" href="#aboutMe">자기소개 수정</a>
+                            <!-- href="#aboutMe"  -->
                         </div>
                         <br>
                         <div class="col-4 col-12-small">
@@ -166,7 +168,8 @@
                         </div>
                     </div>
                         <div class="col-6 col-12-small">
-                            <a class="button small" href="#modifynick">임 수정</a>
+                            <a class="button small" href="#modifynick">닉네임 수정</a>
+                            <!-- href="#modifynick" -->
                         </div>
                 </div>
 

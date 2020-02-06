@@ -330,6 +330,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 				$("#mNick").focus();
 				return false;
 			}
+			
 			if($("#idDuplicateCheck").val() == 0){
 				alert('사용 가능한 이메일을 입력해주세요')
 				$("#mId").focus();

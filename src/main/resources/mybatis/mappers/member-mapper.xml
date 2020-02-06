@@ -41,9 +41,16 @@
 		VALUES(#{mId}, #{mPwd}, #{mNick}, DEFAULT, DEFAULT, DEFAULT, #{myTag}, DEFAULT, DEFAULT, #{authKey})
    </insert>
    
-   <update id="updateMemberNick" parameterType="Member">
+   <update id="updateMemberNick" parameterType="hashmap">
 		UPDATE MEMBER
-   		SET MEMBER_ID=#{mId}, MEMBER_NICK=#{mNick}, ABOUT_ME=#{aboutMe}
+		<trim prefix="SET">
+   			<if test="aboutMe != null">
+   				 ABOUT_ME=#{aboutMe}
+   			</if>
+   			<if test="mNick != null">
+   				MEMBER_NICK=#{mNick}
+   			</if>
+   		</trim>
    		WHERE MEMBER_NO=#{mNo}
    </update>
    

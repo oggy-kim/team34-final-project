@@ -1,6 +1,8 @@
 package com.team34.codehappy.member;
 
 
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,8 +25,8 @@ public class MemberDao {
 	    sqlSession.insert("MemberMapper.insertMember", m);
    }
 
-	public int updateMemberNick(Member m) {
-		return sqlSession.update("MemberMapper.updateMemberNick", m);
+	public int updateMemberNick(HashMap<String, String> map) {
+		return sqlSession.update("MemberMapper.updateMemberNick", map);
 	}
 	
 	public void updateAuthKey(Member m) {
