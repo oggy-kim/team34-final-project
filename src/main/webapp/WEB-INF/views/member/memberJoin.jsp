@@ -107,7 +107,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					</div>
 					<div class="clear"></div>
 					<div class="agile-work">
-						<p>관심있는 프로그램 언어 *</p>
+						<p>관심분야</p>
 							<div class="agile-days">
 								<span class="Java">
 									<input type="checkbox" name="myTag" value="Java">Java<br>	

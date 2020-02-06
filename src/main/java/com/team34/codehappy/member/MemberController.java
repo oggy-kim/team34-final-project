@@ -275,7 +275,7 @@ public class MemberController {
 		model.addAttribute("rList", rList);
 		model.addAttribute("sList", sList);
 	
-		System.out.println(sList);
+		System.out.println(bList);
 
 		return "mypage";
 	}
@@ -284,7 +284,7 @@ public class MemberController {
 	public String memberUpdate(Member m, Model model, @PathVariable("mNo") int mNo) {
 		m.setmNo(mNo);
 		
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, Object> map = new HashMap<>();
 			map.put("mNo", String.valueOf(m.getmNo()));
 			
 			System.out.println(m.getAboutMe());
@@ -302,12 +302,12 @@ public class MemberController {
 		if (result > 0) {
 			Member updateM = mService.selectMemberByMNo(mNo);
 			model.addAttribute("loginMember", updateM)
-				 .addAttribute("msg", "정보 수정 완료.");
+				 .addAttribute("msg", "정보 수정이 완료되었습니다!");
 		} else {
 			throw new MemberException("정보 수정 실패!");
 		}
 
-		return "mypage";
+		return "redirect:/mypage/" + mNo;
 		
 	}
 	

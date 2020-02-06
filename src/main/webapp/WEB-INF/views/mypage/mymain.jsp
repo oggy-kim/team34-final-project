@@ -185,13 +185,15 @@
                 <br>
                 <div class="row myactivity">
                     <div class="col-4 col-12-medium mylist">
-                        <h4>My 게시글 보기</h4>
+                        <h4>나의 최근게시글</h4>
                         <div class="table-wrapper">
                             <table>
                             <thead>
                                 <tr>
-                                    <td>제목</td>
-                                    <td>작성일</td>
+                                    <th style="width:50%;">제목</th>
+                                    <th>작성</th>
+                                    <th>댓글</th>
+                                    <th>조회</th>
                                 </tr>
                         </thead>
                         <tbody>
@@ -234,78 +236,66 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
+                                <c:choose>
+                                    <c:when test="${b.replyDate ne null}">
+                                        <td>
+                                            <fmt:parseNumber value="${b.replyDate.time}" integerOnly="true" var="writeDate"/>
+                                            <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
+                                            <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
+                                            <c:choose>
+                                                <c:when test="${diff lt 120}">방금 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60)}">
+                                                    <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
+                                                    ${minute}분 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24)}">
+                                                    <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
+                                                        ${hour}시간 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24*7)}">
+                                                    <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
+                                                    ${day}일 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24*30)}">
+                                                    <fmt:parseNumber var="week" integerOnly="true" value="${diff / (60*60*24*7) }"/>
+                                                    ${week}주 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24*365)}">
+                                                    <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
+                                                    ${month}달 전
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
+                                                    ${year}년 전
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <td>
+                                            없음
+                                        </td>
+                                    </c:otherwise>
+                                </c:choose>
+                                <td>
+                                    ${b.view}
+                                </td>
                             </tr>
                         </c:forEach>
+                        
                         </tbody>
                         </table>
                         </div>
                     </div>
                     <div class="col-3 col-12-medium mylist">
-                        <h4>My 댓글 활동</h4>
+                        <h4>나의 찜목록</h4>
                         <div class="table-wrapper">
                         <table>
                         <thead>
                             <tr>
-                                <td>제목</td>
-                                <td>작성일</td>
-                            </tr>
-                        </thead>
-                         <tbody>
-                             <c:if test="${fn:length(rList) eq 0}">작성한 댓글 내용이 없습니다.</c:if>
-                             <c:set var="offset" value="1"/>
-                             <c:forEach var="r" items="${rList}" begin="0" end="4">
-                                <tr class="reply-list" value="${r.aNo}">
-                                    <td>
-                                        <input type="hidden" name="rNo" value="${r.aNo}">${r.rContent} 
-                                    </td>
-                                    <td>
-                                        <fmt:parseNumber value="${r.writeDate.time}" integerOnly="true" var="writeDate"/>
-                                        <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
-                                        <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
-                                        <c:choose>
-                                            <c:when test="${diff lt 120}">
-                                                방금 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60)}">
-                                                <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
-                                                ${minute}분 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24)}">
-                                                <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
-                                                    ${hour}시간 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24*7)}">
-                                                <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
-                                                ${day}일 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24*30)}">
-                                                <fmt:parseNumber var="week" integerOnly="true" value="${diff / (60*60*24*7) }"/>
-                                                ${week}주 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24*365)}">
-                                                <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
-                                                ${month}달 전
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
-                                                ${year}년 전
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                </tr>
-                             </c:forEach>
-                         </tbody>
-                        </table>
-                    </div>
-                    </div>
-                    <div class="col-4 col-12-medium mylist">
-                        <h4>My 찜 목록</h4>
-                        <div class="table-wrapper">
-                        <table>
-                        <thead>
-                            <tr>
-                                <td>제목</td>
-                                <td>작성일</td>
+                                <th style="width:70%;">제목</th>
+                                <th>작성일</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -354,6 +344,68 @@
                             </c:forEach>
                         </tbody>
                     </table>
+                    </div>
+                    </div>
+                    <div class="col-4 col-12-medium mylist">
+                        <h4>최근 댓글활동</h4>
+                        <div class="table-wrapper">
+                        <table>
+                        <thead>
+                            <tr>
+                                <th style="width:60%;">제목</th>
+                                <th>작성일</th>
+                                <th>좋아요</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                             <c:if test="${fn:length(rList) eq 0}">작성한 댓글 내용이 없습니다.</c:if>
+                             <c:set var="offset" value="1"/>
+                             <c:forEach var="r" items="${rList}" begin="0" end="4">
+                                <tr class="reply-list" value="${r.aNo}">
+                                    <td>
+                                        <input type="hidden" name="rNo" value="${r.aNo}">${r.rContent} 
+                                    </td>
+                                    <td>
+                                        <fmt:parseNumber value="${r.writeDate.time}" integerOnly="true" var="writeDate"/>
+                                        <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
+                                        <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
+                                        <c:choose>
+                                            <c:when test="${diff lt 120}">
+                                                방금 전
+                                            </c:when>
+                                            <c:when test="${diff lt (60*60)}">
+                                                <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
+                                                ${minute}분 전
+                                            </c:when>
+                                            <c:when test="${diff lt (60*60*24)}">
+                                                <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
+                                                    ${hour}시간 전
+                                            </c:when>
+                                            <c:when test="${diff lt (60*60*24*7)}">
+                                                <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
+                                                ${day}일 전
+                                            </c:when>
+                                            <c:when test="${diff lt (60*60*24*30)}">
+                                                <fmt:parseNumber var="week" integerOnly="true" value="${diff / (60*60*24*7) }"/>
+                                                ${week}주 전
+                                            </c:when>
+                                            <c:when test="${diff lt (60*60*24*365)}">
+                                                <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
+                                                ${month}달 전
+                                            </c:when>
+                                            <c:otherwise>
+                                                <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
+                                                ${year}년 전
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        ${r.like}
+                                    </td>
+                                </tr>
+                             </c:forEach>
+                         </tbody>
+                        </table>
                     </div>
                     </div>
                 </div>

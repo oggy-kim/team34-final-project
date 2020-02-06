@@ -7,9 +7,6 @@ import com.team34.codehappy.member.Member;
 public interface MemberService {
    // 회원 로그인
    public Member loginMember(Member m);
-
-   // 회원 가입
-   // public int insertMember(Member m) throws Exception;
    
    // 회원 가입
    public void insertMember(Member m) throws Exception;
@@ -18,7 +15,7 @@ public interface MemberService {
    public void updateMlevel(Member m)throws Exception;
 
    // 닉네임 정보 수정
-   public int updateMemberNick(HashMap<String, String> map);
+   public int updateMemberNick(HashMap<String, Object> map);
    
    // 아이디 중복확인
    public int checkIdDup(String mId);

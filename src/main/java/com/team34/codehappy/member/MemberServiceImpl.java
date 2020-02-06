@@ -20,11 +20,6 @@ public class MemberServiceImpl implements MemberService{
       return mDao.selectMember(m);
    }
 
-//   @Override
-//   public int insertMember(Member m) {
-//      return mDao.insertMember(m);
-//   }
-   
    @Override
    public void insertMember(Member m) throws Exception{
       mDao.insertMember(m);
@@ -62,7 +57,7 @@ public class MemberServiceImpl implements MemberService{
 	   mDao.updateMlevel(m);
    }
 	@Override
-	public int updateMemberNick(HashMap<String, String> map) {
+	public int updateMemberNick(HashMap<String, Object> map) {
 		return mDao.updateMemberNick(map);
 	}
 	

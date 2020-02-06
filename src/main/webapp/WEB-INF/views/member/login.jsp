@@ -79,7 +79,7 @@
 							</p>
 							<div class="clear"></div>
 						</div>
-						<div class="social">
+						<!-- <div class="social">
 							<ul>
 								<li>Social login using :</li>
 								<li class="sc-iRbamj eFTwYY">
@@ -129,7 +129,7 @@
 											</button>
 										</li>
 							</ul>
-						</div>
+						</div> -->
 					</form>
 				</div>
 				<!-- <div class="social">

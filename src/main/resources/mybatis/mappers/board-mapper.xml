@@ -127,7 +127,8 @@
 	<select id="selectBoardList" resultMap="boardResultSet">
 		SELECT *
 		FROM BOARDVIEW
-		WHERE MEMBER_NO=#{mNo} AND ARTICLE_STAR>'0'
+		WHERE MEMBER_NO=#{mNo}
+		ORDER BY CHANGE_DATE DESC
 	</select>
 	<update id="modifyBoard" parameterType="Board">
 		UPDATE BOARD

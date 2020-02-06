@@ -25,7 +25,7 @@ public class MemberDao {
 	    sqlSession.insert("MemberMapper.insertMember", m);
    }
 
-	public int updateMemberNick(HashMap<String, String> map) {
+	public int updateMemberNick(HashMap<String, Object> map) {
 		return sqlSession.update("MemberMapper.updateMemberNick", map);
 	}
 	
