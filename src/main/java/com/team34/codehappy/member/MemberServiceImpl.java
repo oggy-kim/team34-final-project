@@ -1,6 +1,8 @@
 package com.team34.codehappy.member;
 
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -60,8 +62,8 @@ public class MemberServiceImpl implements MemberService{
 	   mDao.updateMlevel(m);
    }
 	@Override
-	public int updateMemberNick(Member m) {
-		return mDao.updateMemberNick(m);
+	public int updateMemberNick(HashMap<String, String> map) {
+		return mDao.updateMemberNick(map);
 	}
 	
 	@Override

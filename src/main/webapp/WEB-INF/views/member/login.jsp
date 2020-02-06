@@ -180,7 +180,7 @@
 	  
 	 // ID 저장하기를 체크한 상태에서 ID를 입력하는 경우, 이럴 때도 쿠키 저장.
 	 $("#mId").keyup(function(){ // ID 입력 칸에 ID를 입력할 때,
-		 if($("#idSaveCheck").is(":checked")){ // ID 저장하기를 체크한 상태라면,
+		 if($("#idSaveCheck").is(":checked")){  /* ID 저장하기를 체크한 상태라면  */
 			 setCookie("key", $("#mId").val(), 7); // 7일 동안 쿠키 보관
 		 }
 	 });
