@@ -20,7 +20,7 @@
             <script>
                 const gotoChatRoom = () => {
                     const room = prompt('입장할 채팅방 이름을 입력하세요.')
-                    const url = `http://localhost:3000/?username=${loginMember.mNick}&userno=${loginMember.mNo}&room=\${room}`;
+                    const url = `http://192.168.10.44:3000/?username=${loginMember.mNick}&userno=${loginMember.mNo}&room=\${room}`;
                     window.open(url, 'CODEHAPPY - 채팅', 'width=520, height=700');
                 } 
             </script>

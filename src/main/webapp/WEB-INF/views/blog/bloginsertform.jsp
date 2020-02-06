@@ -15,7 +15,7 @@
 </script>
 <section>
     <header class="major">
-        <h2>게시판 - 글쓰기</h2>
+        <h2>블로그 - 글쓰기</h2>
     </header>
     <script src="${contextPath}/resources/ckeditor/ckeditor.js"></script>
                 <form id="insertForm" method="POST" onsubmit="return writeValidate();">

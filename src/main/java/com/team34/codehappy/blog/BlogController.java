@@ -506,7 +506,8 @@ public class BlogController {
 	public String changeEditorsPick(@PathVariable("aNo") int aNo,
 			Model model, HttpServletRequest request) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
-		if(loginMember.getmLevel() != 1) {
+		System.out.println("getmLevel : " + loginMember.getmLevel());
+		if(!loginMember.getLevelName().equals("주관리자")) {
 			model.addAttribute("msg", "관리자만 해당 기능 수행이 가능합니다.");
 		} else {
 			int beforeANo = blogService.selectEditorsPick().getaNo();
