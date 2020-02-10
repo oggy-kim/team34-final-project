@@ -51,11 +51,14 @@ public class BlogController {
 	@ResponseBody
 	public Board selectEditorsPick() {
 		Board b = blogService.selectEditorsPick();
-		if(b.getbContent().indexOf(".png") != -1) {					
-			b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".png")) + ".png");
-			}
 		if(b.getbContent().indexOf(".jpg") != -1) {					
-		b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".jpg")) + ".jpg");
+			b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".jpg")) + ".jpg");
+		} else if(b.getbContent().indexOf(".png") != -1) {					
+			b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".png")) + ".png");
+		} else if(b.getbContent().indexOf(".jpeg") != -1) {					
+			b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".jpeg")) + ".jpeg");
+		} else if(b.getbContent().indexOf(".gif") != -1) {					
+			b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".gif")) + ".gif");
 		}
 		return b;
 	}
@@ -132,11 +135,14 @@ public class BlogController {
 		if(type == null || type.equals("all")) {
 			List<Board> list = blogService.selectList(currentPage, boardLimit);
 			for(Board b : list) {
-				if(b.getbContent().indexOf(".png") != -1) {					
-				b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".png")) + ".png");
-				}
 				if(b.getbContent().indexOf(".jpg") != -1) {					
-				b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".jpg")) + ".jpg");
+					b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".jpg")) + ".jpg");
+				} else if(b.getbContent().indexOf(".png") != -1) {					
+					b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".png")) + ".png");
+				} else if(b.getbContent().indexOf(".jpeg") != -1) {					
+					b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".jpeg")) + ".jpeg");
+				} else if(b.getbContent().indexOf(".gif") != -1) {					
+					b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".gif")) + ".gif");
 				}
 			}
 			return list;
@@ -154,8 +160,6 @@ public class BlogController {
 		List<Board> list = blogService.selectList(type, currentPage, boardLimit);
 	return list;
 	}
-	
-	
 	
 	
 	// 블로그 글 세부 보기
@@ -370,18 +374,22 @@ public class BlogController {
 			} else {
 				result = bService.removeArticleStar(starMap);
 			}
+			if(result > 0) {
+				model.addAttribute("msg", "찜상태 변경에 성공하였습니다.");
+			} else {
+				model.addAttribute("msg", "찜상태 변경에 실패하였습니다.");
+			}
 			return "redirect:/blog/" + aNo;
 		}
 		
 		
 		// 댓글 달기
 		@RequestMapping(value="post/{aNo}/comment", method=RequestMethod.POST)
-		public String insertReply(@PathVariable("aNo") int aNo, String editor, Integer refRNo, HttpServletRequest request) {
+		public String insertReply(Model model, @PathVariable("aNo") int aNo, String editor, Integer refRNo, HttpServletRequest request) {
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			
 			Reply r = new Reply();
 			r.setaNo(aNo);
-//			r.setrContent(editor.substring(0, editor.length()- "<p>&nbsp;</p>  ".length()));
 			r.setrContent(editor);
 			r.setmNo(loginMember.getmNo());
 			if(refRNo != null) {
@@ -390,6 +398,11 @@ public class BlogController {
 			
 			int result = bService.insertReply(r);
 			
+			if(result > 0) {
+				model.addAttribute("msg", "댓글 등록이 완료되었습니다.");
+			} else {
+				model.addAttribute("msg", "댓글 등록에 실패하였습니다.");
+			}
 			return "redirect:/blog/" + aNo;
 		}
 		
@@ -397,12 +410,10 @@ public class BlogController {
 		@RequestMapping(value="post/{aNo}/recomment", method=RequestMethod.POST)
 		@ResponseBody
 		public List<Reply> insertReply(@RequestBody HashMap<String, Object> map, 
-				HttpServletRequest request) {
+				HttpServletRequest request, Model model) {
 			Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 			
 			Reply r = new Reply();
-			
-			
 			
 			r.setaNo(Integer.parseInt(map.get("aNo").toString()));
 			r.setmNo(loginMember.getmNo());
@@ -410,6 +421,12 @@ public class BlogController {
 			r.setrContent((String)map.get("rContent"));
 			
 			int result = bService.insertReply(r);
+			if(result > 0) {
+				model.addAttribute("msg", "댓글 작성이 완료되었습니다.");
+			} else {
+				model.addAttribute("msg", "댓글 작성에 실패하였습니다.");
+			}
+			
 			List<Reply> list = bService.selectReplyList(r.getaNo());
 			return list;
 		}
@@ -434,9 +451,14 @@ public class BlogController {
 		// 게시글 수정
 		@RequestMapping(value="post/{aNo}", method=RequestMethod.POST)
 		public String modifyBoard(@PathVariable("aNo") int aNo,
-				Model Model, Board b) {
+				Model model, Board b) {
 			
 			int result = bService.modifyBoard(b);
+			if(result > 0) {
+				model.addAttribute("msg", "게시글 수정이 완료되었습니다.");
+			} else {
+				model.addAttribute("msg", "게시글 수정에 실패하였습니다.");
+			}
 
 			return "redirect:/blog/" + aNo;
 		}
@@ -454,9 +476,7 @@ public class BlogController {
 					model.addAttribute("msg", "게시글 삭제에 실패하였습니다.");
 				}
 			}
-			
 			return "redirect:/blog";
-			
 		}
 		
 		// 댓글 삭제
@@ -493,18 +513,14 @@ public class BlogController {
 			if(result > 0) {
 				result = blogService.addEditorsPick(aNo);
 				if(result > 0) {
-					model.addAttribute("msg", "변경 성공");
+					model.addAttribute("msg", "Editor's Pick 변경에 성공하였습니다.");
 				} else {
-					model.addAttribute("msg", "추가 실패");
+					model.addAttribute("msg", "Editor's Pick 변경에 실패하였습니다.");
 				}
 			} else {
-				model.addAttribute("msg", "삭제 실패");
+				model.addAttribute("msg", "기존 Editor's Pick 삭제에 실패하였습니다.");
 			}
-			
-			
-			
 		}
 		return "redirect:/blog/" + aNo;
 	}
-	
 }

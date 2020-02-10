@@ -6,8 +6,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.team34.codehappy.member.Member;
 
 @Controller
@@ -30,8 +27,6 @@ import com.team34.codehappy.member.Member;
 public class BoardController {
 	@Autowired
 	private BoardService bService;
-	
-	private Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	// 게시판 메인화면(리스트 불러오기)
 	@RequestMapping(method=RequestMethod.GET)
@@ -285,13 +280,19 @@ public class BoardController {
 		} else {
 			result = bService.removeArticleStar(starMap);
 		}
+		if(result > 0) {
+			model.addAttribute("msg", "찜상태 변경에 성공하였습니다.");
+		} else {
+			model.addAttribute("msg", "찜상태 변경에 실패하였습니다.");
+		}
 		return "redirect:/board/" + aNo;
 	}
 	
 	
 	// 댓글 달기
 	@RequestMapping(value="post/{aNo}/comment", method=RequestMethod.POST)
-	public String insertReply(@PathVariable("aNo") int aNo, String editor, Integer refRNo, HttpServletRequest request) {
+	public String insertReply(@PathVariable("aNo") int aNo, String editor, Integer refRNo, HttpServletRequest request,
+			Model model) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
 		Reply r = new Reply();
@@ -303,7 +304,11 @@ public class BoardController {
 		}
 		
 		int result = bService.insertReply(r);
-		
+		if(result > 0) {
+			model.addAttribute("msg", "댓글 등록이 완료되었습니다.");
+		} else {
+			model.addAttribute("msg", "댓글 등록에 실패하였습니다.");
+		}
 		return "redirect:/board/" + aNo;
 	}
 	
@@ -311,7 +316,7 @@ public class BoardController {
 	@RequestMapping(value="post/{aNo}/recomment", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Reply> insertReply(@RequestBody HashMap<String, Object> map, 
-			HttpServletRequest request) {
+			HttpServletRequest request, Model model) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		
 		Reply r = new Reply();
@@ -322,6 +327,11 @@ public class BoardController {
 		r.setrContent((String)map.get("rContent"));
 		
 		int result = bService.insertReply(r);
+		if(result > 0) {
+			model.addAttribute("msg", "댓글 등록이 완료되었습니다.");
+		} else {
+			model.addAttribute("msg", "댓글 등록에 실패하였습니다.");
+		}
 		List<Reply> list = bService.selectReplyList(r.getaNo());
 		return list;
 	}
@@ -338,12 +348,17 @@ public class BoardController {
 	// 게시글 작성
 	@RequestMapping(value="post", method=RequestMethod.POST)
 	public String insertBoard(HttpServletRequest request, HttpServletResponse response,
-							Board b) {
+							Board b, Model model) {
 		Member loginMember = (Member)request.getSession().getAttribute("loginMember");
 		b.setaType(1);	
 		b.setmNo(loginMember.getmNo());
 		
 		int result = bService.insertBoard(b);
+		if(result > 0) {
+			model.addAttribute("msg", "게시글 작성이 완료되었습니다.");
+		} else {
+			model.addAttribute("msg", "게시글 작성에 실패하였습니다.");
+		}
 
 		return "redirect:/board/";
 	}
@@ -369,8 +384,13 @@ public class BoardController {
 	// 게시글 수정
 	@RequestMapping(value="post/{aNo}", method=RequestMethod.POST)
 	public String modifyBoard(@PathVariable("aNo") int aNo,
-			Model Model, Board b) {
+			Model model, Board b) {
 		int result = bService.modifyBoard(b);
+		if(result > 0) {
+			model.addAttribute("msg", "게시글 수정이 완료되었습니다.");
+		} else {
+			model.addAttribute("msg", "게시글 수정에 실패하였습니다.");
+		}
 		return "redirect:/board/" + aNo;
 	}
 	
@@ -387,9 +407,7 @@ public class BoardController {
 				model.addAttribute("msg", "게시글 삭제에 실패하였습니다.");
 			}
 		}
-		
 		return "redirect:/board";
-		
 	}
 	
 	// 댓글 삭제
@@ -407,9 +425,6 @@ public class BoardController {
 				model.addAttribute("msg", "댓글 삭제에 실패하였습니다.");
 			}
 		}
-		
 		return "redirect:/board/" + r.getaNo();
-		
 	}
-	
 }

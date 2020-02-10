@@ -122,12 +122,9 @@
                     <li class="icon solid fa-home">Github Link : 
                         <a href="https://github.com/oggy-kim/team34-final-project"><img src="${contextPath}/resources/images/common/github.png" width="20px"></a>
                     </li>
-                    <li class="icon solid fa-file-powerpoint">PPT Link : 
-                        <a href="${contextPath}/resources/presentation.pptx">PPT 링크</a>
-                    </li>
-                    <c:if test="${loginMember.levelName eq '주관리자'}">
+                    <!-- <c:if test="${loginMember.levelName eq '주관리자'}">
                         <li><a href="${contextPath}/admin">🔑</a></li>
-                    </c:if>
+                    </c:if> -->
                 </ul>
             </section>
 
