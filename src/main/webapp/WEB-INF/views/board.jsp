@@ -11,10 +11,10 @@
             <div class="inner">
                 <c:import url="./common/header.jsp"/>
                 <c:choose>
-                    <c:when test="${name eq 'boardlist'}">
+                    <c:when test="${name eq 'board' || name eq 'blog'}">
                         <c:import url="./board/boardlistview.jsp"/>
                     </c:when> 
-                    <c:when test="${name eq 'boarddetail'}">
+                    <c:when test="${name eq 'detailview'}">
                         <c:import url="./board/boarddetailview.jsp"/>
                     </c:when>
                     <c:when test="${name eq 'boardinsert'}">

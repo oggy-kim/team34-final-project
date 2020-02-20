@@ -14,27 +14,14 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	BoardDao bDao;
 
-	@Override
-	public int getListCount() {
-		return bDao.getListCount();
-	}
 	
 	@Override
-	public int getListCount(String type) {
-		return bDao.getListCount(type);
+	public int getListCount(HashMap<String, Object> map) {
+		return bDao.getListCount(map);
 	}
-	
-
 	@Override
-	public List<Board> selectList(int currentPage, int boardLimit) {
-		List<Board> list = bDao.selectList(currentPage, boardLimit);
-		return list;
-	}
-
-	@Override
-	public List<Board> selectList(String type, int currentPage, int boardLimit) {
-		List<Board> list = bDao.selectList(type, currentPage, boardLimit);
-		return list;
+	public List<Board> selectList(HashMap<String, Object> map) {
+		return bDao.selectList(map);
 	}
 
 	@Override
@@ -128,4 +115,8 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> selectStarArticleByUser(int mNo) {
 		return bDao.selectStarArticleByUser(mNo);
 	}
+
+
+
+	
 }

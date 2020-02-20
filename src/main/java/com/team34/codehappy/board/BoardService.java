@@ -8,15 +8,12 @@ import com.team34.codehappy.member.Member;
 public interface BoardService {
 	
 	// 글 갯수 count
-	int getListCount();
-	int getListCount(String type);
+	int getListCount(HashMap<String, Object> map);
 	
 	
 	// 게시글 불러오기
 	// 전체
-	List<Board> selectList(int currentPage, int boardLimit);
-	// type에 따라
-	List<Board> selectList(String type, int currentPage, int boardLimit);
+	List<Board> selectList(HashMap<String, Object> map);
 
 	// 글 세부읽기
 	Board selectArticle(int aNo, boolean flag);
@@ -69,6 +66,7 @@ public interface BoardService {
 	
 	// 회원별 찜리스트 불러오기
 	List<Board> selectStarArticleByUser(int mNo);
+	
 	
 	
 	

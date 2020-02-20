@@ -185,7 +185,7 @@ a {
 button.btn.social {
     width : 100%;
     height : 100%;
-    background-color: #fff;
+    background-color: rgb(230, 230, 230);
     color : rgb(15, 10, 10)
 }
 
@@ -209,7 +209,7 @@ button.btn.social {
 	text-transform: uppercase;
 }
 .social {
-    margin: 2em 0 0;
+    margin: 0.5em 0 0;
 }
 .heading h5 {
     color: #c5c5c5;

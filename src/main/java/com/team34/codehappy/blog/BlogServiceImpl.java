@@ -19,28 +19,6 @@ public class BlogServiceImpl implements BlogService {
 	}
 
 	@Override
-	public List<Board> selectList(int currentPage, int boardLimit) {
-		List<Board> list = blogDao.selectList(currentPage, boardLimit);
-		return list;
-	}
-
-	@Override
-	public List<Board> selectList(String type, int currentPage, int boardLimit) {
-		List<Board> list = blogDao.selectList(type, currentPage, boardLimit);
-		return list;
-	}
-
-	@Override
-	public int getListCount() {
-		return blogDao.getListCount();
-	}
-
-	@Override
-	public int getListCount(String type) {
-		return blogDao.getListCount(type);
-	}
-
-	@Override
 	public Board selectEditorsPick() {
 		return blogDao.selectEditorsPick();
 	}

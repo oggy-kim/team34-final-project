@@ -2,6 +2,7 @@ package com.team34.codehappy.member;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,13 @@ public class MemberDao {
 
 	public Member selectMember(int mNo) {
 		return sqlSession.selectOne("MemberMapper.selectMemberByMNo", mNo);
+	}
+
+	public Member selectMember(String id) {
+		return sqlSession.selectOne("MemberMapper.selectMemberById", id);
+	}
+
+	public List<String> getTagList() {
+		return sqlSession.selectList("MemberMapper.getTagList");
 	}
 }

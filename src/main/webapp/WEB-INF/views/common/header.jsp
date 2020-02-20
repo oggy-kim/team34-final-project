@@ -7,8 +7,8 @@
         <ul class="icons">
             <c:choose>
                 <c:when test="${ empty sessionScope.loginMember }">
-                    <li><a href="${contextPath}/login" class="button">로그인</a></li>
-                    <li><a href="${contextPath}/enrollView" class="button">회원가입</a></li>
+                    <li><a href="${contextPath}/login" class="button small">로그인</a></li>
+                    <li><a href="${contextPath}/enrollView" class="button small">회원가입</a></li>
                 </c:when>
                 <c:otherwise>
                     <strong>${loginMember.mNick}</strong> 님,&nbsp;

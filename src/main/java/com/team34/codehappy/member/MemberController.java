@@ -1,15 +1,20 @@
 package com.team34.codehappy.member;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonNode;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,8 +35,6 @@ import com.team34.codehappy.board.Board;
 import com.team34.codehappy.board.BoardService;
 import com.team34.codehappy.board.Reply;
 
-
-
 @SessionAttributes("loginMember")
 @Controller
 public class MemberController {
@@ -48,7 +51,11 @@ public class MemberController {
 
 	// 로그인 폼 으로 이동! GET 방식
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public String loginForm() {
+	public String loginForm(Model model) {
+		String kakaoUrl = KakaoController.getAuthorizationUrl();
+		model.addAttribute("kakao_url", kakaoUrl);
+		String githubUrl = GithubController.getAuthorizationUrl();
+		model.addAttribute("github_url", githubUrl);
 		return "member/login";
 	}
 
@@ -58,13 +65,13 @@ public class MemberController {
 
 		Member loginMember = mService.loginMember(m);
 
-		if (loginMember != null && bcryptPasswordEncoder.matches(m.getmPwd(), loginMember.getmPwd())) {
+		if (loginMember != null && loginMember.getAuthKey() != "kakao" && bcryptPasswordEncoder.matches(m.getmPwd(), loginMember.getmPwd())) {
 			if (!loginMember.getLevelName().equals("회원가입중")) {
 				model.addAttribute("loginMember", loginMember);
 				System.out.println("------ 로그인 발생 ------");
 				System.out.println(new Date());
 				System.out.println(loginMember.getmNick() + "님이 로그인하셨습니다.");
-				return "index";
+				return "redirect:/";
 			} else if(loginMember.getLevelName().equals("회원가입중")) {
 				model.addAttribute("msg", "이메일 인증 먼저 진행해주세요.");
 				return "member/login";
@@ -110,6 +117,9 @@ public class MemberController {
 	// 회원가입 페이지로 이동
 	@RequestMapping("enrollView")
 	public String enrollView(Model model) {
+		List<String> list = mService.getTagList();
+		model.addAttribute("tagList", list);
+		
 		return "member/memberJoin";
 	}
 	
@@ -119,6 +129,7 @@ public class MemberController {
 		String encPwd = bcryptPasswordEncoder.encode(m.getmPwd());
 		
 		m.setmPwd(encPwd);
+		m.setmLevel(9);
 		
 		mService.insertMember(m);
 		
@@ -192,9 +203,9 @@ public class MemberController {
 		int result = mService.deleteMember(mNo);
 
 		if(result > 0) {
-			model.addAttribute("msg", "회원 정보 삭제 완료");
+			model.addAttribute("msg", "CODEHAPPY 탈퇴가 완료되었습니다. 그동안 이용해주셔서 감사합니다.");
 		} else {
-			model.addAttribute("msg", "회원 정보 삭제 실패");
+			model.addAttribute("msg", "탈퇴에 실패하였습니다. 관리자에게 문의해주세요.");
 		}
 
 		// 로그아웃
@@ -250,21 +261,26 @@ public class MemberController {
 	@RequestMapping(value = "mypage/{mNo}", method = RequestMethod.GET)
 	public String myPage(Model model, @PathVariable("mNo") int mNo, HttpServletRequest request,
 			HttpServletResponse response) {
-		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
-		if (loginMember.getmNo() != mNo) {
-			model.addAttribute("msg", "조회된 목록이 없습니다.");
-		}
+
 		List<Board> bList = bService.selectArticleByUser(mNo);
 		List<Reply> rList = bService.selectReplyByUser(mNo);
-		List<Board> sList = bService.selectStarArticleByUser(mNo);
-		
+		Member member = mService.selectMemberByMNo(mNo);
 		model.addAttribute("bList", bList);
 		model.addAttribute("rList", rList);
+		model.addAttribute("myPageInfo", member);
+		
+		Member loginMember = (Member) request.getSession().getAttribute("loginMember");
+		if (loginMember == null || loginMember.getmNo() != mNo) {
+			model.addAttribute("sList", "notUser");
+			return "mypage";
+		}
+		List<Board> sList = bService.selectStarArticleByUser(mNo);
 		model.addAttribute("sList", sList);
 
 		return "mypage";
 	}
 
+	// 자기소개 및 닉네임 수정
 	@RequestMapping(value = "mypage/{mNo}", method = RequestMethod.POST)
 	public String memberUpdate(Member m, Model model, @PathVariable("mNo") int mNo) {
 		m.setmNo(mNo);
@@ -309,5 +325,88 @@ public class MemberController {
 		json.addProperty("success", 1);
 		
 		return json;
-	}	
+	}
+	
+	@RequestMapping(value="/kakaologin", produces="application/json", method = {RequestMethod.GET, RequestMethod.POST})
+	public String kakaoLogin(@RequestParam("code") String code,
+			HttpServletRequest request, HttpServletResponse response, Model model) {
+		new com.team34.codehappy.member.KakaoController();
+		JsonNode accessToken = KakaoController.getAccessToken(code);
+		JsonNode userInfo = KakaoController.getKakaoUserInfo(accessToken);
+		
+		JsonNode properties = userInfo.path("properties");
+		
+		Member loginMember = mService.selectMemberById("kakao" + userInfo.path("id").asText());
+		
+		if(loginMember == null) {
+			Member m = new Member();
+			
+			m.setmNick(properties.path("nickname").asText());
+			m.setmId("kakao" + userInfo.path("id").asText());
+			m.setmLevel(8);
+			m.setAuthKey("kakao");
+			m.setMyTag(null);
+			
+			mService.insertMemberViaSocial(m);
+			loginMember = mService.selectMemberById(m.getmId());
+			System.out.println(loginMember.getmNick() + "님이 kakao를 통해 가입하셨습니다.");
+			
+			// 프로필 사진 저장
+			String thumbnailUrl = properties.path("profile_image").asText();
+			String saveUrl = request.getSession().getServletContext().getRealPath("/resources/images/member/");
+			File outputFile = new File(saveUrl + loginMember.getmNo() + ".png");
+			URL url = null;
+			BufferedImage bi = null;
+			try {
+				url = new URL(thumbnailUrl);
+				bi = ImageIO.read(url);
+				ImageIO.write(bi, "png", outputFile);
+			} catch(IOException e) {
+				System.out.println(e);
+			}
+		} 
+		model.addAttribute("loginMember", loginMember);
+
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value="/githublogin", produces="application/json", method = {RequestMethod.GET, RequestMethod.POST})
+	public String githubLogin(@RequestParam("code") String code,
+			HttpServletRequest request, HttpServletResponse response, Model model) {
+		new com.team34.codehappy.member.KakaoController();
+		JsonNode accessToken = GithubController.getAccessToken(code);
+		JsonNode userInfo = GithubController.getGithubUserInfo(accessToken);
+		
+		Member loginMember = mService.selectMemberById("github" + userInfo.path("id").asText());
+		
+		if(loginMember == null) {
+			Member m = new Member();
+			
+			m.setmNick(userInfo.path("login").asText());
+			m.setmId("github" + userInfo.path("id").asText());
+			m.setmLevel(8);
+			m.setAuthKey("github");
+			m.setMyTag(null);
+			
+			mService.insertMemberViaSocial(m);
+			loginMember = mService.selectMemberById(m.getmId());
+			System.out.println(loginMember.getmNick() + "님이 Github를 통해 가입하셨습니다.");
+			
+			// 프로필 사진 저장
+			String thumbnailUrl = userInfo.path("avatar_url").asText();
+			String saveUrl = request.getSession().getServletContext().getRealPath("/resources/images/member/");
+			File outputFile = new File(saveUrl + loginMember.getmNo() + ".png");
+			URL url = null;
+			BufferedImage bi = null;
+			try {
+				url = new URL(thumbnailUrl);
+				bi = ImageIO.read(url);
+				ImageIO.write(bi, "png", outputFile);
+			} catch(IOException e) {
+				System.out.println(e);
+			}
+		} 
+		model.addAttribute("loginMember", loginMember);
+		return "redirect:/";
+	}
 }

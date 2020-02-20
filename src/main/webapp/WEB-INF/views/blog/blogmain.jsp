@@ -63,7 +63,7 @@
 
 
 
-    fetch('${contextPath}/blog/fetch/?limit=6')
+    fetch('${contextPath}/blog/fetch/?atype=2&limit=6')
         .then((res) => {
             if(res.ok) {
                 return res.json();

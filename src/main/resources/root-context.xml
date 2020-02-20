@@ -68,6 +68,12 @@
 			</props>
 		</property>
 	</bean>
+
+	<bean id="KakaoController" class="com.team34.codehappy.member.KakaoController">
+	</bean>
+	<bean id="GithubController" class="com.team34.codehappy.member.GithubController">
+	</bean>
+
 	 <!-- 회원가입 email 인증하기 끝 -->
 	 
 	  <tx:advice id="txAdvice" transaction-manager="transactionManager">

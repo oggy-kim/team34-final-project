@@ -53,7 +53,7 @@ if(title_el && title_header)
     <table class="profile-info">
         <tr>
             <td><img src="${contextPath}/resources/images/member/${board.mNo}.png" name=${board.mNo} onerror="this.src='${contextPath}/resources/images/member/default.png'"class="profile-small"></td>
-            <td><p>${board.mNick} 님</p>
+            <td><p>${board.mNick}</p>
                 <p>포인트 : ${board.mPoint}점</p>
             </td>
             <td>${board.aboutMe}</td>
@@ -63,15 +63,15 @@ if(title_el && title_header)
     <div class="box">
         ${board.bContent}
     </div>
-        <div class="article-like-toggle" style="text-align:center"><a onclick="javascript:document.article_info.submit()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 20 20" fill="#fc2605"><path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75  C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
+        <div class="article-like-toggle" style="text-align:center"><a title="좋아요 클릭" onclick="javascript:document.article_info.submit()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 15 15" fill="#fc2605"><path d="M13.91,6.75c-1.17,2.25-4.3,5.31-6.07,6.94c-0.1903,0.1718-0.4797,0.1718-0.67,0C5.39,12.06,2.26,9,1.09,6.75  C-1.48,1.8,5-1.5,7.5,3.45C10-1.5,16.48,1.8,13.91,6.75z"/>
             </svg> <strong>${board.like} </strong> </a>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 
             <c:choose>
                 <c:when test="${star eq 0}">
-                    <a title="나의 찜목록에 추가" class="add-star" onclick="javascript:document.article_star.submit()"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#dddddd"/></svg></a>
+                    <a title="나의 찜목록에 추가" class="add-star" onclick="javascript:document.article_star.submit()"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#dddddd"/>&nbsp;</svg><strong>${board.star}</strong></a>
                 </c:when>
                 <c:otherwise>
-                    <a title="나의 찜목록에서 제거" class="add-star"  onclick="javascript:document.article_star.submit()"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#fc2605"/></svg></a>
+                    <a title="나의 찜목록에서 제거" class="add-star"  onclick="javascript:document.article_star.submit()"><svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" fill="#fc2605"/>&nbsp;</svg><strong>${board.star}</strong></a>
                 </c:otherwise>
             </c:choose>
             <form name="article_info" action="${contextPath}/board/${board.aNo}/like" method="POST">
@@ -86,7 +86,6 @@ if(title_el && title_header)
                 <a class="button primary" href="${contextPath}/board/post/${board.aNo}">글 수정/삭제</a>
             </c:if>
         </div>
-    <hr class="major" />
 
     
     <!-- Reply Part -->
@@ -116,7 +115,7 @@ if(title_el && title_header)
                             </c:when>
                             <c:otherwise>
                             <hr class="reReply-content-${rr.rNo}">
-                            <div class="reReply-content-${rr.rNo}"><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}님</a> ${rr.rContent}
+                            <div class="reReply-content-${rr.rNo}"><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}</a> ${rr.rContent}
                                 <c:if test="${loginMember.mNo eq rr.mNo}">
                                     <a class="button primary small" style="float: right;" href="${contextPath}/board/comment/${rr.rNo}/delete.do">삭제</a>
                                 </c:if>
@@ -135,7 +134,7 @@ if(title_el && title_header)
                 <table class="reply-profile">
                     <tr>
                         <td><img src="${contextPath}/resources/images/member/${r.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-small"></td>
-                        <td><p>${r.mNick} 님</p>
+                        <td><p>${r.mNick}</p>
                             <p><fmt:parseNumber value="${r.writeDate.time}" integerOnly="true" var="writeDate"/>
                                 <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
                                 <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
@@ -189,7 +188,7 @@ if(title_el && title_header)
                                         <input type="hidden" name="aNo" value="${r.aNo}">
                                         <input type="hidden" name="refRNo" value="${r.rNo}">
                                         <input type="text" name="rContent" style="width: 90%;"> &nbsp; &nbsp;
-                                        <input type="button" class="primary small" onclick="insertReReply(${r.rNo});" value="댓글 달기"/>
+                                        <input type="button" class="primary small" onclick="insertReReply(${r.rNo});" style="justify-content: right;" value="댓글 달기"/>
                                     </form>
                                 </div>
                                     <div id="reReplyBox-${r.rNo}">
@@ -202,7 +201,7 @@ if(title_el && title_header)
                                                 </c:when>
                                                 <c:otherwise>
                                                 <hr class="reReply-content-${rr.rNo}">
-                                                <div class="reReply-content-${rr.rNo}"><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}님</a> ${rr.rContent} 
+                                                <div class="reReply-content-${rr.rNo}"><a href="${contextPath}/mypage/${rr.mNo}">${rr.mNick}</a> ${rr.rContent} 
                                                     <c:if test="${loginMember.mNo eq rr.mNo}">
                                                         <a class="button primary small" style="float: right;" href="${contextPath}/board/comment/${rr.rNo}/delete.do">삭제</a>
                                                     </c:if>
@@ -226,14 +225,14 @@ if(title_el && title_header)
             </ul>
             </c:otherwise>
         </c:choose>
-    
+
+    <hr class="major">
                     
     <!-- Reply Insert -->
     <script src="${contextPath}/resources/ckeditor/ckeditor.js"></script>
     <form method="POST" action="post/${aNo}/comment" >
         <div class="box writeReply">
-            <img src="${contextPath}/resources/images/member/${loginMember.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'"class="profile-small">
-            <input type="submit" value="댓글 달기" vertical-align="middle">
+            <input type="submit" class="button primary" value="댓글 달기" style="display: inline-block">
             <br>
             <textarea name="editor" id="editor" rows="5" cols="50" placeholder="코드해피를 위해 도움이 되는 글을 올려주세요. <p> 규칙에 위배되는 글 작성시 삭제 처리됩니다.">
             </textarea>
@@ -285,7 +284,7 @@ if(title_el && title_header)
                     }
 
 
-                        fetch('${contextPath}/board/post/' + aNo + '/recomment', {
+                fetch('${contextPath}/board/post/' + aNo + '/recomment', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 credentials: "same-origin",
@@ -301,18 +300,24 @@ if(title_el && title_header)
             }).then((replies) => {
                 const reReplyBox = document.querySelector('div[id=reReplyBox-' + refRNo);
                 reReplyBox.innerHTML = "";
+                document.querySelector('form[name=reReplyBox-' + rNo + ']').rContent.value = '';
                 replies.filter((reply) => {
                     return reply.refRNo == refRNo;
                 }).map((reply) => {
                     const output = `
                     <hr class="reReply-content-\${reply.rNo}">
-                    <div class="reReply-content-\${reply.rNo}"><a href="${contextPath}/mypage/\${reply.mNo}">\${reply.mNick}님</a> \${reply.rContent} </div>
+                    <div class="reReply-content-\${reply.rNo}"><a href="${contextPath}/mypage/\${reply.mNo}">\${reply.mNick}</a> \${reply.rContent} </div>
                     `;
                     reReplyBox.innerHTML += output;
+                    if("${loginMember.mNo}" === `\${reply.mNo}`) {
+                        document.querySelector('div[class=reReply-content-' + reply.rNo).innerHTML += `<a class="button primary small" style="float: right;" href="${contextPath}/board/comment/\${reply.rNo}/delete.do">삭제</a>`;
+                    }
                     })
+                
             }).catch((e) => {
                 console.log(e);
-            });                                             
+            }); 
+                                                   
         };
 
         function seeMoreReply() {
@@ -350,7 +355,7 @@ if(title_el && title_header)
                     <table class="reply-profile">
                 <tr>
                     <td><img src="${contextPath}/resources/images/member/\${mReply.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" class="profile-small"></td>
-                    <td><p>\${mReply.mNick} 님</p>
+                    <td><p>\${mReply.mNick} </p>
                         <p>\${writeDate}</p>
                 </tr>
                 <tr>
@@ -374,7 +379,7 @@ if(title_el && title_header)
                             <input type="hidden" name="aNo" value="\${mReply.aNo}">
                             <input type="hidden" name="refRNo" value="\${mReply.rNo}">
                             <input type="text" name="rContent" style="width: 90%;">
-                            <input type="button" class="primary small" onclick="insertReReply(\${mReply.rNo});" value="댓글 달기"/>
+                            <input type="button" class="primary small" onclick="insertReReply(\${mReply.rNo});" style="justify-content: right;" value="댓글 달기"/>
                         </form>
                     </div>
                     <div id="reReplyBox-\${mReply.rNo}">
@@ -399,13 +404,13 @@ if(title_el && title_header)
                 if(reReplyBox !== null) {
                 const output = `
                         <hr class="reReply-content-\${reReply.rNo}">
-                            <div class="reReply-content-\${reReply.rNo}"><a href="${contextPath}/mypage/\${reReply.mNo}">\${reReply.mNick}님</a> \${reReply.rContent} </div>
+                            <div class="reReply-content-\${reReply.rNo}"><a href="${contextPath}/mypage/\${reReply.mNo}">\${reReply.mNick}</a> \${reReply.rContent} </div>
                 `;
                 reReplyBox.innerHTML += output;
                 }
                 }
             if("${loginMember.mNo}" !== "") {
-                if("${loginMember.mNo}" === `\${reReply.mNo}`) {
+                if("${loginMember.mNo}" === `\${reReply.mNo}` && document.querySelector('div[class=reReply-content-' + reReply.rNo) !== null) {
                 document.querySelector('div[class=reReply-content-' + reReply.rNo).innerHTML += `<a class="button primary small" style="float: right;" href="${contextPath}/board/comment/\${reReply.rNo}/delete.do">삭제</a>`;
                 }
             }       

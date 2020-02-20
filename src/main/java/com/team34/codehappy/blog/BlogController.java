@@ -47,6 +47,7 @@ public class BlogController {
 		return "blog";
 	}
 	
+	// 에디터스 픽 선택(대표 이미지 선택)
 	@RequestMapping(value="fetch/editorspick")
 	@ResponseBody
 	public Board selectEditorsPick() {
@@ -70,70 +71,76 @@ public class BlogController {
 				@RequestParam(value="page", required=false) Integer page,
 				@RequestParam(value="limit", required=false) Integer limit) {
 
+			HashMap<String, Object> map = new HashMap<>();
 			int currentPage = page != null ? page : 1;
 			int boardLimit = limit != null ? limit : 15;
+			map.put("currentPage", currentPage);
+			map.put("boardLimit", boardLimit);
+			map.put("atype", 2);
 			
-			if(type == null || type.equals("all")) {
-				List<Board> list = blogService.selectList(currentPage, boardLimit);
-				
-				int countList = blogService.getListCount();
-				
+			HashMap<String, Object> countMap = new HashMap<>();
+			countMap.put("atype", 2);
+			
+			if(type.equals("all")) {
 				mv.addObject("bName", "모아보기").
-				   addObject("countList", countList).
-				   addObject("list", list).
-				   addObject("type", "all").
-				   addObject("pageInfo", currentPage).
-				   addObject("boardLimit", boardLimit).
-				   addObject("name", "bloglist");
-				mv.setViewName("blog");
-				return mv;
+				   addObject("type", "all");
 			} else if(type.equals("frontend")) {
-				type = "1";
+				map.put("type", 1);
+				countMap.put("type", 1);
 				mv.addObject("bName", "프론트엔드").
 				   addObject("type", "frontend");
 			} else if(type.equals("backend")) {
-				type = "2";
+				map.put("type", 2);
+				countMap.put("type", 2);
 				mv.addObject("bName", "백엔드").
 				   addObject("type", "backend");
 			} else if(type.equals("others")) {
-				type = "3";
-				mv.addObject("bName", "그외 프로그래밍 관련").
+				map.put("type", 3);
+				countMap.put("type", 3);
+				mv.addObject("bName", "기타 프로그래밍").
 				   addObject("type", "others");
 			} else if(type.equals("freetalk")) {
-				type = "4";
+				map.put("type", 4);
+				countMap.put("type", 4);
 				mv.addObject("bName", "프리톡").
 				   addObject("type", "freetalk");
 			} else {
-				mv.addObject("msg", "잘못된 검색값 입력");
+				mv.addObject("msg", "잘못된 분류입니다.");
 				mv.setViewName("common/errorpage");
 				return mv;
 			}
 			
-			List<Board> list = blogService.selectList(type, currentPage, boardLimit);
+			List<Board> list = bService.selectList(map);
+			int countList = bService.getListCount(countMap);
 			
-			int countList = blogService.getListCount(type);
 			mv.addObject("list", list).
 			   addObject("countList", countList).
-				addObject("pageInfo", currentPage).
-				addObject("boardLimit", boardLimit).
-			 	addObject("name", "bloglist");
-			mv.setViewName("blog");
+			   addObject("pageInfo", currentPage).
+			   addObject("boardLimit", boardLimit).
+			   addObject("name", "blog");
+			mv.setViewName("board");
 			return mv;
 		}
-	
+		
 	// '더보기'로 게시글 리스트 더 출력하기
 	@RequestMapping(value="fetch", method=RequestMethod.GET)
 	@ResponseBody
 	public List<Board> fetchView(Model model,
+		@RequestParam(value="atype") Integer atype,
 		@RequestParam(value="type", required=false) String type,
 		@RequestParam(value="page", required=false) Integer page,
 		@RequestParam(value="limit", required=false) Integer limit) {
+		
+		HashMap<String, Object> map = new HashMap<>();
 		int currentPage = page != null ? page + 1 : 1;
 		int boardLimit = limit != null ? limit : 15;
 		
+		map.put("currentPage", currentPage);
+		map.put("boardLimit", boardLimit);
+		map.put("atype", 2);
 		
 		if(type == null || type.equals("all")) {
-			List<Board> list = blogService.selectList(currentPage, boardLimit);
+			List<Board> list = bService.selectList(map);
 			for(Board b : list) {
 				if(b.getbContent().indexOf(".jpg") != -1) {					
 					b.setImageUrl(b.getbContent().substring(b.getbContent().indexOf("src=\"") + "src=\"".length(), b.getbContent().indexOf(".jpg")) + ".jpg");
@@ -147,18 +154,17 @@ public class BlogController {
 			}
 			return list;
 		} else if(type.equals("frontend")) {
-			type = "1";
+			map.put("type", 1);
 		} else if(type.equals("backend")) {
-			type = "2";
+			map.put("type", 2);
 		} else if(type.equals("others")) {
-			type = "3";
+			map.put("type", 3);
 		} else if(type.equals("freetalk")) {
-			type = "4";
-		} else {
-			
-		}
-		List<Board> list = blogService.selectList(type, currentPage, boardLimit);
-	return list;
+			map.put("type", 4);
+		} 
+		
+		List<Board> list = bService.selectList(map);
+		return list;
 	}
 	
 	
@@ -205,28 +211,23 @@ public class BlogController {
 			for(Reply r : rList) {
 				if(r.getRefRNo() == 0) {
 					replyList.add(r);
-				}
-			}
-			for(Reply r : rList) {
-				if(r.getRefRNo() != 0) {
+				} else {
 					reReplyList.add(r);
 				}
 			}
 		}
 		Gson gson = new Gson();
 		if(board != null) {
-			mv.addObject("name", "blogdetail").
+			mv.addObject("name", "detailview").
 			   addObject("board", board).
 			   addObject("reply", replyList).
 			   addObject("jsonReply", gson.toJson(replyList)).
 			   addObject("jsonReReply", gson.toJson(reReplyList)).
 			   addObject("reReply", reReplyList).
-			   setViewName("blog");
+			   setViewName("board");
 		}
 		return mv;
 	}
-	
-	
 	
 	// 게시글 작성
 	// 게시글 작성 화면으로 이동

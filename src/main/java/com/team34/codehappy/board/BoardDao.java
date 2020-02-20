@@ -22,25 +22,16 @@ public class BoardDao {
 	}
 	
 
-	public int getListCount(String type) {
-		return sqlSession.selectOne("BoardMapper.getListCount", type);
+	public int getListCount(HashMap<String, Object> map) {
+		return sqlSession.selectOne("BoardMapper.getListCount", map);
 	}
 	
 	
-
-	public List<Board> selectList(int currentPage, int boardLimit) {
-		int offset = (currentPage - 1) * boardLimit;
-		RowBounds rowBounds = new RowBounds(offset, boardLimit);
+	public List<Board> selectList(HashMap<String, Object> map) {
+		int offset = ((int)(map.get("currentPage")) - 1) * (int)(map.get("boardLimit"));
+		RowBounds rowBounds = new RowBounds(offset, (int)(map.get("boardLimit")));
 		
-		List<Board> list = sqlSession.selectList("BoardMapper.selectList", null, rowBounds);
-		return list;
-	}
-
-	public List<Board> selectList(String type, int currentPage, int boardLimit) {
-		int offset = (currentPage - 1) * boardLimit;
-		RowBounds rowBounds = new RowBounds(offset, boardLimit);
-		
-		List<Board> list = sqlSession.selectList("BoardMapper.selectList", type, rowBounds);
+		List<Board> list = sqlSession.selectList("BoardMapper.selectList", map, rowBounds);
 		return list;
 	}
 
@@ -123,4 +114,7 @@ public class BoardDao {
 	public List<Board> selectStarArticleByUser(int mNo) {
 		return sqlSession.selectList("BoardMapper.selectStarArticleByUser", mNo);
 	}
+
+
+
 }

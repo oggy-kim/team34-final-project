@@ -166,7 +166,15 @@ option {
     border: 2px solid #9e2929;
     letter-spacing: 2px;
 }
-.agile-days span.Java {
+
+.agile-days span {
+	float: left;
+	width: 25%;
+	color: #fff;
+	text-transform: none;
+	margin-bottom: 10px;
+}
+/* .agile-days span.Java {
     float: left;
     width: 25%;
 	font-size: 15px;
@@ -253,7 +261,7 @@ option {
     color: #fff;
     letter-spacing: 1px;
 	    padding: 0.5em 0;
-}
+} */
 select {
     font-size: 15px;
     font-weight: 500;

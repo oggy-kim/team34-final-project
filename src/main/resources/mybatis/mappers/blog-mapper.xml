@@ -25,33 +25,6 @@
 		<result property="reply" column="TOTAL_REPLY"/>
 	</resultMap>
 
-	<select id="getListCount" parameterType="String" resultType="_int">
-		SELECT COUNT(*)
-		FROM BOARD
-		WHERE ARTICLE_STATUS='Y'
-		AND ARTICLE_TYPE = 2
-		<if test="value != null">
-	 	AND CONTENT_TYPE = #{value}
-	 	</if>
-	</select>
-	
-	<select id="selectList" parameterType="String" resultMap="blogResultSet">
-		SELECT *
-		FROM BOARDVIEW
-		WHERE ARTICLE_STATUS = 'Y'
-		AND ARTICLE_TYPE = 2
-	 	<if test="value != null">
-	 	AND CONTENT_TYPE = #{value}
-	 	</if>
-		ORDER BY WRITE_DATE DESC
-	</select>
-
-	<select id="selectArticle" resultMap="blogResultSet">
-		SELECT *
-		FROM BOARDVIEW
-		WHERE ARTICLE_NO = #{aNo}
-	</select>
-
 	<select id="selectEditorsPick" resultMap="blogResultSet">
 		SELECT HEADER, CONTENT, ARTICLE_NO
 		FROM BOARD

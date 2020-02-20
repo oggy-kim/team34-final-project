@@ -35,7 +35,7 @@
                                 const spinner = document.getElementById("spinner");
                                 const list = document.querySelector(".board-wrapper tbody");
                                 spinner.removeAttribute('hidden');
-                                fetch("${contextPath}/board/fetch/?limit=5")
+                                fetch("${contextPath}/board/fetch/?atype=1&limit=5")
                                     .then((res) => {
                                         if(res.ok) {
                                             return res.json();

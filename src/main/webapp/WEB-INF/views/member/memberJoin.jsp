@@ -58,10 +58,11 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 		</div>
 		<div class="agile-voltsub">
 			<h2>계정 만들기</h2>
+			<p>* : 필수 입력사항</p>
 				<form action="minsert" method="post" id="joinForm" onsubmit="return joinValidate();">
 					<div class="nick-name">
 						<p>닉네임 *</p>
-						<input type="text" name="mNick" id="mNick" placeholder="닉네임 *" required="" autofocus>
+						<input type="text" name="mNick" id="mNick" placeholder="최대 9자" required="" autofocus>
 						<!-- 닉네임 사용가능 & 불가능 Start -->
 						<p class="guide2 ok2">이 닉네임은 사용 가능합니다.</p>
 						<p class="guide2 error2">이 닉네임은 사용할 수 없습니다.</p>
@@ -71,10 +72,10 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					<div class="clear"></div>
 					<div class="agile-email">
 						<p>이메일 *</p>
-						<input type="email" name="mId" id="mId" placeholder="이메일 *" required="">
+						<input type="email" name="mId" id="mId" placeholder="인증 가능한 메일주소" required="">
 						<!-- 아이디 사용가능 & 불가능 Start -->
 						<p class="guide ok">이 이메일 주소는 사용 가능합니다.</p>
-						<p class="guide error">이 이메일 주소는  사용할 수 없습니다.</p>
+						<p class="guide error">이 이메일 주소는 사용할 수 없습니다.</p>
 						<p class="guide error1">이메일 형식에 맞춰주세요.</p>
 						<input type="hidden" name="idDuplicateCheck" id="idDuplicateCheck" value="0">
 						<!-- 아이디 사용가능 & 불가능 End -->
@@ -82,7 +83,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					<div class="clear"></div>
 					<div class="agile-password">
 						<p>비밀번호 *</p>
-						<input type="password" name="mPwd"  id="mPwd" placeholder="비밀번호 *" required="" >
+						<input type="password" name="mPwd"  id="mPwd" placeholder="6자 이상 / 영문소문자&숫자&특수문자 포함" required="" >
 						<!-- 비밀번호 유효성검사 -->
 						<div class="pwdHidden">
 							<div class="pwdHiddenP">
@@ -109,7 +110,12 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 					<div class="agile-work">
 						<p>관심분야</p>
 							<div class="agile-days">
-								<span class="Java">
+								<c:forEach var="tag" items="${tagList}">
+									<span><input type="checkbox" name="myTag" value="${tag}">${tag}<br></span>
+								</c:forEach>
+							
+
+								<!-- <span class="Java">
 									<input type="checkbox" name="myTag" value="Java">Java<br>	
 								</span>
 								<span class="HTML">
@@ -135,7 +141,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 								</span>
 								<span class="Python">
 									<input type="checkbox" name="myTag" value="기타">기타<br>
-								</span>
+								</span> -->
 							</div>
 					</div>
 					<div class="clear"></div>

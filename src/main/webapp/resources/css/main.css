@@ -2286,7 +2286,7 @@ button,
     cursor: pointer;
     transition: all 0.5s;
     background-color: rgba(222, 224, 226, 0.75);
-    font-weight: 500;
+    font-weight: 700;
   }
   .board-list td {
     vertical-align: middle;
@@ -2421,7 +2421,8 @@ button,
   }
 
   .row.myactivity > div {
-    height: 35rem;
+    height: auto;
+    overflow: hidden;
     background-color:#dddddd;
     padding: 1em;
     margin: 0.5em;
@@ -2519,6 +2520,9 @@ button,
     display: none;
   }
 
+  .nicknamefont {
+    display: flex;
+  }
   .nicknamefont h1 {
     font-size: 2em;
     margin: 0 0 0.5em 0;
@@ -2552,7 +2556,7 @@ button,
     background: #fff;
     border-radius: 5px;
     width: 30%;
-    height: 50%;
+    height: auto;
     position: relative;
     transition: all 5s ease-in-out;
   }
@@ -2807,16 +2811,16 @@ button,
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 0; 
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+  } 
   
   #spinner::after {
     content: "";
-    width: 80px;
-    height: 80px;
+    width: 30px;
+    height: 30px;
     border: 2px solid #f3f3f3;
     border-top: 3px solid #f25a41;
     border-radius: 100%;

@@ -32,25 +32,28 @@
 		<result property="bHeader" column="HEADER"/>
 	</resultMap>
 
-	<select id="getListCount" parameterType="String" resultType="_int">
+	<select id="getListCount" parameterType="hashmap" resultType="_int">
 		SELECT COUNT(*)
 		FROM BOARD
 		WHERE ARTICLE_STATUS='Y'
-		AND ARTICLE_TYPE = 1
-		<if test="value != null">
-	 	AND CONTENT_TYPE = #{value}
+		AND ARTICLE_TYPE = #{atype}
+		<if test="type != null">
+	 	AND CONTENT_TYPE = #{type}
 	 	</if>
 	</select>
-	
-	<select id="selectList" parameterType="String" resultMap="boardResultSet">
+
+	<select id="selectList" parameterType="hashmap" resultMap="boardResultSet">
 		SELECT *
 		FROM BOARDVIEW
 		WHERE ARTICLE_STATUS = 'Y'
-		AND ARTICLE_TYPE = 1
-	 	<if test="value != null">
-	 	AND CONTENT_TYPE = #{value}
+		AND ARTICLE_TYPE = #{atype}
+	 	<if test="type != null">
+	 	AND CONTENT_TYPE = #{type}
 	 	</if>
-		ORDER BY CHANGE_DATE DESC
+		<trim prefix="ORDER BY">
+			<if test="atype == 1">  CHANGE_DATE DESC </if>
+			<if test="atype == 2">  WRITE_DATE DESC </if>
+		</trim>
 	</select>
 	
 	<update id="updateCount" parameterType="_int">

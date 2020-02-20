@@ -2,6 +2,7 @@ package com.team34.codehappy.member;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,6 +21,12 @@ public class MemberServiceImpl implements MemberService{
       return mDao.selectMember(m);
    }
 
+	@Override
+	public void insertMemberViaSocial(Member m) {
+		mDao.insertMember(m);
+	}
+   
+   
    @Override
    public void insertMember(Member m) throws Exception{
       mDao.insertMember(m);
@@ -91,4 +98,16 @@ public class MemberServiceImpl implements MemberService{
 	public Member selectMemberByMNo(int mNo) {
 		return mDao.selectMember(mNo);
 	}
+
+	@Override
+	public Member selectMemberById(String id) {
+		return mDao.selectMember(id);
+	}
+
+	@Override
+	public List<String> getTagList() {
+		return mDao.getTagList();
+	}
+
+
 }

@@ -15,6 +15,6 @@ function prettyDate(time){
     // day_diff == 1 && "어제" ||
     day_diff < 7 && day_diff + "일 전" ||
     day_diff < 31 && Math.floor( day_diff / 7 ) + "주 전" ||
-    day_diff < 360 && Math.floor( day_diff / 30 ) + "개월 전" ||
+    day_diff < 360 && Math.floor( day_diff / 30 ) + "달 전" ||
     day_diff >= 360 && (Math.floor( day_diff / 360 )==0?1:Math.floor( day_diff / 360 )) + "년 전"
 }

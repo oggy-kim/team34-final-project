@@ -14,9 +14,12 @@
                 <!-- 프로필, 이름, 설정-->
                 <div class="row">
                     <label class="label" data-toggle="tooltip" title="프로필사진 변경">
-                        <img class="profile-big" id="avatar" src="${contextPath}/resources/images/member/${loginMember.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" alt="avatar">
+                        <img class="profile-big" id="avatar" src="${contextPath}/resources/images/member/${myPageInfo.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'" alt="avatar">
+                        <c:if test="${myPageInfo.mNo eq loginMember.mNo}">
                         <input type="file" class="sr-only" id="input" name="image" accept="image/*">
+                        </c:if>
                     </label>
+                    <c:if test="${myPageInfo.mNo eq loginMember.mNo}">
                     <div class="alert" role="alert"></div>
                     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -40,152 +43,32 @@
                     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
                     <script type="text/javascript" src="${contextPath}/resources/js/cropper.js"></script>
 
-                    <script>
-                        window.addEventListener('DOMContentLoaded', function () {
-                          var avatar = document.getElementById('avatar');
-                          var image = document.getElementById('image');
-                          var input = document.getElementById('input');
-                          var $progress = $('.progress');
-                          var $progressBar = $('.progress-bar');
-                          var $alert = $('.alert');
-                          var $modal = $('#modal');
-                          var cropper;
-                    
-                          $('[data-toggle="tooltip"]').tooltip();
-                    
-                          input.addEventListener('change', function (e) {
-                            var files = e.target.files;
-                            var done = function (url) {
-                              input.value = '';
-                              image.src = url;
-                              $alert.hide();
-                              $modal.modal('show');
-                            };
-                            var reader;
-                            var file;
-                            var url;
-                    
-                            if (files && files.length > 0) {
-                              file = files[0];
-                    
-                              if (URL) {
-                                done(URL.createObjectURL(file));
-                              } else if (FileReader) {
-                                reader = new FileReader();
-                                reader.onload = function (e) {
-                                  done(reader.result);
-                                };
-                                reader.readAsDataURL(file);
-                              }
-                            }
-                          });
-                    
-                          $modal.on('shown.bs.modal', function () {
-                            cropper = new Cropper(image, {
-                              aspectRatio: 1,
-                              viewMode: 3,
-                            });
-                          }).on('hidden.bs.modal', function () {
-                            cropper.destroy();
-                            cropper = null;
-                          });
-                    
-                          document.getElementById('crop').addEventListener('click', function () {
-                            var initialAvatarURL;
-                            var canvas;
-                    
-                            $modal.modal('hide');
-                    
-                            if (cropper) {
-                              canvas = cropper.getCroppedCanvas({
-                                width: 160,
-                                height: 160,
-                              });
-                              initialAvatarURL = avatar.src;
-                              avatar.src = canvas.toDataURL();
-                              $progress.show();
-                              $alert.removeClass('alert-success alert-warning');
-                              canvas.toBlob(function (blob) {
-                                var formData = new FormData();
-                    
-                                formData.append('avatar', blob);
-                                console.log(formData);
-                                $.ajax('${contextPath}/mypage/updateProfilePic', {
-                                  method: 'POST',
-                                  data: formData,
-                                  processData: false,
-                                  contentType: false,
-                    
-                                  xhr: function () {
-                                    var xhr = new XMLHttpRequest();
-                    
-                                    xhr.upload.onprogress = function (e) {
-                                      var percent = '0';
-                                      var percentage = '0%';
-                    
-                                      if (e.lengthComputable) {
-                                        percent = Math.round((e.loaded / e.total) * 100);
-                                        percentage = percent + '%';
-                                        $progressBar.width(percentage).attr('aria-valuenow', percent).text(percentage);
-                                      }
-                                    };
-                    
-                                    return xhr;
-                                  },
-                                  success: function (result) {
-                                    console.log(result);
-                                    console.log("성공");
-                                  },
-                    
-                                  error: function () {
-                                    avatar.src = initialAvatarURL;
-                                  },
-                    
-                                  complete: function () {
-                                    $progress.hide();
-                                  },
-                                });
-                              }, 'image/png');
-                            }
-                          });
-                        });
-                      </script>
-
+                    </c:if>
                     <div class="nicknamefont">
-                        <div class="col-4 col-12-small">
-                            <h1>${loginMember.mNick}</h1>
-                            <h4>${loginMember.aboutMe}</h4>
-                            <a class="button small" href="#aboutMe">자기소개 수정</a>
-                            <!-- href="#aboutMe"  -->
-                        </div>
-                        <br>
-                        <div class="col-4 col-12-small">
-                            <a class="button small" onclick="updatePwd();">비밀번호 변경</a>
-                        </div>
-                        <br>
-                        <div class="col-4 col-12-small">
-                            <a class="button small" onclick="deleteMember(${loginMember.mNo});">**회원 탈퇴**</a>
+                        <div class="col-6 col-12-small">
+                            <h1>${myPageInfo.mNick}</h1> 
+                            <h4>${myPageInfo.aboutMe}</h4>
+                            가입한지
+                            <fmt:parseNumber value="${myPageInfo.joinDate.time}" integerOnly="true" var="joinDate"/>
+                            <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
+                            <c:set var="totalDate" value="${nowDate / 1000 - joinDate / 1000}"/>
+                            <fmt:parseNumber var="dayday" integerOnly="true" value="${totalDate / (60*60*24) + 1 }"/>
+                            ${dayday}일째, {코딩포인트} : <strong>${myPageInfo.mPoint} 점</strong> (상위 ${myPageInfo.pointRanking} %)
+                            <br>
+                            <c:if test="${myPageInfo.mNo eq loginMember.mNo}">
+                            <a class="button small" href="#modifynick">닉네임 수정</a> <a class="button small" href="#aboutMe">자기소개 수정</a>
+                            </c:if>
                         </div>
                     </div>
-                        <div class="col-6 col-12-small">
-                            <a class="button small" href="#modifynick">닉네임 수정</a>
-                            <!-- href="#modifynick" -->
-                        </div>
-                </div>
 
-                <script>
-                    function deleteMember(mNo) {
-                        if(confirm('삭제하시겠습니까?')) {
-                            location.href="${contextPath}/member/" + mNo;
-                        }
-                    }
-
-                </script>
-                
+                </div>                
                 <br>
+                <header class="major">
+                    <h3>${myPageInfo.mNick} 님의 활동내역</h3>
+                </header>
                 <div class="row myactivity">
                     <div class="col-4 col-12-medium mylist">
-                        <h4>나의 최근게시글</h4>
+                        <h4>게시글(총 ${fn:length(bList)}개)</h4>
                         <div class="table-wrapper">
                             <table>
                             <thead>
@@ -197,7 +80,6 @@
                                 </tr>
                         </thead>
                         <tbody>
-                            <c:if test="${fn:length(bList) eq 0}">작성한 게시글이 없습니다.</c:if>
                             <c:forEach var="b" items="${bList}" begin="0" end="4">
                             <tr class="board-list" value="${b.aNo}">
                                 <td>
@@ -274,7 +156,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <td>
-                                            없음
+                                            -
                                         </td>
                                     </c:otherwise>
                                 </c:choose>
@@ -283,13 +165,16 @@
                                 </td>
                             </tr>
                         </c:forEach>
-                        
                         </tbody>
                         </table>
                         </div>
+                        <!-- <a class="button small" href="${contextPath}/myarticle/${myPageInfo.mNo}">더보기</a> -->
                     </div>
+
+                    <!-- 로그인한 사용자 당사자만 자신의 찜글 볼 수 있도록 -->
+                    <c:if test="${myPageInfo.mNo eq loginMember.mNo}">
                     <div class="col-3 col-12-medium mylist">
-                        <h4>나의 찜목록</h4>
+                        <h4>찜목록(총 ${fn:length(sList)}개)</h4>
                         <div class="table-wrapper">
                         <table>
                         <thead>
@@ -299,56 +184,57 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:if test="${fn:length(sList) eq 0}">찜한 게시글이 없습니다.</c:if>
-                            <c:set var="offset" value="1"/>
-                            <c:forEach var="s" items="${sList}" begin="0" end="4">
-                                <tr class="board-list" value="${s.aNo}">
-                                    <td>
-                                        <input type="hidden" name="aNo" value="${s.aNo}">${s.bHeader}
-                                    </td>
-                                    <td>
-                                        <fmt:parseNumber value="${s.writeDate.time}" integerOnly="true" var="writeDate"/>
-                                        <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
-                                        <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
-                                        <c:choose>
-                                            <c:when test="${diff lt 120}">
-                                                방금 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60)}">
-                                                <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
-                                                ${minute}분 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24)}">
-                                                <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
+                                <c:set var="offset" value="1"/>
+                                <c:forEach var="s" items="${sList}" begin="0" end="4">
+                                    <tr class="board-list" value="${s.aNo}">
+                                        <td>
+                                            <input type="hidden" name="aNo" value="${s.aNo}">${s.bHeader}
+                                        </td>
+                                        <td>
+                                            <fmt:parseNumber value="${s.writeDate.time}" integerOnly="true" var="writeDate"/>
+                                            <fmt:parseNumber value="${now.time}" integerOnly="true" var="nowDate"/>
+                                            <c:set var="diff" value="${nowDate / 1000 - writeDate / 1000}"/>
+                                            <c:choose>
+                                                <c:when test="${diff lt 120}">
+                                                    방금 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60)}">
+                                                    <fmt:parseNumber var="minute" integerOnly="true" value="${diff / 60}"/>
+                                                    ${minute}분 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24)}">
+                                                    <fmt:parseNumber var="hour" integerOnly="true" value="${diff / (60 * 60)}"/>
                                                     ${hour}시간 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24*7)}">
-                                                <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
-                                                ${day}일 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24*30)}">
-                                            <fmt:parseNumber var="week" integerOnly="true" value="${diff / (60*60*24*7) }"/>
-                                                ${week}주 전
-                                            </c:when>
-                                            <c:when test="${diff lt (60*60*24*365)}">
-                                                <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
-                                                ${month}달 전
-                                            </c:when>
-                                            <c:otherwise>
-                                                <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
-                                                ${year}년 전
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24*7)}">
+                                                    <fmt:parseNumber var="day" integerOnly="true" value="${diff / (60*60*24) }"/>
+                                                    ${day}일 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24*30)}">
+                                                    <fmt:parseNumber var="week" integerOnly="true" value="${diff / (60*60*24*7) }"/>
+                                                    ${week}주 전
+                                                </c:when>
+                                                <c:when test="${diff lt (60*60*24*365)}">
+                                                    <fmt:parseNumber var="month" integerOnly="true" value="${diff / (60*60*24*30) }"/>
+                                                    ${month}달 전
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <fmt:parseNumber var="year" integerOnly="true" value="${diff / (60*60*24*30*365) }"/>
+                                                    ${year}년 전
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
                     </div>
-                    </div>
-                    <div class="col-4 col-12-medium mylist">
-                        <h4>최근 댓글활동</h4>
-                        <div class="table-wrapper">
+                    <!-- <a class="button small" href="${contextPath}/starredArticle/${loginMember.mNo}" >내 찜리스트 모두보기</a> -->
+                </div>
+            </c:if>
+            <div class="col-4 col-12-medium mylist">
+                <h4>댓글(총 ${fn:length(rList)}개)</h4>
+                    <div class="table-wrapper">
                         <table>
                         <thead>
                             <tr>
@@ -358,7 +244,6 @@
                             </tr>
                         </thead>
                          <tbody>
-                             <c:if test="${fn:length(rList) eq 0}">작성한 댓글 내용이 없습니다.</c:if>
                              <c:set var="offset" value="1"/>
                              <c:forEach var="r" items="${rList}" begin="0" end="4">
                                 <tr class="reply-list" value="${r.aNo}">
@@ -410,21 +295,33 @@
                     </div>
                 </div>
                 <br>
-                    <!-- 비밀번호 재설정 윈도우 창 띄우기!! -->
-                    <script>
-                        function updatePwd(){
-                            window.open('updatePwd','비밀번호 재설정','width=550, height=400, left=300, top=150');
-                            
-                        }
+                <c:if test="${myPageInfo.mNo eq loginMember.mNo}">
+                <header class="major">
+                    <h3>개인정보 수정</h3>
+                </header>
+                    <a class="button small" onclick="updatePwd();">비밀번호 변경</a>
+                    <a class="button primary small" onclick="deleteMember(${loginMember.mNo});">**회원 탈퇴**</a>
+                </c:if>
+            <script>
+                function deleteMember(mNo) {
+                    if(confirm('한번 탈퇴하시면 재가입을 위해 관리자에게 별도로 연락주셔야 합니다. 그래도 탈퇴하시겠습니까?')) {
+                        location.href="${contextPath}/member/" + mNo;
+                    }
+                }
+                function updatePwd(){
+                    window.open('updatePwd','비밀번호 재설정','width=550, height=400, left=300, top=150');
+                    
+                }
 
-                        const myactivity = document.querySelector('.myactivity');
-                        myactivity.addEventListener('click', (e) => {
-                            if(e.target.parentElement.className === 'board-list' || e.target.parentElement.className === 'reply-list') {
-                                const aNo = e.target.parentElement.getAttribute('value');
-                                location.href="${contextPath}/board/" + aNo;
-                            }
-                        })
-                    </script>
+                const myactivity = document.querySelector('.myactivity');
+                myactivity.addEventListener('click', (e) => {
+                    if(e.target.parentElement.className === 'board-list' || e.target.parentElement.className === 'reply-list') {
+                        const aNo = e.target.parentElement.getAttribute('value');
+                        location.href="${contextPath}/board/" + aNo;
+                    }
+                })
+            </script>
+
             </section>
             
 

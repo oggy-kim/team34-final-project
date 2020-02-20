@@ -10,8 +10,8 @@
     let title_header = document.querySelector("#header strong");
     
     if(title_el && title_header)
-        title_el.innerHTML = "CODEHAPPY - Board";
-        title_header.innerHTML = "CODEHAPPY 게시판입니다.";
+        title_el.innerHTML = "CODEHAPPY - ${name}";
+        title_header.innerHTML = "CODEHAPPY ${name}입니다.";
 </script>
 <section>
     <header class="major">
@@ -20,17 +20,6 @@
     <div class="col-6 col-12-small">
         <ul class="actions stacked">
             <li><a href="${contextPath}/board/post" class="button primary">글쓰기</a> &nbsp; <strong>${countList}개</strong>의 글이 있습니다.</li>
-            <c:if test="${loginMember eq null}">
-                <script>
-                    const needLogin = document.querySelector('.button.primary');
-                    needLogin.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        if(confirm("글쓰기는 로그인한 회원만 가능합니다. 로그인하시겠습니까?")) {
-                            location.href="${contextPath}/login";
-                        };
-                    }, false);
-                </script>
-            </c:if>
         </ul>
     </div>
     <div class="table-wrapper">
@@ -41,7 +30,7 @@
                 <c:forEach var="b" items="${list}" begin="${(pageInfo - 1) * boardLimit}" end="${pageInfo * boardLimit}">
                 <tr class="board-list" value="${b.aNo}">
                     <td>
-                        <img class="profile-small" src="${contextPath}/resources/images/member/${b.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'">
+                        <img class="profile-small" value="${b.mNo}" src="${contextPath}/resources/images/member/${b.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'">
                     </td>
                     <td><input type="hidden" name="aNo" value="${b.aNo}">${b.bHeader}<br>
                         <c:set var="aTag" value="${b.aTag}"/>
@@ -108,37 +97,19 @@
             <c:if test="${boardLimit < countList}">
                 <li><a onclick="javascript:seeMore('${type}', 15);" class="button primary fit">더 보기</a></li>
             </c:if>
-            <script src="${contextPath}/resources/js/fetch.js"></script>
+            <c:choose>
+                <c:when test="${name eq Blog}">
+                    <c:set var="atype" value="1" />
+                </c:when>
+                <c:otherwise>
+                    <c:set var="atype" value="2" />
+                </c:otherwise>
+            </c:choose>
             <script>
-                function prettyDate(time){
-                    var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
-                    diff = (((new Date()).getTime() - date.getTime()) / 1000);
-                    if(diff < 0) diff = 0;
-                    day_diff = Math.floor(diff / 86400);
-                    if ( isNaN(day_diff) || day_diff < 0 )
-                    return;
-
-                    return day_diff == 0 && (
-                    diff < 60 && "방금 전" ||
-                    diff < 120 && "1분 전" ||
-                    diff < 3600 && Math.floor( diff / 60 ) + "분 전" ||
-                    // diff < 7200 && "1 시간 전" ||
-                    diff < 86400 && Math.floor( diff / 3600 ) + "시간 전") ||
-                    // day_diff == 1 && "어제" ||
-                    day_diff < 7 && day_diff + " 일전" ||
-                    day_diff < 31 && Math.floor( day_diff / 7 ) + "주 전" ||
-                    day_diff < 360 && Math.floor( day_diff / 30 ) + "개월 전" ||
-                    day_diff >= 360 && (Math.floor( day_diff / 360 )==0?1:Math.floor( day_diff / 360 )) + "년 전"
-                }
-
                 let pageInfo = 1;
-                
                 const list = document.querySelector(".board-wrapper tbody");
                 function seeMore(boardType, limit) {
-                    console.log("boardType : " + boardType);
-                    console.log("limit : " + limit);
-                    console.log("info : " + pageInfo);
-                    fetch('${contextPath}/board/fetch/?type=' + boardType + '&page=' + pageInfo + '&limit=' + limit)
+                    fetch('${contextPath}/${name}/fetch/?atype=${atype}&type=' + boardType + '&page=' + pageInfo + '&limit=' + limit)
                     .then((res) => {
                         if(res.ok) {
                             return res.json();
@@ -157,7 +128,7 @@
                                 const output = `
                                 <tr class="board-list" value="\${article.aNo}">
                                     <td>
-                                    <img class="profile-small" src="${contextPath}/resources/images/member/\${article.mNo}.png" onerror="this.src='${contextPath}/resources/images/member/default.png'"></td>
+                                    <img class="profile-small" src="${contextPath}/resources/images/member/\${article.mNo}.png" value="\${article.mNo}" onerror="this.src='${contextPath}/resources/images/member/default.png'"></td>
                                     <td><input type="hidden" name="aNo" value="\${article.aNo}">\${article.bHeader}<br>
                                     \${tagList}</td>
                                     <td> \${changeDate} \${dateType}</td>
@@ -176,19 +147,29 @@
                     .catch((e) => console.log(e));
                 }
             </script>
-            
         </ul>
         </div>
     </div>
     <script>
         const board = document.querySelector('.board-wrapper')
         board.onclick = function(e) {
-            // location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
             if(e.target.className === "profile-small") {
-                location.href = "${contextPath}/board/" + e.target.parentElement.parentElement.getAttribute('value');
+                location.href="${contextPath}/mypage/" + e.target.getAttribute('value');
+                // location.href = "${contextPath}/${name}/" + e.target.parentElement.parentElement.getAttribute('value');
             } else {
-                location.href = "${contextPath}/board/" + e.target.parentElement.getAttribute('value');
+                location.href = "${contextPath}/${name}/" + e.target.parentElement.getAttribute('value');
             }
         }
     </script> 
+    <c:if test="${loginMember eq null}">
+        <script>
+            const needLogin = document.querySelector('.button.primary');
+            needLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                if(confirm("글쓰기는 로그인한 회원만 가능합니다. 로그인하시겠습니까?")) {
+                    location.href="${contextPath}/login";
+                };
+            }, false);
+        </script>
+    </c:if>
 </section>

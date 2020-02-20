@@ -35,6 +35,7 @@
 		SELECT *
 		FROM REPLYVIEW
 		WHERE MEMBER_NO=#{mNo}
+		AND REPLY_STATUS='Y'
 	</select>
 
 	<select id="selectReplyMember" resultMap="ReplyResultSet">

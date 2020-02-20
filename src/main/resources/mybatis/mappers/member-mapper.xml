@@ -35,11 +35,18 @@
 		WHERE MEMBER_NO=#{mNo}
 		AND MEMBER_STATUS='Y'
 	</select>
+
+	<select id="selectMemberById" parameterType="String" resultMap="MemberResultSet">
+		SELECT *
+		FROM MEMBERVIEW
+		WHERE MEMBER_ID=#{mId}
+		AND MEMBER_STATUS='Y'
+	</select>
 	
 	<insert id="insertMember" parameterType="Member">
 		INSERT INTO  
 		MEMBER(MEMBER_ID, MEMBER_PWD, MEMBER_NICK, MEMBER_LEVEL, ABOUT_ME, MEMBER_STATUS, TAG_ID, JOIN_DATE, LOGIN_DATE, AUTHKEY)
-		VALUES(#{mId}, #{mPwd}, #{mNick}, DEFAULT, DEFAULT, DEFAULT, #{myTag}, DEFAULT, DEFAULT, #{authKey})
+		VALUES(#{mId}, #{mPwd}, #{mNick}, #{mLevel}, DEFAULT, DEFAULT, #{myTag}, DEFAULT, DEFAULT, #{authKey})
    </insert>
    
    <update id="updateMemberNick" parameterType="hashmap">
@@ -97,4 +104,10 @@
 		SET MEMBER_PWD=#{mPwd}
 		WHERE MEMBER_ID=#{mId}
    </update>
+
+   <select id="getTagList" resultType="String">
+		SELECT TAG_ID
+		FROM TAG
+		WHERE IS_MAIN = 'Y'
+   </select>
 </mapper>
