@@ -18,10 +18,13 @@
                 </c:otherwise>
             </c:choose>
             <script>
+                
+
                 const gotoChatRoom = () => {
-                    const room = prompt('입장할 채팅방 이름을 입력하세요.')
-                    const url = `http://192.168.10.44:3000/?username=${loginMember.mNick}&userno=${loginMember.mNo}&room=\${room}`;
-                    window.open(url, 'CODEHAPPY - 채팅', 'width=520, height=700');
+                    alert('기능 업데이트 중입니다. 곧 만나요!');
+                    // const room = prompt('입장할 채팅방 이름을 입력하세요.')
+                    // const url = `http://192.168.10.44:3000/?username=${loginMember.mNick}&userno=${loginMember.mNo}&room=\${room}`;
+                    // window.open(url, 'CODEHAPPY - 채팅', 'width=520, height=700');
                 } 
             </script>
         </ul>

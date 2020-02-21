@@ -11,15 +11,15 @@
     
     if(title_el && title_header)
         title_el.innerHTML = "CODEHAPPY - ${name}";
-        title_header.innerHTML = "CODEHAPPY ${name}입니다.";
+        title_header.innerHTML = "CODEHAPPY ${name}";
 </script>
 <section>
     <header class="major">
-        <h2>게시판 - ${bName}</h2>
+        <h2>${name} - ${bName}</h2>
     </header>
     <div class="col-6 col-12-small">
         <ul class="actions stacked">
-            <li><a href="${contextPath}/board/post" class="button primary">글쓰기</a> &nbsp; <strong>${countList}개</strong>의 글이 있습니다.</li>
+            <li><a href="${contextPath}/${name}/post" class="button primary">글쓰기</a> &nbsp; <strong>${countList}개</strong>의 글이 있습니다.</li>
         </ul>
     </div>
     <div class="table-wrapper">
@@ -117,7 +117,6 @@
                             console.log(res.status);
                         }
                     }).then((articles) => {
-                            console.log(articles);
                             articles.map((article) => {
                                 const changeDate = prettyDate(article.changeDate);
                                 let tagList = "";

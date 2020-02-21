@@ -35,10 +35,6 @@
         .then((editorsPick) => {
             const banner = document.querySelector('#banner');
             const cuttedContent = textLengthOverCut(removeTags(editorsPick.bContent), 150, "...");
-
-            console.log(banner);
-            console.log(cuttedContent);
-
             const output = `
             <div class="content">
                 <header class="major">

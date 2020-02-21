@@ -111,7 +111,7 @@ public class MemberController {
 	@RequestMapping("logout")
 	public String logout(SessionStatus status) {
 		status.setComplete();
-		return "index";
+		return "redirect:/";
 	}
 
 	// 회원가입 페이지로 이동

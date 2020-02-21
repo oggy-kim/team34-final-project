@@ -37,7 +37,6 @@
     <script>
     const $sortOption = document.querySelector('#sortOption');
         $sortOption.addEventListener('change', (e) => {
-            console.log(e.target.value);
             const url = "${contextPath}/searchdetail/fetch/?${searchType}=${searchItem}&aType=${aType}&sort=" + e.target.value;
             fetchResult(url);
     })
@@ -72,7 +71,6 @@
                         }
                     }).then((results) => {
                         list.innerHTML = "";
-                        console.log(results);
                         results.map((result) => {
                             const changeDate = prettyDate(result.changeDate);
                                 let tagList = "";

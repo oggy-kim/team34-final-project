@@ -11,6 +11,11 @@
     if(title_el && title_header)
         title_el.innerHTML = "CODEHAPPY - Main";
         title_header.innerHTML = "CODEHAPPY Main💡🐷";
+
+    const agent = navigator.userAgent.toLowerCase();
+    if ( (navigator.appName == 'Netscape' && navigator.userAgent.search('Trident') != -1) || (agent.indexOf("msie") != -1) ) {
+        alert("인터넷 익스플로러에서는 해당 사이트의 기능을 활용하실 수 없습니다. Chrome, Safari, Firefox를 추천드리며, Windows 사용자라면 Windows Edge 사용을 권장드립니다.");
+    }
 </script>
 <!-- 메인페이지 주요 게시글 -->
             <section>
@@ -30,7 +35,6 @@
                         </thead>
                         <tbody>
                             <div hidden id="spinner"></div>
-                            <script src="${contextPath}/resources/js/fetch.js"></script>
                             <script>
                                 const spinner = document.getElementById("spinner");
                                 const list = document.querySelector(".board-wrapper tbody");
